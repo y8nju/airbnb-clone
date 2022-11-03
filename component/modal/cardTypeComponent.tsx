@@ -11,10 +11,10 @@ interface Props {
 	children: React.ReactNode;
 }
 
-export default function CardTypeComponent(props: Props) {
+const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 	const ctx = useCtx();
 	const { mode, setMode } =ctx!
-	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} ref={ref}>
 		<Card style={{width: 500}}>
 			<CardHeader
 				action={
@@ -36,4 +36,5 @@ export default function CardTypeComponent(props: Props) {
 			{props.children}
 		</Card>
 	</Box>)
-}
+})
+export default CardTypeComponent;

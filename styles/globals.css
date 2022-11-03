@@ -15,7 +15,24 @@ a {
   box-sizing: border-box;
   font-family: 'Noto Sans KR', sans-serif;
 }
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field { 
+  -webkit-appearance: none; 
+  display: none; 
+}
+/* input[type="date"]:focus:-webkit-datetime-edit-text,
+input[type="date"]:focus:-webkit-datetime-edit-month-field,
+input[type="date"]:focus:-webkit-datetime-edit-day-field,
+input[type="date"]:focus:-webkit-datetime-edit-year-field { 
+  -webkit-appearance: block; 
+  display: block; 
+}  */
 
+.MuiCardHeader-action {
+  order: -1
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

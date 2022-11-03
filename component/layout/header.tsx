@@ -3,7 +3,7 @@ import { Box, Button, Container, Divider, Menu, MenuItem, Toolbar, Typography } 
 
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SignUpModal from '../modal/signUpModal';
+import LoginAndSignUp from '../modal/resister';
 
 export default function Header () {
 	const [anchorElUser, setAnchorElUser] = useState<null | Element>(null);
@@ -64,6 +64,6 @@ export default function Header () {
 				</Box>
 			</Toolbar>
 		</Container>
-		<SignUpModal open={Boolean(signupOpen)} onClose={setSignupOpen}/>
+		<LoginAndSignUp open={Boolean(signupOpen)} onClose={setSignupOpen}/>
 	</Container>)
 }

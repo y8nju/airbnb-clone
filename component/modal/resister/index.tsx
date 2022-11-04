@@ -3,6 +3,7 @@ import { useCtx } from '../../../context/context';
 import CardTypeComponent from '../cardTypeComponent';
 import BasicModal from "../index";
 import Login from './loginModal';
+import PassChk from './passChkModal';
 import Signup from './signUpModal';
 interface Open {
 	open: boolean;
@@ -21,6 +22,7 @@ export default function LoginAndSignUp(props: Open) {
             >
             {mode == 'Checked' && <Login />}
             {mode == 'SignUp' && <Signup />}
+            {mode == 'Login' && <PassChk />}
 		</CardTypeComponent>
 	</BasicModal>)
 	

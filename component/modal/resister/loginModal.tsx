@@ -2,15 +2,16 @@ import { Box, Button, CardContent, Divider, FormControl, FormHelperText, TextFie
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { red } from '@mui/material/colors';
 import { useCtx } from '../../../context/context';
+import { findEmail } from '../../../lib/api/accountApi';
 export default function Login() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [emailType, setEmailType] = useState(false);
 	const ctx = useCtx();
-	const {userEmail, setUserEmail, setMode} = ctx!
+	const {userEmail, setUserEmail, setMode, emailRegex} = ctx!
 	const emailChange = (text: string) => {
 		setUserEmail(text);
 		if(text.length > 0) {
-			if(!(/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(text))) {
+			if(!(emailRegex.test(text))) {
 				setErrorMsg('이메일 형식이 아닙니다');
 				setEmailType(true);
 			}else {
@@ -22,12 +23,18 @@ export default function Login() {
 			setEmailType(false);
 		}
 	}
-	const submitHandle = () => {
-		if(!(/^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(userEmail as string))) {
+	const submitHandle = async () => {
+		if(!(emailRegex.test(userEmail as string)) || !userEmail) {
 			setErrorMsg('이메일 형식이 아닙니다');
 			setEmailType(true);
 		}else {
-			setMode('SignUp');
+			console.log(userEmail)
+			let resp = await findEmail(userEmail!);
+			if(resp.result) {
+				setMode('Login')
+			}else {
+				setMode('SignUp');
+			}
 		}
 	}
 

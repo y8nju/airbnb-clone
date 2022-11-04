@@ -47,7 +47,7 @@ export default function Header () {
 						<MenuItem onClick={() => setSignupOpen(true)} sx={{pr: 8}}>
 							<Typography style={{fontWeight: 600}}>회원가입</Typography>
 						</MenuItem>
-						<MenuItem onClick={handleCloseUserMenu} sx={{pr: 8}}>
+						<MenuItem onClick={() => setSignupOpen(true)} sx={{pr: 8}}>
 							<Typography>로그인</Typography>
 						</MenuItem>
 						<Divider />

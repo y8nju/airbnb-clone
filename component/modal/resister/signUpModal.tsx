@@ -1,5 +1,5 @@
 import { Box, Button, CardContent, Checkbox, Divider, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { red } from '@mui/material/colors';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -18,7 +18,7 @@ export default function Signup() {
 	const [emailType, setEmailType] = useState(false);
 	const [firstName, setFirstName] = useState<string|undefined>(undefined);
 	const [lastName, setLastName] = useState<string|undefined>(undefined);
-	const [birth, setBirth] = useState<string|undefined>(null);
+	const [birth, setBirth] = useState<string|undefined>(undefined);
 	const [age, setAge] = useState<number|null>(null);
 	const [password, setPassword] = useState<string>('');
 	const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -29,14 +29,24 @@ export default function Signup() {
 		regex: false,
 		error: false
 	})
+	const [termsChk, setTermsChk] = useState<boolean>(false);
+	const [marketingChk, setMarketingChk] = useState<boolean>(false);
+	const [essentialData, setEssentialData] = useState<boolean>(true);
 
 	const ctx = useCtx();
-	const {userEmail, setUserEmail, setMode} = ctx!
+	const {userEmail, setUserEmail, setMode, emailRegex} = ctx!
 	
-	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    const passRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{9, }$/;
-	const passLevelRegx = /([0-9]|[!@#$%^*+=-]|[A-Za-z\d]){8, }$/;
+    const passRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#])[\da-zA-Z!@#]{8,}$/
+	const passLevelRegx = /([0-9])|([A-Za-z\d]){8, }/;
 	const passSubRegx = /[0-9]|[!@#$%^*+=-]/;
+
+	useEffect(()=> {
+		if((!emailRegex.test(userEmail!) || password.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
+			setEssentialData(true);
+		} else {
+			setEssentialData(false);
+		}
+	}, [firstName, lastName, age, password, termsChk, userEmail ])
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword);
@@ -65,13 +75,15 @@ export default function Signup() {
 		setPassType((passType) => ({ ...passType, length: text.length }))
 		if(text.length > 0 && text.length < 8 ) {
 			setPassType((passType) => ({ ...passType, error: true }))
-		}
-		if(text.length > 8 || passLevelRegx.test(text) ) {
-			setPassType((passType) => ({ ...passType, level: '보통' }))
-		} else if(text.length > 8 && passRegex.test(text)) {
-			setPassType((passType) => ({ ...passType, level: '강함' }))
 		} else {
+			setPassType((passType) => ({ ...passType, error: false }))
+		}
+		if(text.length < 8) {
 			setPassType((passType) => ({ ...passType, level: '약함' }))
+		} else if( passRegex.test(text)) {
+			setPassType((passType) => ({ ...passType, level: '강함' }))
+		} else if(passLevelRegx.test(text)) {
+			setPassType((passType) => ({ ...passType, level: '보통' }))
 		}
 	}
 	const birthChk = (text: any) => {
@@ -97,6 +109,9 @@ export default function Signup() {
 		setBirth(text);
 		console.log(userBirth, today);
 		console.log(age);
+	}
+	const submitHandle = () => {
+		setMode('Login');
 	}
 
 	return (<CardContent sx={{p: 3}}>
@@ -127,18 +142,6 @@ export default function Signup() {
 					<Grid item xs={12} style={{paddingTop: 0}}>
 						<FormHelperText sx={{mx: '14px'}}>정부 발급 신분증에 표시된 이름과 일치하는지 확인하세요.</FormHelperText>
 					</Grid>
-				{/* <Grid item xs={12}>
-					<TextField fullWidth label="생년월일" id="birth" type="date" sx={{mt: 2}} color="info" 
-					placeholder='          '
-						value={birth}
-						onChange={(e)=>birthChk(e.target.value)} />
-					<FormHelperText 
-						sx={[{display: 'flex'}, (age !== null && age < 18) && {color:"#d32f2f"}]}>
-						{(age !== null && age < 18) && <Error sx={{mr: 1, mt: 0.5}} fontSize="small" /> }
-						<span>만 18세 이상의 성인만 회원으로 가입할 수 있습니다. 생일은 에어비앤비의 다른 회원에게 공개되지 않습니다.</span>
-					</FormHelperText>
-				</Grid> */}
-				
 				<Grid item xs={12}>
 					<FormControl sx={{ width: 1}} variant="outlined">
 					<InputLabel htmlFor="password" color="info" >생년월일</InputLabel>
@@ -151,7 +154,7 @@ export default function Signup() {
 						label="생년월일"
 						color="info"
 						endAdornment={ (age == null && 
-							<InputAdornment style={{position: 'absolute', width: '40%', height: '100%', pointerEvents: 'none' }} >
+							<InputAdornment position='start' style={{position: 'absolute', width: '40%', height: '100%', pointerEvents: 'none' }} >
 								<div className='datePlaceHolder'></div>
 							</InputAdornment>	)}
 					/>
@@ -217,6 +220,8 @@ export default function Signup() {
 				</Grid>
 			</Grid>
 			<Button variant="contained" disableElevation
+				disabled={essentialData}
+				onClick={submitHandle}
 				sx={{ width: 1, my: 2, bgcolor: red[600], p:1.4}}>
 				계속
 			</Button>
@@ -229,13 +234,17 @@ export default function Signup() {
 						label={<Typography sx={{ fontSize: 10, fontWeight: 400 }}>
 							개인정보 수집 및 이용에 동의합니다.
 						</Typography>}
-						control={<Checkbox value="allowExtraEmails" color="primary" size="small" />}
+						control={<Checkbox value="약관동의" color="primary" size="small" 
+							checked={termsChk}
+							onChange={(e) => setTermsChk(e.target.checked)}/>}
 						style={{fontSize: '10px'}}
 					/>
 				</Box>
 				<Box>
 					<FormControlLabel
-						control={<Checkbox value="allowExtraEmails" color="primary" size="small" />}
+						control={<Checkbox value="마케팅 수신 동의" color="primary" size="small" 
+							checked={marketingChk}
+							onChange={(e) => setMarketingChk(e.target.checked)}/>}
 						label={<Typography sx={{ fontSize: 10, fontWeight: 400 }}>
 							마케팅 이메일 수신을 원합니다(선택).
 						</Typography>}

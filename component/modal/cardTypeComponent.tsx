@@ -14,6 +14,10 @@ interface Props {
 const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 	const ctx = useCtx();
 	const { mode, setMode } =ctx!
+	const accountClose =()=> {
+		props.onClose(false);
+		setMode('Checked');
+	}
 	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} ref={ref}>
 		<Card style={{width: 500}}>
 			<CardHeader
@@ -21,7 +25,7 @@ const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 					mode == 'SignUp' ? (<IconButton onClick={() => setMode('Checked')}>
 						<KeyboardArrowLeftIcon />
 					</IconButton>) : (
-					<IconButton onClick={() => props.onClose(false)}>
+					<IconButton onClick={accountClose}>
 						<CloseOutlinedIcon />
 					</IconButton>)
 				}

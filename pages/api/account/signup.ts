@@ -6,8 +6,7 @@ import Account from "../../../lib/models/account";
 import { useCtx } from "../../../context/context";
 
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
-	const ctx = useCtx();
-	const {emailRegex} = ctx!
+	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     
     if(req.method !== "POST") {
         return res.status(405).json({result: false, message: '요청을 처리할 수 없습니다'})

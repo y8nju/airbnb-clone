@@ -1,9 +1,10 @@
 import {useState} from 'react'
-import { Box, Button, Container, Divider, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { Box, Button, Container, Toolbar, Typography } from "@mui/material";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoginAndSignUp from '../modal/resister';
+import AnchorUserMenu from '../menu/anchorUserMenu';
 
 export default function Header () {
 	const [anchorElUser, setAnchorElUser] = useState<null | Element>(null);
@@ -28,42 +29,10 @@ export default function Header () {
 						<MenuIcon fontSize='small' sx={{mr: 0.8}} />
 						<AccountCircleIcon style={{ fontSize: '1.8rem'}}/>
 					</Button>
-					<Menu
-						sx={{ mt: 6 }}
-						id="menu-appbar"
-						anchorEl={anchorElUser}
-						anchorOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-						}}
-						keepMounted
-						transformOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-						}}
-						open={Boolean(anchorElUser)}
-						onClose={handleCloseUserMenu}
-					>
-						<MenuItem onClick={() => setSignupOpen(true)} sx={{pr: 8}}>
-							<Typography style={{fontWeight: 600}}>회원가입</Typography>
-						</MenuItem>
-						<MenuItem onClick={() => setSignupOpen(true)} sx={{pr: 8}}>
-							<Typography>로그인</Typography>
-						</MenuItem>
-						<Divider />
-						<MenuItem onClick={handleCloseUserMenu} sx={{pr: 8}}>
-							<Typography>숙소 호스트 되기</Typography>
-						</MenuItem>
-						<MenuItem onClick={handleCloseUserMenu} sx={{pr: 8}}>
-							<Typography>체험 호스팅 하기</Typography>
-						</MenuItem>
-						<MenuItem onClick={handleCloseUserMenu} sx={{pr: 8}}>
-							<Typography>도움말</Typography>
-						</MenuItem>
-					</Menu>
+					<AnchorUserMenu active={anchorElUser} closeMenu={handleCloseUserMenu} setSignupOpen={setSignupOpen} />
 				</Box>
 			</Toolbar>
 		</Container>
-		<LoginAndSignUp open={Boolean(signupOpen)} onClose={setSignupOpen}/>
+		<LoginAndSignUp open={Boolean(signupOpen)} onClose={setSignupOpen} closeMenu={handleCloseUserMenu}/>
 	</Container>)
 }

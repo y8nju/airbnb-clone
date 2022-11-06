@@ -6,6 +6,8 @@ import Footer from './footer'
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
+import HeaderAlert from './Alert/headerAlert';
+import { useCtx } from '../../context/context';
 interface Props {
 	window?: () => Window;
 	children: React.ReactElement;
@@ -23,14 +25,19 @@ function ElevationScroll(props: Props) {
 	});
 }
 export default function Layout (props: Props) {
+	const ctx = useCtx();
+	const {headerAlertProps} = ctx!;
 	return ( <Container maxWidth={false} disableGutters={true}>
 		<ElevationScroll {...props}>
+			<>
+			{headerAlertProps.visible && <HeaderAlert />}
 			<AppBar position="sticky" sx={{ bgcolor: "white", color: 'text.primary' }}>
 				<Header />
 				<Nav />
 			</AppBar>
-			</ElevationScroll>
-			{props.children}
-			<Footer />
+			</>
+		</ElevationScroll>
+		{props.children}
+		<Footer />
 	</Container> )
 }

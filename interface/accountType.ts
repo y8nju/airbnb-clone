@@ -4,6 +4,6 @@ export default interface AccountType {
     firstName: string, 
     birth: string,
     password: string,
-    marketing?: Date, 
-    visible?: Date
+    marketing?: Date | null, 
+    visible?: Date | null
 }

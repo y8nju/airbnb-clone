@@ -4,6 +4,7 @@ import Layout from '../component/layout'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { grey, orange } from '@mui/material/colors';
 import { ContextProvider } from '../context/context';
+import { SessionProvider } from 'next-auth/react';
 
 export default function App({ Component, pageProps }: AppProps) {
 	const customTheme = createTheme({
@@ -15,15 +16,17 @@ export default function App({ Component, pageProps }: AppProps) {
 				main: '#ff5a5f',
 			},
 			info: {
-				main: grey[700]
+				main: grey[800],
 			}
 		},
 	});
 	return (<ThemeProvider theme={customTheme}>
-		<ContextProvider>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
-		</ContextProvider>
+		<SessionProvider>
+			<ContextProvider>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</ContextProvider>
+		</SessionProvider>
 	</ThemeProvider>)
 }

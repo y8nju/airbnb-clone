@@ -9,7 +9,7 @@ interface OnClose {
 }
 
 export default function PassFind(props: OnClose) {
-    const [email, setEmail] = useState<string | null>(null);
+    const [email, setEmail] = useState<string | undefined>(undefined);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [emailType, setEmailType] = useState<boolean>(false);
 	const {onClose} = props;

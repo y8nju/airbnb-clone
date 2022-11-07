@@ -14,7 +14,7 @@ interface OnClose {
 }
 export default function PassChk(props: OnClose) {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
-	const [password, setPassword] = useState<string | null>(null);
+	const [password, setPassword] = useState<string | undefined>(undefined);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [inpError, setInpError] = useState<boolean>(false);
 	const [diffrent, setDiffrent] = useState<boolean>(false);

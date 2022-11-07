@@ -33,6 +33,21 @@ export async function signup(doc: AccountType) {
     console.log(response)
     return data;
 }
+type CommitmentDoc = {
+    email: string, 
+    visible: Date
+}
+export async function commitment(doc: CommitmentDoc) {
+    let endPoint = serverURI + '/api/account/commitment';
+    const response = await fetch(endPoint, {
+        ...postOption,
+        body: JSON.stringify(doc)
+    });
+    const data = await response.json();
+    console.log(response)
+    return data;
+}
+
 type Credentials = {
     email: string, 
     password: string

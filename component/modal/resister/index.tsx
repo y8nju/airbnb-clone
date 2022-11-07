@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 're
 import { useCtx } from '../../../context/context';
 import CardTypeComponent from '../cardTypeComponent';
 import BasicModal from "../index";
+import Commitment from './commitmentModal';
 import Login from './loginModal';
 import PassChk from './passChkModal';
 import PassFind from './passFindModal';
@@ -17,7 +18,7 @@ export default function LoginAndSignUp(props: Open) {
     const {open, onClose, closeMenu} = props;
 	const [show, setShow] = useState<boolean>(false);
     const ctx = useCtx();
-    const {mode} = ctx!
+    const {mode, setMode} = ctx!
     useEffect(()=> {
         setShow(open);
     }, [open]);
@@ -32,14 +33,15 @@ export default function LoginAndSignUp(props: Open) {
 	return (<BasicModal open={show} onClose={setShow}>
 		<CardTypeComponent onClose={setShow} 
             title={ mode == 'Checked' && '로그인 또는 회원 가입' || 
-                mode == 'SignUp' && '회원 가입 완료하기' || mode =='Checked' && '로그인' ||
-                mode == 'PassFind'&& '비밀번호를 잊으셨나요?'  
+                mode == 'SignUp' && '회원 가입 완료하기' || mode == 'Login' && '로그인' ||
+                mode == 'PassFind'&& '비밀번호를 잊으셨나요?' || mode == 'Commitment' && undefined
             }
             >
             {mode == 'Checked' && <Login />}
             {mode == 'SignUp' && <Signup />}
             {mode == 'Login' && <PassChk onClose={setShow} closeMenu={closeMenu}  />}
             {mode == 'PassFind' && <PassFind onClose={setShow} />}
+            {mode == 'Commitment' && <Commitment />}
 		</CardTypeComponent>
 	</BasicModal>)
 	

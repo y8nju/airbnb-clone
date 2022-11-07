@@ -28,9 +28,8 @@ enum SignType {
 }
 export default function Signup() {
 	const ctx = useCtx();
-	const {userEmail, emailRegex, setLoading, mode} = ctx!
+	const {userEmail, setUserEmail, emailRegex, setLoading, mode, setMode} = ctx!
 	const {data: session} = useSession();
-	console.log(session);
 
 	const [email, setEmail]= useState<string>(userEmail as string);
 	const [emailType, setEmailType] = useState(false);
@@ -62,8 +61,8 @@ export default function Signup() {
 	const passSubRegx = /[0-9]|[!@#$%^*+=-]/;
 
 	useEffect(() => {
-		setEmail(session.user!.email as string);
 		if(mode == 'GoogleSignUp'){
+			setEmail(session.user!.email as string);
 			setTermsChk(true);
 			setPassword('googlePassFree')
 		}
@@ -189,7 +188,8 @@ export default function Signup() {
 		} as AccountType
 		const resp = await signup(userData);
 		if(resp.result) {
-			console.log('서약동의로 이동')
+			setMode('Commitment');
+			setUserEmail(email);
 		}
 		setLoading(false);
 	}

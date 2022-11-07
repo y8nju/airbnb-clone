@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box, Card, CardHeader, IconButton, IconButtonProps} from '@mui/material/'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useCtx } from '../../context/context';
@@ -6,7 +6,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 
 interface Props {
-	title: string | boolean, 
+	title?: string, 
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;
 	children: React.ReactNode;
 }

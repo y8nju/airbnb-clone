@@ -1,14 +1,23 @@
 import { Divider, MenuItem, Typography } from "@mui/material";
 import { SetStateAction } from "react";
+import { useCtx } from "../../context/context";
 
 interface AnchorAction {
     setSignupOpen: (value: SetStateAction<boolean>) => void
     closeMenu: () => void
 }
 export default function AnchorUnUser(props: AnchorAction) {
-    const {setSignupOpen, closeMenu} = props;
+	const {setSignupOpen, closeMenu} = props;
+	const ctx = useCtx();
+	const {setMode, mode} = ctx!;
 	const signupHandle = () => {
-		setSignupOpen(true)
+		setMode('Checked')
+		setSignupOpen(true);
+		closeMenu();
+	}
+	const testHandle = () => {
+		setMode('Commitment');
+		setSignupOpen(true);
 		closeMenu();
 	}
 	return (<>
@@ -19,7 +28,7 @@ export default function AnchorUnUser(props: AnchorAction) {
 		<Typography>로그인</Typography>
 	</MenuItem>
 	<Divider />
-	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
+	<MenuItem onClick={testHandle} sx={{pr: 8}}>
 		<Typography>숙소 호스트 되기</Typography>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>

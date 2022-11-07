@@ -22,7 +22,7 @@ const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 		<Card style={{width: 500, height: '100%', display: 'flex', flexDirection: 'column'}}>
 			<CardHeader
 				action={
-					mode == 'SignUp' ? (<IconButton onClick={() => setMode('Checked')}>
+					mode == 'SignUp' || 'Checked' ? (<IconButton onClick={() => setMode('Checked')}>
 						<KeyboardArrowLeftIcon />
 					</IconButton>) : (
 					<IconButton onClick={accountClose}>

@@ -5,6 +5,9 @@ import { red } from '@mui/material/colors';
 import { useCtx } from '../../../context/context';
 import { findEmail } from '../../../lib/api/accountApi';
 import { FcGoogle } from "react-icons/fc";
+import { signIn } from 'next-auth/react';
+import popupCenter from '../../layout/popup/popupCenter';
+
 
 export default function Login() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -42,6 +45,9 @@ export default function Login() {
 			setLoading(false);
 		}
 	}
+	const googleSigninHandle = () => {
+		popupCenter('/OAuth/google', 'Google Login', )
+	}
 
 	return (<CardContent sx={{p: 3, height: 'auto'}}>
 		<Typography variant="h6" color="text.primary"
@@ -66,7 +72,9 @@ export default function Login() {
 		<Box sx={{mt: 2}}>
 			<Button variant="outlined" color="info"
 				sx={{ width: 1, p: 1.4}}
-				startIcon={<FcGoogle />}>
+				onClick={googleSigninHandle}
+				startIcon={<FcGoogle style={{marginLeft: '10px'}}
+			/>}>
 				<Typography variant='button' flexGrow={1}>구글로 로그인하기</Typography>
 			</Button>
 		</Box>

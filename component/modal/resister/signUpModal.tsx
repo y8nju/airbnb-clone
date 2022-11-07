@@ -164,12 +164,13 @@ export default function Signup() {
 		}
 		const userData = {
 			email: email,
-			lastname: lastName,
+			lastName: lastName,
 			firstName: firstName, 
 			birth: birth,
 			password: password,
 			marketing: marketingChk ? new Date() : null, 
-			visible: null
+			visible: null, 
+			signupType: 'email'
 		} as AccountType
 		const resp = await signup(userData);
 		if(resp.result) {

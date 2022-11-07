@@ -35,5 +35,4 @@ export default function AnchorUserMenu(props: Anchor) {
                 <AnchorUser closeMenu={closeMenu} setSignupOpen={setSignupOpen} />
             }
     </Menu>)
-    
 }

@@ -107,6 +107,7 @@ export default function PassChk(props: OnClose) {
 					</FormHelperText>
 				}
 				<LoadingButton variant="contained" disableElevation
+					type="submit"
 					loading={loading}
 					sx={{ width: 1, my: 2, bgcolor: red[600], p:1.4}}
 					onClick={() => submitHandle('Enter')}

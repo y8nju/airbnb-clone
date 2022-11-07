@@ -14,7 +14,7 @@ export default async function handler (req:NextApiRequest, res: NextApiResponse)
     const doc = req.body as AccountType;
     try{
         const findEmail = await Account.findOne({email: req.body.email});    
-        if(!doc.email || !emailRegex.test(doc.email) || !doc.firstName || !doc.lastname || !doc.birth || !doc.password) {
+        if(!doc.email || !emailRegex.test(doc.email) || !doc.firstName || !doc.lastName || !doc.birth || !doc.password) {
             throw new Error('누락된 필드값이 존재합니다.');
         }
         

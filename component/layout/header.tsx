@@ -5,10 +5,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoginAndSignUp from '../modal/resister';
 import AnchorUserMenu from '../menu/anchorUserMenu';
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import { useSession } from 'next-auth/react';
 
 export default function Header () {
 	const [anchorElUser, setAnchorElUser] = useState<null | Element>(null);
 	const [signupOpen, setSignupOpen] = useState<boolean>(false);
+	const {status} = useSession();
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElUser(event.currentTarget);
 	};
@@ -27,7 +30,12 @@ export default function Header () {
 					<Button variant="outlined" onClick={handleOpenUserMenu} color="inherit"
 						sx={{ color: 'grey.700',  borderColor: 'grey.300', borderRadius: 50, pr: 0.8, pl: 1.4 }}>
 						<MenuIcon fontSize='small' sx={{mr: 0.8}} />
-						<AccountCircleIcon style={{ fontSize: '1.8rem'}}/>
+						{status === 'unauthenticated' && 
+							<AccountCircleIcon style={{ fontSize: '1.8rem'}}/>
+						}
+						{status == 'authenticated' &&
+							<AccountCircleTwoToneIcon style={{ fontSize: '1.8rem'}} />
+						}
 					</Button>
 					<AnchorUserMenu active={anchorElUser} closeMenu={handleCloseUserMenu} setSignupOpen={setSignupOpen} />
 				</Box>

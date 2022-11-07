@@ -6,7 +6,7 @@ const accountSchema = new mongoose.Schema<AccountType>({
         type: String,
         required: true
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true
     },
@@ -23,7 +23,8 @@ const accountSchema = new mongoose.Schema<AccountType>({
         required: true
     },
     marketing: Date, 
-    visible: Date
+    visible: Date, 
+    signupType: String
 });
 
 export default mongoose.models.Account as mongoose.Model<AccountType> ||

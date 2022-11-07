@@ -12,7 +12,7 @@ export default async function handler (req:NextApiRequest, res: NextApiResponse)
     const getEmail = await Account.findOne({email: email});
     console.log()
     if(compareSync(password, getEmail?.password!)) {
-        return res.status(200).json({result: true, message: '로그인이 완료되었습니다'});
+        return res.status(200).json(getEmail);
     }
-    return res.status(400).json({result:false})
+    return res.status(400).json(null)
 }

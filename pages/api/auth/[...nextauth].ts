@@ -1,5 +1,6 @@
 import nextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google";
 import { login } from "../../../lib/api/accountApi";
 import account from "../../../lib/models/account";
 import { compare } from "bcryptjs";
@@ -19,8 +20,10 @@ export const authOption = {
 						console.log('getId', getId)
 						const response = await login(credentials!)
 						console.log("authorize : ", response);
-						if (response.result) {
-							return response
+						if (response) {
+							return { email: response.email,
+								name: `${response.lastName} ${response.firstName}`,
+							} as any;
 						}else {
 							return null
 						}
@@ -32,6 +35,10 @@ export const authOption = {
 					console.log(e);
 				}
 			}
+		}),
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID as string,
+    		clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
 		})
 	]
 }

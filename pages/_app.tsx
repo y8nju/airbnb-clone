@@ -5,8 +5,12 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { grey, orange } from '@mui/material/colors';
 import { ContextProvider } from '../context/context';
 import { SessionProvider } from 'next-auth/react';
+import { NextPage } from 'next';
 
 export default function App({ Component, pageProps }: AppProps) {
+	console.log('App', Component);
+	console.log(Component);
+	const { isLayout } = Component as NextPage & {isLayout: boolean};
 	const customTheme = createTheme({
 		typography: {
 			fontFamily: 'Noto Sans KR,  sans-serif'
@@ -23,9 +27,12 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (<ThemeProvider theme={customTheme}>
 		<SessionProvider>
 			<ContextProvider>
-				<Layout>
+				{isLayout?
+					<Layout>
+						<Component {...pageProps} />
+					</Layout> :
 					<Component {...pageProps} />
-				</Layout>
+				}
 			</ContextProvider>
 		</SessionProvider>
 	</ThemeProvider>)

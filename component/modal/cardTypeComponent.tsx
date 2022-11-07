@@ -12,32 +12,33 @@ interface Props {
 }
 
 const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
+	const {title, onClose, children} = props;
 	const ctx = useCtx();
 	const { mode, setMode } =ctx!
 	const accountClose =()=> {
-		props.onClose(false);
+		onClose(false);
 		setMode('Checked');
 	}
 	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxHeight: '80%' }} ref={ref}>
 		<Card style={{width: 500, height: '100%', display: 'flex', flexDirection: 'column'}}>
 			<CardHeader
+				style={title && { borderBottom: '1px solid #eee' }}
 				action={
-					mode == 'SignUp' || 'Checked' ? (<IconButton onClick={() => setMode('Checked')}>
+					mode == 'SignUp' && (<IconButton onClick={() => setMode('Checked')}>
 						<KeyboardArrowLeftIcon />
-					</IconButton>) : (
-					<IconButton onClick={accountClose}>
+					</IconButton>) || 
+					mode == 'Checked' &&(<IconButton onClick={accountClose}>
 						<CloseOutlinedIcon />
 					</IconButton>)
 				}
-				title={props.title}
+				title={title}
 				titleTypographyProps={{
-				fontSize: '1rem',
-				fontWeight: 600,
-				textAlign: 'center'
+					fontSize: '1rem',
+					fontWeight: 600,
+					textAlign: 'center'
 				}}
-				sx={{ borderBottom: 1, borderBottomColor: 'grey.200' }}
 			/>
-			{props.children}
+			{children}
 		</Card>
 	</Box>)
 })

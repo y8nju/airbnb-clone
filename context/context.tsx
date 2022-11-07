@@ -1,6 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
 
-type SignMode = 'SignUp' | 'Login' | 'Checked' | 'PassFind';
+type SignMode = 'SignUp' | 'Login' | 'Checked' | 'PassFind' | 'GoogleSignUp' | 'Session'
 type HeaderAlertType = 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'| null;
 interface ContextType {
 	userEmail: string | undefined;

@@ -24,14 +24,14 @@ export default function LoginAndSignUp(props: Open) {
     useEffect(()=> {
         onClose(show);
     }, [show])
-    if(status =='authenticated') {
+    if(mode =='Session') {
         if(show == true) {
             setShow(false);
         }
     }
 	return (<BasicModal open={show} onClose={setShow}>
 		<CardTypeComponent onClose={setShow} 
-            title={mode == 'Checked' && '로그인 또는 회원 가입' || 
+            title={ mode == 'Checked' && '로그인 또는 회원 가입' || 
                 mode == 'SignUp' && '회원 가입 완료하기' || mode =='Checked' && '로그인' ||
                 mode == 'PassFind'&& '비밀번호를 잊으셨나요?'  
             }

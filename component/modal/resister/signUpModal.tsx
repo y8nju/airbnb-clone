@@ -1,12 +1,13 @@
 import { Box, Button, CardContent, Checkbox, Divider, FormControl, FormControlLabel, FormHelperText, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { red } from '@mui/material/colors';
+import { grey, red } from '@mui/material/colors';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { CheckCircle, Cancel, Error } from '@mui/icons-material/';
 import { useCtx } from '../../../context/context';
 import { signup } from '../../../lib/api/accountApi';
 import AccountType from '../../../interface/accountType';
+import { useSession } from 'next-auth/react';
 
 export const CheckCircleIcon = () => {
 	return <CheckCircle style={{fontSize: '14px', marginRight: '2px', verticalAlign: 'sub'}} />
@@ -21,9 +22,15 @@ const helperText = {
 	email: '예약 확인과 영수증을 이메일로 보내드립니다.',
 	name: '정부 발급 신분증에 표시된 이름과 일치하는지 확인하세요.',
 }
+enum SignType {
+	SignUp = 'email',
+	GoogleSignUp = 'google'
+}
 export default function Signup() {
 	const ctx = useCtx();
-	const {userEmail, emailRegex, setLoading} = ctx!
+	const {userEmail, emailRegex, setLoading, mode} = ctx!
+	const {data: session} = useSession();
+	console.log(session);
 
 	const [email, setEmail]= useState<string>(userEmail as string);
 	const [emailType, setEmailType] = useState(false);
@@ -50,17 +57,25 @@ export default function Signup() {
 	const [marketingChk, setMarketingChk] = useState<boolean>(false);
 	const [essentialData, setEssentialData] = useState<boolean>(true);
 	
-    const passRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#*])[\da-zA-Z!@#]{8,}$/
+    const passRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#*])[\da-zA-Z!@#*]{8,}$/
 	const passLevelRegx = /([0-9])|([A-Za-z\d]){8, }/;
 	const passSubRegx = /[0-9]|[!@#$%^*+=-]/;
 
+	useEffect(() => {
+		setEmail(session.user!.email as string);
+		if(mode == 'GoogleSignUp'){
+			setTermsChk(true);
+			setPassword('googlePassFree')
+		}
+	}, [session]) 
 	useEffect(()=> {
-		if((!emailRegex.test(userEmail!) || password.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
+		console.log()
+		if((!emailRegex.test(email!) || password.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
 			setEssentialData(true);
 		} else {
 			setEssentialData(false);
 		}
-	}, [firstName, lastName, email, age, password, termsChk, userEmail ])
+	}, [firstName, lastName, email, age, password, termsChk, userEmail ]);
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword);
@@ -170,7 +185,7 @@ export default function Signup() {
 			password: password,
 			marketing: marketingChk ? new Date() : null, 
 			visible: null, 
-			signupType: 'email'
+			signupType: SignType[mode as keyof typeof SignType]
 		} as AccountType
 		const resp = await signup(userData);
 		if(resp.result) {
@@ -179,9 +194,20 @@ export default function Signup() {
 		setLoading(false);
 	}
 
-	return (<CardContent sx={{p: 3, overflowY: 'scroll'}}>
+	return (<CardContent sx={{p: 3, overflowY: 'scroll', height: '100%'}}>
+		{mode == 'GoogleSignUp' && <Grid container spacing={2} sx={{mb: 4}}>
+			<Grid item xs={12} sm={6}>
+				<Typography variant='h6' sx={{fontWeight: 600, color: grey[800]}}>
+					Complete your information
+				</Typography>
+				<Typography variant='body2' sx={{ color: grey[700]}} >
+					Please review and provide any missing information to finish signin up.
+				</Typography>
+			</Grid>
+
+		</Grid>}
 		<FormControl fullWidth={true}>
-		<Grid container spacing={2}>
+			<Grid container spacing={2}>
 				<Grid item xs={12} sm={6}>
 					<TextField
 						required
@@ -193,8 +219,8 @@ export default function Signup() {
 						error={nameError}
 						onChange={(e)=> firstNameHandle(e.target.value)}
 					/>
-					</Grid>
-					<Grid item xs={12} sm={6}>
+				</Grid>
+				<Grid item xs={12} sm={6}>
 					<TextField
 						required
 						fullWidth
@@ -205,14 +231,14 @@ export default function Signup() {
 						error={nameError}
 						onChange={(e)=> lastNameHandle(e.target.value)}
 					/>
-					</Grid>
-					<Grid item xs={12} style={{paddingTop: 0}}>
-						<FormHelperText
-							sx={nameError && {color:"#d32f2f"}}>
-							{nameError && <ErrorIcon />}
-							{nameHelperText}
-						</FormHelperText>
-					</Grid>
+				</Grid>
+				<Grid item xs={12} style={{paddingTop: 0}}>
+					<FormHelperText
+						sx={nameError && {color:"#d32f2f"}}>
+						{nameError && <ErrorIcon />}
+						{nameHelperText}
+					</FormHelperText>
+				</Grid>
 				<Grid item xs={12}>
 					<FormControl sx={{ width: 1}} variant="outlined">
 					<InputLabel htmlFor="password" color="info" >생년월일</InputLabel>
@@ -242,16 +268,17 @@ export default function Signup() {
 				</Grid>
 				<Grid item xs={12}>
 					<TextField fullWidth label="이메일" id="email" type="email" sx={{mt: 2}} color="info" 
-					error={emailType}
-					value={email}
-					onChange={(e) => emailHandle(e.target.value)} />
+						error={emailType}
+						value={email}
+						disabled={session ? true : false}
+						onChange={(e) => emailHandle(e.target.value)} />
 					<FormHelperText
 						sx={emailType && {color:"#d32f2f"}}>
 						{emailType && <ErrorIcon />}
 						{emailHelperText}
 					</FormHelperText>
 				</Grid>
-				<Grid item xs={12}>
+				{mode == 'SignUp' && <Grid item xs={12}>
 					<FormControl sx={{ width: 1}} variant="outlined">
 					<InputLabel htmlFor="password" color="info" >비밀번호</InputLabel>
 						<OutlinedInput
@@ -299,10 +326,10 @@ export default function Signup() {
 							<ErrorIcon /> 비밀번호를 입력하세요
 						</FormHelperText> }
 					</FormControl>
-				</Grid>
+				</Grid>}
 			</Grid>
 		</FormControl>
-		<Divider sx={{my: 2}} />
+		{mode == 'SignUp' && <> <Divider sx={{my: 2}} />
 		<Grid container spacing={2}>
 			<Grid item xs={12}>
 				<Box>
@@ -347,7 +374,37 @@ export default function Signup() {
 					동의 및 계속하기
 				</Button>
 			</Grid>
-		</Grid>
+		</Grid> </>}
+		{mode == 'GoogleSignUp' && <Grid container spacing={2}>
+			<Grid item xs={12} sx={{mt: 3}}>
+				<Typography align="center">
+					This info came from Google
+				</Typography>
+				<Typography variant="body2" sx={{color: grey[700], mt: 1}}>
+					에어비앤비의 마케팅 프로모션, 특별 할인 및 추천 여행정보, 정책 변경사항을 이메일로 보내드립니다.
+				</Typography>
+				<Box>
+					<FormControlLabel sx={{alignItems: 'flex-start'}}
+						control={<Checkbox value="마케팅 수신 동의" color="primary" size="small" 
+							checked={marketingChk}
+							onChange={(e) => setMarketingChk(e.target.checked)}/>}
+						label={<Typography variant="body2" sx={{ color: grey[700], pt: 1 }}>
+							에어비앤비에서 보내는 마케팅 이메일 수신을 원합니다(선택) <br/>
+							계정 관리 설정 또는 메시지의 링크에서 언제든지 수신을 거부할 수 있습니다.
+						</Typography>}
+					/>
+				</Box>
+			</Grid>
+			<Grid item xs={12}>
+				<Button variant="contained" disableElevation
+					disabled={essentialData}
+					onClick={submitHandle}
+					sx={{ width: 1, mt: 1, p:1.4}}>
+					동의 및 계속하기
+				</Button>
+			</Grid>
+		</Grid>}
+		
 		<style jsx>{`
 			.datePlaceHolder {
 				width: 100%;
@@ -356,5 +413,4 @@ export default function Signup() {
 			}
 		`}</style>
 	</CardContent>)
-
 }

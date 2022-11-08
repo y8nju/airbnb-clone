@@ -16,7 +16,7 @@ export default function AnchorUnUser(props: AnchorAction) {
 		closeMenu();
 	}
 	const testHandle = () => {
-		setMode('Commitment');
+		setMode('AlreadyChk');
 		setSignupOpen(true);
 		closeMenu();
 	}

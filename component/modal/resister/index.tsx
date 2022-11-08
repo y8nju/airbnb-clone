@@ -5,6 +5,7 @@ import { useCtx } from '../../../context/context';
 import { findEmail } from '../../../lib/api/accountApi';
 import CardTypeComponent from '../cardTypeComponent';
 import BasicModal from "../index";
+import AlreadyCheck from './alreadyCheckModal';
 import Commitment from './commitmentModal';
 import Login from './loginModal';
 import PassChk from './passChkModal';
@@ -17,21 +18,29 @@ interface Open {
 }
 export default function LoginAndSignUp(props: Open) {
 	const [show, setShow] = useState<boolean>(false);
+    const [alreadyEmail, setAlreadyEmail] = useState<string | null>(null)
     const {data: session, status} = useSession();
     const {open, onClose, closeMenu} = props;
     const ctx = useCtx();
-    const {mode,userEmail, setMode} = ctx!
-    let commShow: string | boolean = false;
-    if (typeof window !== 'undefined') {
-        // Perform localStorage action
-        commShow = localStorage.getItem('commShow');
-    }
+    const {mode, userEmail, setUserEmail, setMode} = ctx!
+    let commShow: string | null = null;
+    useEffect(()=> {
+        if (typeof window !== 'undefined') {
+            // Perform localStorage action
+            commShow = localStorage.getItem('commShow') as string;
+            setAlreadyEmail(localStorage.getItem('alreadyEmail'))
+        }
+    }, [])
 
     useEffect(()=> {
         setShow(open);
     }, [open]);
+
     useEffect(()=> {
         onClose(show);
+        if(show == false) {
+            setMode(null);
+        }
     }, [show]);
 
     //-- 소셜 로그인 서약 동의
@@ -41,7 +50,7 @@ export default function LoginAndSignUp(props: Open) {
         }
     }, [status])
     useEffect(()=> {
-        console.log(commShow)
+        console.log('commShow', commShow)
         if(commShow == null) {
             setMode(null);
         }
@@ -57,19 +66,33 @@ export default function LoginAndSignUp(props: Open) {
     // -- 소셜 로그인 서약 동의
     
     useEffect(()=> {
-        console.log(mode)
+        console.log('mode', mode);
+        console.log('alreadyEmail', alreadyEmail);
         if(session && mode == 'Checked') {
             setShow(false);
         }
         if(mode == 'Commitment' && show == false && session !== null) {
             setShow(true)
         }
+        if(mode == null) {
+            localStorage.removeItem('alreadyEmail');
+            localStorage.removeItem('authUserName');
+        }
     }, [mode, status])
+
+    useEffect(()=> {
+        if(alreadyEmail !== null) {
+            setMode('AlreadyChk');
+            setShow(true);
+        }
+    }, [alreadyEmail])
 	return (<BasicModal open={show} onClose={setShow}>
 		<CardTypeComponent onClose={setShow} 
             title={ mode == 'Checked' && '로그인 또는 회원 가입' || 
                 mode == 'SignUp' && '회원 가입 완료하기' || mode == 'Login' && '로그인' ||
-                mode == 'PassFind'&& '비밀번호를 잊으셨나요?' || mode == 'Commitment' && undefined
+                mode == 'PassFind' && '비밀번호를 잊으셨나요?' || 
+                mode == 'AlreadyChk' && '계정이 이미 존재합니다' ||
+                mode == 'Commitment' && undefined
             }
             >
             {mode == 'Checked' && <Login />}
@@ -77,6 +100,7 @@ export default function LoginAndSignUp(props: Open) {
             {mode == 'Login' && <PassChk onClose={setShow} closeMenu={closeMenu}  />}
             {mode == 'PassFind' && <PassFind onClose={setShow} />}
             {mode == 'Commitment' && <Commitment onClose={setShow} />}
+            {mode == 'AlreadyChk' && <AlreadyCheck onClose={setShow} />}
 		</CardTypeComponent>
 	</BasicModal>)
 	

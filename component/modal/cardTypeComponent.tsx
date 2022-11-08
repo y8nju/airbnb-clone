@@ -27,9 +27,9 @@ const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 					mode == 'SignUp' && (<IconButton onClick={() => setMode('Checked')}>
 						<KeyboardArrowLeftIcon />
 					</IconButton>) || 
-					mode == 'Checked' &&(<IconButton onClick={accountClose}>
+					(mode == 'Checked' || mode == 'AlreadyChk' && (<IconButton onClick={accountClose}>
 						<CloseOutlinedIcon />
-					</IconButton>)
+					</IconButton>))
 				}
 				title={title}
 				titleTypographyProps={{

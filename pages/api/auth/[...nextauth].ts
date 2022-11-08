@@ -58,7 +58,7 @@ export const authOption: NextAuthOptions = {
 			// return false // 인증X /error=AcessDenied
 			// throw new Error('Duplicated');	// 파라미터
 			console.log(params);
-			const {email} = params.user;
+			const {email, name} = params.user;
 			const {provider, providerAccountId} = params.account!;
 			const findEmail = await account.findOne({email: email});
 			console.log(findEmail)
@@ -67,12 +67,10 @@ export const authOption: NextAuthOptions = {
 			}
 			if(findEmail.signupType == 'email' && provider == 'google') {
 				console.log('계정 가입 타입 확인')
-				return false;
+				// name이 한글이면 오류 발생!
+				return `/OAuth/google?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}&name=${name}`
 			}
-			if(findEmail.signupType == 'google' && provider == 'google' ||
-				findEmail.signupType == null && provider == 'credentials') {
-				return true;
-			}
+			return true;
 
 		}
 	}

@@ -28,7 +28,6 @@ export default function GoogleOAuth () {
                 setLoading(false);
 				if(resp.result) {
 					window.close();
-					setMode('Session');
 				}
 			})();
 		}

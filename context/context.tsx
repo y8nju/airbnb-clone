@@ -1,6 +1,6 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
 
-type SignMode = 'SignUp' | 'Login' | 'Checked' | 'PassFind' | 'GoogleSignUp' | 'Session' | 'Commitment';
+type SignMode = null | 'SignUp' | 'Login' | 'Checked' | 'PassFind' | 'GoogleSignUp' | 'Session' | 'Commitment';
 type HeaderAlertType = 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'| null;
 interface ContextType {
 	userEmail: string | undefined;
@@ -15,16 +15,18 @@ interface ContextType {
         title: string | null,
         visible: boolean
     }>>
-    emailRegex: RegExp
-    
+    emailRegex: RegExp,
+    loginDate: Date | null, 
+    setLoginDate: Dispatch<SetStateAction<Date | null>>
 }
 
 export const Context = createContext<ContextType| null>(null);
 
 export const ContextProvider = (props: {children: ReactNode}) => {
-    const [mode, setMode] = useState<SignMode>('Checked');
+    const [mode, setMode] = useState<SignMode>(null);
     const [userEmail, setUserEmail] = useState<string|undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
+    const [loginDate, setLoginDate] = useState<Date|null>(null)
     const [headerAlertProps, setHeaderAlertProps] = useState<{type: HeaderAlertType, title: string | null, visible: boolean}>({
         type: null,
         title: null, 
@@ -37,7 +39,8 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         userEmail: userEmail, setUserEmail: setUserEmail, 
         loading: loading, setLoading: setLoading,
         headerAlertProps: headerAlertProps, setHeaderAlertProps: setHeaderAlertProps,
-        emailRegex: emailRegex
+        emailRegex: emailRegex,
+        loginDate: loginDate, setLoginDate: setLoginDate
     }}>
         {props.children}
     </Context.Provider>

@@ -1,27 +1,34 @@
 import { Button, CardContent, Grid, Link, Typography } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useCtx } from "../../../context/context";
 import { commitment } from "../../../lib/api/accountApi";
+interface OnClose {
+	onClose: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function Commitment() {
+export default function Commitment(props: OnClose) {
+	const {data: session} = useSession();
+
 	const ctx = useCtx();
 	const {userEmail} = ctx!
+
 	const submitHandle = async () => {
 		const data = {
-			email: userEmail!,
+			email: userEmail! || session?.user.email,
 			visible: new Date()
 		}
 		const resp = await commitment(data);
-		console.log(resp);
+		props.onClose(false);
 	}
 
 	return (<CardContent sx={{p: 3, height: 'auto'}}>
 		<Grid container spacing={2} sx={{mb: 4}}>
-			<Grid item xs={12} sm={6} sx={{mt: -3, mb: 1}}>
+			<Grid item xs={12} sx={{mt: -3, mb: 1}}>
 				<Image src='/icon.svg' alt="logo" width={42} height={42} />
 			</Grid>
-			<Grid item xs={12} sm={6}>
+			<Grid item xs={12}>
 				<Typography variant='body2' sx={{mb: 1}}>
 					에어비앤비 커뮤니티 차별반대 서약
 				</Typography>
@@ -48,7 +55,7 @@ export default function Commitment() {
 					에어비앤비 서비스 약관, 결제 서비스 약관, 차별 금지 정책에 동의합니다. 또한, 에어비앤비 개인정보 처리방침에 따른 개인정보 이용 및 처리에도 동의합니다.
 				</Typography>
 			</Grid>
-			<Grid item xs={12} sm={6}>
+			<Grid item xs={12}>
 				<Button variant="contained" disableElevation
 					onClick={submitHandle}
 					sx={{ width: 1, mb: 1.5, bgcolor: red[600], p:1.4}}>

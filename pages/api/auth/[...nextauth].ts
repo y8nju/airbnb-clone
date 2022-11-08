@@ -1,11 +1,15 @@
-import nextAuth from "next-auth";
+import nextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import { login } from "../../../lib/api/accountApi";
 import account from "../../../lib/models/account";
 import { compare } from "bcryptjs";
+import { ParaglidingSharp } from "@mui/icons-material";
 
-export const authOption = {
+export const authOption: NextAuthOptions = {
+	pages: {
+		error: "/auth/error",
+	},
 	providers: [
 		CredentialsProvider({
 			credentials: {
@@ -38,15 +42,30 @@ export const authOption = {
 		}),
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
-    		clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
 			authorization: {
 				params: {
-				  prompt: "consent",
-				  access_type: "offline",
-				  response_type: "code"
+					prompt: "consent",
+					access_type: "offline",
+					response_type: "code"
 				}
-			  }
+			}
 		})
-	]
+	],
+	callbacks: {
+		async signIn(params) {
+			// return true	// 인증O
+			// return false // 인증X /error=AcessDenied
+			// throw new Error('Duplicated');	// 파라미터
+			console.log(params);
+			const {email} = params.user;
+			const {provider, providerAccountId} = params.account!;
+			const getId = await account.findOne({email: email});
+			if(!getId){
+				return `/OAuth/googleSignup?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}`
+			}
+			return true
+		}
+	}
 }
 export default nextAuth(authOption); 

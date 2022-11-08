@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useCtx } from '../../../context/context';
+import { findEmail } from '../../../lib/api/accountApi';
 import CardTypeComponent from '../cardTypeComponent';
 import BasicModal from "../index";
 import Commitment from './commitmentModal';
@@ -14,7 +15,7 @@ interface Open {
     closeMenu: () => void;
 }
 export default function LoginAndSignUp(props: Open) {
-    const {status} = useSession();
+    const {data: session, status} = useSession();
     const {open, onClose, closeMenu} = props;
 	const [show, setShow] = useState<boolean>(false);
     const ctx = useCtx();
@@ -24,12 +25,16 @@ export default function LoginAndSignUp(props: Open) {
     }, [open]);
     useEffect(()=> {
         onClose(show);
-    }, [show])
-    if(mode =='Session') {
-        if(show == true) {
-            setShow(false);
+    }, [show]);
+    useEffect(()=> {
+        console.log(mode)
+        // if(session && mode == 'Checked') {
+        //     setShow(false);
+        // }
+        if(mode == 'Commitment' && show == false) {
+            setShow(true)
         }
-    }
+    }, [mode])
 	return (<BasicModal open={show} onClose={setShow}>
 		<CardTypeComponent onClose={setShow} 
             title={ mode == 'Checked' && '로그인 또는 회원 가입' || 
@@ -41,7 +46,7 @@ export default function LoginAndSignUp(props: Open) {
             {mode == 'SignUp' && <Signup />}
             {mode == 'Login' && <PassChk onClose={setShow} closeMenu={closeMenu}  />}
             {mode == 'PassFind' && <PassFind onClose={setShow} />}
-            {mode == 'Commitment' && <Commitment />}
+            {mode == 'Commitment' && <Commitment onClose={setShow} />}
 		</CardTypeComponent>
 	</BasicModal>)
 	

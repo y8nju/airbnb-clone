@@ -24,7 +24,9 @@ const accountSchema = new mongoose.Schema<AccountType>({
     },
     marketing: Date, 
     visible: Date, 
-    signupType: String
+    signupType: String,
+    provider: String, 
+    providerAccountId: String
 });
 
 export default mongoose.models.Account as mongoose.Model<AccountType> ||

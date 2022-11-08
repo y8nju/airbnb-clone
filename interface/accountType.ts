@@ -6,5 +6,7 @@ export default interface AccountType {
     password: string,
     marketing?: Date | null, 
     visible?: Date | null, 
-    signupType: string
+    signupType: string,
+    provider: string, 
+    providerAccountId: string
 }

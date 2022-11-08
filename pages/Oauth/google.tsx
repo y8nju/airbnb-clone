@@ -1,32 +1,34 @@
 import { useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Box, Container } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { grey } from "@mui/material/colors";
 import { findEmail } from "../../lib/api/accountApi";
 import { useCtx } from "../../context/context";
 import Signup from "../../component/modal/resister/signUpModal";
+import { useRouter } from "next/router";
 export default function GoogleOAuth () {
 	const { data: session, status } = useSession();
 	console.log('session', session, status);
+    const router = useRouter();
 	const ctx = useCtx();
-	const {setMode, mode, setLoading, loading} = ctx!;
+	const {setMode, mode, setLoading, loading, setUserEmail} = ctx!;
 	useEffect(() => {
 		setLoading(true);
-		
 		if (!(status === "loading") && !session) {
 			setLoading(false);
-			void signIn("google")
+			void signIn("google", {redirect: false})
+                .then((response) =>  console.log('response', response))
+                .catch((e) => (console.log(e)))
 		}
 		if(session) {
-			setLoading(false);
-			(async () => {
-				let resp = await findEmail(session.user!.email as string);
-				console.log(resp)
+            (async () => {
+                let resp = await findEmail(session.user!.email as string);
+                console.log(resp)
+                setLoading(false);
 				if(resp.result) {
 					window.close();
-				} else {
-					setMode("GoogleSignUp");
+					setMode('Session');
 				}
 			})();
 		}
@@ -39,24 +41,9 @@ export default function GoogleOAuth () {
 			display: 'flex',
 			justifyContent: 'center',
 			alignItems: 'center',
-			position: "absolute",
-			left: 0,
-			top: 0,
 			background: "white",
-			zIndex: 1500,
 		}}>
-			{loading && <Box sx={{
-				width: "100vw",
-				height: "100vh",
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				position: "absolute",
-				zIndex: 2500,
-			}}>
-				<CircularProgress color="info"  />
-			</Box>}
-			{mode == 'GoogleSignUp' &&  <Signup />}
+			<CircularProgress color="info"  />
 		</Box> );
 };
 

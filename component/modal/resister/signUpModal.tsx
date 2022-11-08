@@ -7,7 +7,8 @@ import { CheckCircle, Cancel, Error } from '@mui/icons-material/';
 import { useCtx } from '../../../context/context';
 import { signup } from '../../../lib/api/accountApi';
 import AccountType from '../../../interface/accountType';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export const CheckCircleIcon = () => {
 	return <CheckCircle style={{fontSize: '14px', marginRight: '2px', verticalAlign: 'sub'}} />
@@ -28,9 +29,10 @@ enum SignType {
 }
 export default function Signup() {
 	const ctx = useCtx();
-	const {userEmail, setUserEmail, emailRegex, setLoading, mode, setMode} = ctx!
+	const {userEmail, setUserEmail, emailRegex, setLoading, mode, setMode, setLoginDate} = ctx!
 	const {data: session} = useSession();
-
+	const router = useRouter();
+    const {provider, providerAccountId} = router.query!;
 	const [email, setEmail]= useState<string>(userEmail as string);
 	const [emailType, setEmailType] = useState(false);
 	const [emailHelperText, setEmailHelperText] = useState<string>(helperText.email);
@@ -59,16 +61,14 @@ export default function Signup() {
     const passRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#*])[\da-zA-Z!@#*]{8,}$/
 	const passLevelRegx = /([0-9])|([A-Za-z\d]){8, }/;
 	const passSubRegx = /[0-9]|[!@#$%^*+=-]/;
-
-	useEffect(() => {
-		if(mode == 'GoogleSignUp'){
-			setEmail(session.user!.email as string);
-			setTermsChk(true);
-			setPassword('googlePassFree')
-		}
-	}, [session]) 
 	useEffect(()=> {
-		console.log()
+		if(mode == 'GoogleSignUp'){
+			setEmail(userEmail!);
+			setTermsChk(true);
+			setPassword('googlePassFree');
+		}
+	}, [firstName])
+	useEffect(()=> {
 		if((!emailRegex.test(email!) || password.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
 			setEssentialData(true);
 		} else {
@@ -184,12 +184,20 @@ export default function Signup() {
 			password: password,
 			marketing: marketingChk ? new Date() : null, 
 			visible: null, 
-			signupType: SignType[mode as keyof typeof SignType]
+			signupType: SignType[mode as keyof typeof SignType],
+			provider: provider ? provider : null, 
+			providerAccountId: providerAccountId? providerAccountId : null
 		} as AccountType
 		const resp = await signup(userData);
 		if(resp.result) {
+			await signIn('credentials', {
+				redirect: false,
+				email: userEmail,
+				password: password});
+			setUserEmail(email);
 			setMode('Commitment');
 			setUserEmail(email);
+			setLoginDate(new Date());
 		}
 		setLoading(false);
 	}
@@ -213,7 +221,7 @@ export default function Signup() {
 						required
 						fullWidth
 						id="firstName"
-						value={firstName}
+						value={firstName || ''}
 						label="이름(예: 길동)"
 						color="info"
 						error={nameError}
@@ -225,7 +233,7 @@ export default function Signup() {
 						required
 						fullWidth
 						id="lastName"
-						value={lastName}
+						value={lastName || ''}
 						label="성(예:홍)"
 						color="info"
 						error={nameError}
@@ -245,7 +253,7 @@ export default function Signup() {
 					<OutlinedInput
 						id="birth"
 						type="date" 
-						value={birth}
+						value={birth || ''}
 						onChange={(e)=> birthChk(e.target.value)}
 						error={(age !== null && age < 18 || birthError) ? true : false}
 						label="생년월일"
@@ -269,8 +277,8 @@ export default function Signup() {
 				<Grid item xs={12}>
 					<TextField fullWidth label="이메일" id="email" type="email" sx={{mt: 2}} color="info" 
 						error={emailType}
-						value={email}
-						disabled={session ? true : false}
+						value={email || mode == 'GoogleSignUp' && userEmail || ''}
+						disabled={mode == 'GoogleSignUp' ? true : false}
 						onChange={(e) => emailHandle(e.target.value)} />
 					<FormHelperText
 						sx={emailType && {color:"#d32f2f"}}>
@@ -278,13 +286,13 @@ export default function Signup() {
 						{emailHelperText}
 					</FormHelperText>
 				</Grid>
-				{mode == 'SignUp' && <Grid item xs={12}>
+				{mode == 'SignUp' &&<> <Grid item xs={12}>
 					<FormControl sx={{ width: 1}} variant="outlined">
 					<InputLabel htmlFor="password" color="info" >비밀번호</InputLabel>
 						<OutlinedInput
 							id="password"
 							type={showPassword ? 'text' : 'password'}
-							value={password}
+							value={password || ''}
 							error={passType.error || passError}
 							onChange={(e)=>passChk(e.target.value)}
 							label="비밀번호"
@@ -326,7 +334,7 @@ export default function Signup() {
 							<ErrorIcon /> 비밀번호를 입력하세요
 						</FormHelperText> }
 					</FormControl>
-				</Grid>}
+				</Grid></>}
 			</Grid>
 		</FormControl>
 		{mode == 'SignUp' && <> <Divider sx={{my: 2}} />

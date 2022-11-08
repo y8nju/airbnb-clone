@@ -21,7 +21,7 @@ export default function PassChk(props: OnClose) {
 	const {onClose, closeMenu} = props;
 	const {status} = useSession();
 	const ctx = useCtx();
-	const {userEmail, setMode, setLoading, loading} = ctx!
+	const {userEmail, setLoginDate, setMode, setLoading, loading} = ctx!
 	
 	useEffect(()=> {
 		if(inpError) {
@@ -53,6 +53,7 @@ export default function PassChk(props: OnClose) {
 				console.log('result', result)
 				if(result.ok == true) {
 					console.log('로그인')
+					setLoginDate(new Date());
 					onClose(false);
 					closeMenu();
 				}else {

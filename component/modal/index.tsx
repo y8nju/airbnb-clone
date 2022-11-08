@@ -1,5 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from 'react'
 import Modal from '@mui/material/Modal';
+import Slide from '@mui/material/Slide';
 
 interface Props {
 	open: boolean;
@@ -12,6 +13,7 @@ export default function BasicModal(props: Props) {
 		open={props.open}
 		onClose={() => props.onClose(false)}
 		aria-labelledby="modal-modal-title"
+		
 		aria-describedby="modal-modal-description" >
 		{props.children}
 	</Modal> );

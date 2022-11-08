@@ -13,12 +13,12 @@ const postOption = {
 
 export async function findEmail(email: string) {
     let endPoint = serverURI + '/api/account/flow';
-    console.log('email', email)
     const response = await fetch(endPoint, {
         ...postOption,
         body: JSON.stringify({email: email})
     })
     const data = await response.json();
+    console.log(data);
     return data;
 }
 

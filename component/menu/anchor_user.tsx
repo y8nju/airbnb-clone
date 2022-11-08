@@ -2,6 +2,7 @@ import { Divider, MenuItem, Typography } from "@mui/material";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { SetStateAction } from "react";
+import { useCtx } from "../../context/context";
 
 interface AnchorAction {
     setSignupOpen: (value: SetStateAction<boolean>) => void
@@ -9,9 +10,13 @@ interface AnchorAction {
 }
 export default function AnchorUser(props: AnchorAction) {
     const {setSignupOpen, closeMenu} = props;
+	const ctx = useCtx();
+	const {setMode} = ctx!;
     const router = useRouter();
     const logoutHandle = () => {
         setSignupOpen(false);
+		window.localStorage.removeItem('commShow');
+		setMode('Checked');
         signOut();
     };
 

@@ -60,11 +60,20 @@ export const authOption: NextAuthOptions = {
 			console.log(params);
 			const {email} = params.user;
 			const {provider, providerAccountId} = params.account!;
-			const getId = await account.findOne({email: email});
-			if(!getId){
+			const findEmail = await account.findOne({email: email});
+			console.log(findEmail)
+			if(!findEmail){
 				return `/OAuth/googleSignup?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}`
 			}
-			return true
+			if(findEmail.signupType == 'email' && provider == 'google') {
+				console.log('계정 가입 타입 확인')
+				return false;
+			}
+			if(findEmail.signupType == 'google' && provider == 'google' ||
+				findEmail.signupType == null && provider == 'credentials') {
+				return true;
+			}
+
 		}
 	}
 }

@@ -29,7 +29,7 @@ enum SignType {
 }
 export default function Signup() {
 	const ctx = useCtx();
-	const {userEmail, setUserEmail, emailRegex, setLoading, mode, setMode, setLoginDate} = ctx!
+	const {userEmail, setUserEmail, emailRegex, setLoading, mode, setMode} = ctx!
 	const {data: session} = useSession();
 	const router = useRouter();
     const {provider, providerAccountId} = router.query!;
@@ -196,8 +196,7 @@ export default function Signup() {
 				password: password});
 			setUserEmail(email);
 			setMode('Commitment');
-			setUserEmail(email);
-			setLoginDate(new Date());
+			window.localStorage.setItem('commShow', 'true');
 		}
 		setLoading(false);
 	}

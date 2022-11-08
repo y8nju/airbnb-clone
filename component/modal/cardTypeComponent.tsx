@@ -17,7 +17,7 @@ const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 	const { mode, setMode } =ctx!
 	const accountClose =()=> {
 		onClose(false);
-		setMode('Checked');
+		setMode(null);
 	}
 	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxHeight: '80%' }} ref={ref}>
 		<Card style={{width: 500, height: '100%', display: 'flex', flexDirection: 'column'}}>

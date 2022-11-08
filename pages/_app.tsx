@@ -8,8 +8,7 @@ import { SessionProvider } from 'next-auth/react';
 import { NextPage } from 'next';
 
 export default function App({ Component, pageProps }: AppProps) {
-	console.log('App', Component);
-	console.log(Component);
+	// console.log('App', Component);
 	const { isLayout } = Component as NextPage & {isLayout: boolean};
 	const customTheme = createTheme({
 		typography: {

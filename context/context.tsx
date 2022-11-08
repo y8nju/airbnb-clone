@@ -16,8 +16,6 @@ interface ContextType {
         visible: boolean
     }>>
     emailRegex: RegExp,
-    loginDate: Date | null, 
-    setLoginDate: Dispatch<SetStateAction<Date | null>>
 }
 
 export const Context = createContext<ContextType| null>(null);
@@ -26,7 +24,6 @@ export const ContextProvider = (props: {children: ReactNode}) => {
     const [mode, setMode] = useState<SignMode>(null);
     const [userEmail, setUserEmail] = useState<string|undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
-    const [loginDate, setLoginDate] = useState<Date|null>(null)
     const [headerAlertProps, setHeaderAlertProps] = useState<{type: HeaderAlertType, title: string | null, visible: boolean}>({
         type: null,
         title: null, 
@@ -40,7 +37,6 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         loading: loading, setLoading: setLoading,
         headerAlertProps: headerAlertProps, setHeaderAlertProps: setHeaderAlertProps,
         emailRegex: emailRegex,
-        loginDate: loginDate, setLoginDate: setLoginDate
     }}>
         {props.children}
     </Context.Provider>

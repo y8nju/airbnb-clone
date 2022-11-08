@@ -18,7 +18,6 @@ export async function findEmail(email: string) {
         body: JSON.stringify({email: email})
     })
     const data = await response.json();
-    console.log(data);
     return data;
 }
 
@@ -30,7 +29,6 @@ export async function signup(doc: AccountType) {
         body: JSON.stringify(doc)
     })
     const data = await response.json();
-    console.log(response)
     return data;
 }
 type CommitmentDoc = {
@@ -44,7 +42,6 @@ export async function commitment(doc: CommitmentDoc) {
         body: JSON.stringify(doc)
     });
     const data = await response.json();
-    console.log(response)
     return data;
 }
 

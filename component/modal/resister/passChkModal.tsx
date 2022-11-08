@@ -7,6 +7,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { CheckCircle, Cancel, Error } from '@mui/icons-material/';
 import { signIn, SignInResponse, useSession } from "next-auth/react";
+import { findEmail } from '../../../lib/api/accountApi';
 
 interface OnClose {
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +22,7 @@ export default function PassChk(props: OnClose) {
 	const {onClose, closeMenu} = props;
 	const {status} = useSession();
 	const ctx = useCtx();
-	const {userEmail, setLoginDate, setMode, setLoading, loading} = ctx!
+	const {userEmail, setMode, setLoading, loading} = ctx!
 	
 	useEffect(()=> {
 		if(inpError) {
@@ -53,9 +54,15 @@ export default function PassChk(props: OnClose) {
 				console.log('result', result)
 				if(result.ok == true) {
 					console.log('로그인')
-					setLoginDate(new Date());
+					window.localStorage.setItem('commShow', 'true');
 					onClose(false);
 					closeMenu();
+					const resp = await findEmail(userEmail);
+					if(resp?.data?.visible == null) {
+						setMode('Commitment');
+					}else {
+						setMode(null)
+					}
 				}else {
 					console.log('확인요망')
 					setDiffrent(true);

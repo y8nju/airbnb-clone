@@ -22,5 +22,4 @@ export default function Home() {
     </div>
   )
 }
-
-Home.isLayout = true;
+Home.layout = "default";

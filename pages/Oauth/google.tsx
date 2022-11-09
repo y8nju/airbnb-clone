@@ -65,4 +65,4 @@ export default function GoogleOAuth () {
 	</Box> );
 };
 
-GoogleOAuth.isLayout = false;
+GoogleOAuth.layout = 'noLayout';

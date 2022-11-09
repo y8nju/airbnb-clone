@@ -8,11 +8,9 @@ import AppBar from '@mui/material/AppBar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import HeaderAlert from './Alert/headerAlert';
 import { useCtx } from '../../context/context';
-interface Props {
-	window?: () => Window;
-	children: React.ReactElement;
-}
-function ElevationScroll(props: Props) {
+import { DefaultProps } from '../../interface/propsType';
+
+function ElevationScroll(props: DefaultProps) {
 	const { children, window } = props;
 	const trigger = useScrollTrigger({
 		disableHysteresis: true,

@@ -6,10 +6,30 @@ import { grey, orange } from '@mui/material/colors';
 import { ContextProvider } from '../context/context';
 import { SessionProvider } from 'next-auth/react';
 import { NextPage } from 'next';
+import HalfTypeLayout from '../component/layout/otherLayout/halfType/halfTypeLayout';
+import NoLayout from '../component/layout/noLayout';
+import { ChidrenProps, DefaultProps } from '../interface/propsType';
 
-export default function App({ Component, pageProps }: AppProps) {
+const layouts = {
+	default: Layout,
+	halfType: HalfTypeLayout,
+	noLayout: NoLayout
+}
+
+export type PageWithLayoutType =
+NextPage & ((props:DefaultProps) => JSX.Element)
+ | NextPage & ((props:ChidrenProps) => JSX.Element)
+ | NextPage & ((props:ChidrenProps) => JSX.Element)
+
+type AppLayoutProps = AppProps & {
+	Component: PageWithLayoutType
+	pageProps: any
+  }
+
+export default function App({ Component, pageProps }: AppLayoutProps) {
 	// console.log('App', Component);
-	const { isLayout } = Component as NextPage & {isLayout: boolean};
+	// const { isLayout } = Component as NextPage & {isLayout: boolean};
+	const Layout = layouts[Component.layout] || ((children: React.ReactElement) => <>{children}</>);
 	const customTheme = createTheme({
 		typography: {
 			fontFamily: 'Noto Sans KR,  sans-serif'
@@ -26,12 +46,9 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (<ThemeProvider theme={customTheme}>
 		<SessionProvider>
 			<ContextProvider>
-				{isLayout?
 					<Layout>
 						<Component {...pageProps} />
-					</Layout> :
-					<Component {...pageProps} />
-				}
+					</Layout>
 			</ContextProvider>
 		</SessionProvider>
 	</ThemeProvider>)

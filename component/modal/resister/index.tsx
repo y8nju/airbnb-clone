@@ -19,17 +19,19 @@ interface Open {
 export default function LoginAndSignUp(props: Open) {
     let commShow: string | null = null;
     let alreadyEmail: string | null = null;
+    
     if (typeof window !== 'undefined') {
         // Perform localStorage action
         commShow = localStorage.getItem('commShow') as string;
         alreadyEmail= localStorage.getItem('alreadyEmail') as string;
     }
-	const [show, setShow] = useState<boolean>(false);
+	const [email, setEmail] = useState<string | null>(null)
+    const [show, setShow] = useState<boolean>(false);
     const {data: session, status} = useSession();
     const {open, onClose, closeMenu} = props;
     const ctx = useCtx();
     const {mode, userEmail, setUserEmail, setMode} = ctx!
-
+    console.log(status);    
     useEffect(()=> {
         setShow(open);
     }, [open]);
@@ -46,6 +48,7 @@ export default function LoginAndSignUp(props: Open) {
         if(status == 'authenticated' && commShow == null) {
             window.localStorage.setItem('commShow', 'true');
         }
+        setEmail(() =>localStorage.getItem('alreadyEmail'))
     }, [status])
     useEffect(()=> {
         console.log('commShow', commShow)
@@ -83,7 +86,7 @@ export default function LoginAndSignUp(props: Open) {
             setMode('AlreadyChk');
             setShow(true);
         }
-    }, [alreadyEmail]);
+    }, [email]);
 
 	return (<BasicModal open={show} onClose={setShow}>
 		<CardTypeComponent onClose={setShow} 

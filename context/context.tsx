@@ -13,7 +13,7 @@ interface ContextType {
     setMode: Dispatch<SetStateAction<SignMode>>,
     loading: boolean,
     setLoading: Dispatch<SetStateAction<boolean>>,
-    headerAlertProps: { type: HeaderAlertType, title: string | null},
+    headerAlertProps: { type: HeaderAlertType, title: string | null, visible: boolean},
     setHeaderAlertProps: Dispatch<SetStateAction<{
         type: HeaderAlertType,
         title: string | null,

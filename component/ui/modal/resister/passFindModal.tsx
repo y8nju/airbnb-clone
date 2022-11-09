@@ -1,8 +1,8 @@
 import { Button, CardContent, TextField, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
-import { useCtx } from "../../../context/context";
-import { findEmail } from "../../../lib/api/accountApi";
+import { useCtx } from "../../../../context/context";
+import { findEmail } from "../../../../lib/api/accountApi";
 
 interface OnClose {
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;

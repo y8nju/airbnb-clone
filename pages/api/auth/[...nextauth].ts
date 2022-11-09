@@ -68,7 +68,12 @@ export const authOption: NextAuthOptions = {
 			if(findEmail.signupType == 'email' && provider == 'google') {
 				console.log('계정 가입 타입 확인')
 				// name이 한글이면 오류 발생!
-				return `/OAuth/google?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}&name=${name}`
+				const params = new URLSearchParams();
+				params.append("name", name!);
+				params.append("email", email!);
+				params.append("provider", provider!);
+				params.append("providerAccountId", providerAccountId!);
+				return '/OAuth/google?'+params.toString();
 			}
 			return true;
 

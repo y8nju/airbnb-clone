@@ -3,7 +3,7 @@ import { Box, Button, Container, Toolbar, Typography } from "@mui/material";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LoginAndSignUp from '../modal/resister';
+import LoginAndSignUp from '../ui/modal/resister';
 import AnchorUserMenu from '../menu/anchorUserMenu';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import { useSession } from 'next-auth/react';

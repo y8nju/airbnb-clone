@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { grey } from "@mui/material/colors";
 import { findEmail } from "../../lib/api/accountApi";
 import { useCtx } from "../../context/context";
-import Signup from "../../component/modal/resister/signUpModal";
+import Signup from "../../component/ui/modal/resister/signUpModal";
 import { useRouter } from "next/router";
 import Router from "next/dist/server/router";
 export default function GoogleOAuth () {

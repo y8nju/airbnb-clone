@@ -2,11 +2,11 @@ import { Box, Button, CardContent, Divider, FormControl, FormHelperText, TextFie
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { red } from '@mui/material/colors';
-import { AlreadyCheck, useCtx } from '../../../context/context';
-import { findEmail } from '../../../lib/api/accountApi';
+import { AlreadyCheck, useCtx } from '../../../../context/context';
+import { findEmail } from '../../../../lib/api/accountApi';
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from 'next-auth/react';
-import popupCenter from '../../layout/popup/popupCenter';
+import popupCenter from '../../popup/popupCenter';
 
 
 export default function Login() {

@@ -1,8 +1,8 @@
 import { useSession } from 'next-auth/react';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { isConstructorDeclaration } from 'typescript';
-import { useCtx } from '../../../context/context';
-import { findEmail } from '../../../lib/api/accountApi';
+import { useCtx } from '../../../../context/context';
+import { findEmail } from '../../../../lib/api/accountApi';
 import CardTypeComponent from '../cardTypeComponent';
 import BasicModal from "../index";
 import AlreadyCheck from './alreadyCheckModal';

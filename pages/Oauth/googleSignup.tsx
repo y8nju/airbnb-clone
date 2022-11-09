@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Box, Container } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useCtx } from "../../context/context";
-import Signup from "../../component/modal/resister/signUpModal";
+import Signup from "../../component/ui/modal/resister/signUpModal";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 export default function GoogleOAuth () {

@@ -4,9 +4,9 @@ import { grey, red } from '@mui/material/colors';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { CheckCircle, Cancel, Error } from '@mui/icons-material/';
-import { useCtx } from '../../../context/context';
-import { signup } from '../../../lib/api/accountApi';
-import AccountType from '../../../interface/accountType';
+import { useCtx } from '../../../../context/context';
+import { signup } from '../../../../lib/api/accountApi';
+import AccountType from '../../../../interface/accountType';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 

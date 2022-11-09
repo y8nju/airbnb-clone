@@ -5,9 +5,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import Error from '@mui/icons-material/Error';
-import { useCtx } from "../../../context/context";
+import { useCtx } from "../../../../context/context";
 import { signIn, SignInResponse } from 'next-auth/react';
-import { findEmail } from '../../../lib/api/accountApi';
+import { findEmail } from '../../../../lib/api/accountApi';
 import { red } from '@mui/material/colors';
 
 interface OnClose {

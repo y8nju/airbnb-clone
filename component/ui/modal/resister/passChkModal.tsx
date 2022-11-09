@@ -2,12 +2,12 @@ import { Box, Button, Card, CardContent, Divider, FormControl, FormHelperText, I
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useEffect, useState } from 'react';
 import { red } from '@mui/material/colors';
-import { useCtx } from '../../../context/context';
+import { useCtx } from '../../../../context/context';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { CheckCircle, Cancel, Error } from '@mui/icons-material/';
 import { signIn, SignInResponse, useSession } from "next-auth/react";
-import { findEmail } from '../../../lib/api/accountApi';
+import { findEmail } from '../../../../lib/api/accountApi';
 
 interface OnClose {
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;

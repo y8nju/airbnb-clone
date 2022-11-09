@@ -6,7 +6,7 @@ import Footer from './footer'
 import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import HeaderAlert from './Alert/headerAlert';
+import HeaderAlert from '../ui/Alert/headerAlert';
 import { useCtx } from '../../context/context';
 import { DefaultProps } from '../../interface/propsType';
 
@@ -22,7 +22,8 @@ function ElevationScroll(props: DefaultProps) {
 		elevation: trigger ? 4 : 0,
 	});
 }
-export default function Layout (props: Props) {
+export default function Layout (props: DefaultProps) {
+	const { children, window } = props;
 	const ctx = useCtx();
 	const {headerAlertProps} = ctx!;
 	return ( <Container maxWidth={false} disableGutters={true}>
@@ -35,7 +36,7 @@ export default function Layout (props: Props) {
 			</AppBar>
 			</>
 		</ElevationScroll>
-		{props.children}
+		{children}
 		<Footer />
 	</Container> )
 }

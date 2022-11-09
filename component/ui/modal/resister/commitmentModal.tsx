@@ -2,8 +2,8 @@ import { Button, CardContent, Grid, Link, Typography } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useCtx } from "../../../context/context";
-import { commitment } from "../../../lib/api/accountApi";
+import { useCtx } from "../../../../context/context";
+import { commitment } from "../../../../lib/api/accountApi";
 interface OnClose {
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }

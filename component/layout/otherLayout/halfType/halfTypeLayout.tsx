@@ -9,10 +9,6 @@ import Right from "./right";
 
 
 export default function HalfTypeLayout (props: ChidrenProps) {
-    
-    const [footerShow, setFooterShow] = useState<boolean>(true);
-    const [headerShow, setHeaderShow] = useState<boolean>(true);
-    const [progress, setProgress] = useState<number>(10);
     const [title, setTitle] = useState<string>('')
     const {data: session} = useSession();
     const router = useRouter();
@@ -23,17 +19,24 @@ export default function HalfTypeLayout (props: ChidrenProps) {
         
     switch(pathname) {
         case '/become-a-host':
-            setTitle(`${session?.user?.name}님, 환영합니다.`)
-            setFooterShow(false);
+            setTitle(`${session?.user?.name}님, 환영합니다.`);
             break;
+        case "/become-a-host/[roomid]/property-type-group":
+            setTitle('호스팅할 숙소 유형을 알려주세요');
+            break;
+        case '/become-a-host/[roomid]/property-type':
+            setTitle('다음 중 숙소를 가장 잘 설명하는 문구는 무엇인가요?');
+            break;
+        case '/become-a-host/[roomid]/privacy-type':
+            setTitle('게스트가 머무르게 될 숙소의 종류가 무엇인가요?');
+            break
     }
     })
-    console.log(title)
     
 
     return ( <Grid container sx={{height: '100vh', overflow: 'hidden'}}>
         <Left title={title} />
-        <Right progress={progress} setProgress={setProgress} footerShow={footerShow} headerShow={headerShow} >
+        <Right>
             {props.children}
         </Right>
     </Grid> )

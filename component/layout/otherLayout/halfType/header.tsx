@@ -1,19 +1,13 @@
 import {Button, Grid } from "@mui/material/";
 import { useRouter } from "next/router";
-
 interface Props {
-    headerShow: boolean
+    saveHanle?: () => void;
 }
-
 export default function HalfHeader (props: Props) {
-    const {headerShow} = props;
     const router = useRouter();
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
 
-    if(!headerShow) {
-        return <></>
-    }
     if(pathname == intro) {
         return (<Grid container sx={{height: '88px', px: '48px'}} position="absolute" top={0} alignItems="center" justifyContent="flex-end" zIndex={2000}>
             <Grid item>

@@ -1,7 +1,7 @@
+import IntroRight from "../../component/room/intro/introRight";
+
 export default function Intro () {
     
-    return ( <h1>
-        become-a-host / intro
-    </h1> )
+    return ( <IntroRight /> )
 }
 Intro.layout = "halfType";

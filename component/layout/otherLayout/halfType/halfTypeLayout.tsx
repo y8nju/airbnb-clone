@@ -31,7 +31,7 @@ export default function HalfTypeLayout (props: ChidrenProps) {
     console.log(title)
     
 
-    return ( <Grid container sx={{height: '100vh'}}>
+    return ( <Grid container sx={{height: '100vh', overflow: 'hidden'}}>
         <Left title={title} />
         <Right progress={progress} setProgress={setProgress} footerShow={footerShow} headerShow={headerShow} >
             {props.children}

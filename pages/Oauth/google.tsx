@@ -20,8 +20,11 @@ export default function GoogleOAuth () {
 		if (!(status === "loading") && !session) {
 			setLoading(false);
 			if(router.query.email) {
-				window.localStorage.setItem('alreadyEmail', router.query.email as string);
-				window.localStorage.setItem('authUserName', router.query.name as string);
+				const authData = {
+					alreadyEmail: router.query.email as string,
+					authUserName: router.query.name as string
+				}
+				window.opener.parentCallback(authData);
 				window.close();
 			} else {
 				void signIn("google", {redirect: false})

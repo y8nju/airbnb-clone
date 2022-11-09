@@ -2,7 +2,7 @@ import { Box, Button, CardContent, Divider, FormControl, FormHelperText, TextFie
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { red } from '@mui/material/colors';
-import { useCtx } from '../../../context/context';
+import { AlreadyCheck, useCtx } from '../../../context/context';
 import { findEmail } from '../../../lib/api/accountApi';
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from 'next-auth/react';
@@ -13,7 +13,7 @@ export default function Login() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [emailType, setEmailType] = useState<boolean>(false);
 	const ctx = useCtx();
-	const {userEmail, setUserEmail, setMode, emailRegex, loading, setLoading} = ctx!
+	const {userEmail, setUserEmail, setMode, emailRegex, loading, setLoading, alreadyChk, setAlredayChk} = ctx!
 	const emailChange = (text: string) => {
 		setUserEmail(text);
 		if(text.length > 0) {
@@ -47,6 +47,11 @@ export default function Login() {
 	}
 	const googleSigninHandle = () => {
 		popupCenter('/OAuth/google', 'Google Login', )
+		
+		window.parentCallback = (data: AlreadyCheck) => {
+			setAlredayChk(data);
+			console.log(data)
+		} 
 	}
 
 	return (<CardContent sx={{p: 3, height: 'auto'}}>

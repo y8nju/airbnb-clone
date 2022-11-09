@@ -2,6 +2,10 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useStat
 
 type SignMode = null | 'SignUp' | 'Login' | 'Checked' | 'PassFind' | 'GoogleSignUp' | 'Session' | 'Commitment' | 'AlreadyChk';
 type HeaderAlertType = 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'| null;
+export type AlreadyCheck = {
+    authUserName: string | null,
+    alreadyEmail: string | null
+}
 interface ContextType {
 	userEmail: string | undefined;
 	setUserEmail: Dispatch<SetStateAction<string | undefined>>;
@@ -15,6 +19,7 @@ interface ContextType {
         title: string | null,
         visible: boolean
     }>>
+    alreadyChk: AlreadyCheck, setAlredayChk: Dispatch<SetStateAction<AlreadyCheck>>,
     emailRegex: RegExp,
 }
 
@@ -29,6 +34,10 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         title: null, 
         visible: false
     })
+    const [alreadyChk, setAlredayChk] = useState<AlreadyCheck>({
+        alreadyEmail: null,
+        authUserName: null
+    })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     
     return <Context.Provider value={{
@@ -36,6 +45,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         userEmail: userEmail, setUserEmail: setUserEmail, 
         loading: loading, setLoading: setLoading,
         headerAlertProps: headerAlertProps, setHeaderAlertProps: setHeaderAlertProps,
+        alreadyChk: alreadyChk, setAlredayChk: setAlredayChk,
         emailRegex: emailRegex,
     }}>
         {props.children}

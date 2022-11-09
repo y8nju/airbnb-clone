@@ -57,7 +57,7 @@ export default function PassChk(props: OnClose) {
 					window.localStorage.setItem('commShow', 'true');
 					onClose(false);
 					closeMenu();
-					const resp = await findEmail(userEmail);
+					const resp = await findEmail(userEmail as string);
 					if(resp?.data?.visible == null) {
 						setMode('Commitment');
 					}else {

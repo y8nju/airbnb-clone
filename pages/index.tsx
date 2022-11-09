@@ -9,6 +9,7 @@ import { findEmail } from '../lib/api/accountApi';
 
 export default function Home() {
 	const {data: session, status} = useSession();
+  const ctx = useCtx();
   return (
     <div className={styles.container}>
       <main className={styles.main}>

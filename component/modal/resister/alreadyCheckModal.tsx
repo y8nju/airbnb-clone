@@ -22,14 +22,7 @@ export default function AlreadyCheck(props: OnClose) {
 	const {onClose} = props;
 
 	const ctx = useCtx();
-	const {userEmail, setMode, setLoading, loading} = ctx!
-
-    let authUserName: string | boolean = false;
-    let alreadyEmail: string | boolean = false;
-    if (typeof window !== 'undefined') {
-        alreadyEmail = localStorage.getItem('alreadyEmail') as string;
-        authUserName = localStorage.getItem('authUserName') as string;
-    }
+	const {userEmail, setMode, setLoading, loading, alreadyChk, setAlredayChk } = ctx!
 
     useEffect(()=> {
 		if(inpError) {
@@ -55,7 +48,7 @@ export default function AlreadyCheck(props: OnClose) {
 				setLoading(true);
 				const result = (await signIn('credentials', {
 					redirect: false,
-					email: alreadyEmail,
+					email: alreadyChk?.alreadyEmail,
 					password: password
 				})) as SignInResponse;
 				console.log('result', result)
@@ -63,7 +56,7 @@ export default function AlreadyCheck(props: OnClose) {
 					console.log('로그인')
 					window.localStorage.setItem('commShow', 'true');
 					onClose(false);
-					const resp = await findEmail(alreadyEmail as string);
+					const resp = await findEmail(alreadyChk?.alreadyEmail as string);
 					if(resp?.data?.visible == null) {
 						setMode('Commitment');
 					}else {
@@ -86,11 +79,10 @@ export default function AlreadyCheck(props: OnClose) {
 				</Typography>
                 <AccountCircleTwoToneIcon style={{ fontSize: '8rem', color: '#495966', mb: 0.5 }} />
                 <Typography sx={{fontSize: '12px'}}>
-					{/* {authUserName} */}
-                    윤주
+					{alreadyChk?.authUserName}
 				</Typography>
 				<Typography variant='body2' sx={{mb: 1.5}}>
-					{alreadyEmail}
+					{alreadyChk?.alreadyEmail}
 				</Typography>
             </Grid>
             <Grid item xs={12} sx={{ mb: 1}}>

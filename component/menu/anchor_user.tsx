@@ -11,12 +11,12 @@ interface AnchorAction {
 export default function AnchorUser(props: AnchorAction) {
     const {setSignupOpen, closeMenu} = props;
 	const ctx = useCtx();
-	const {setMode} = ctx!;
+	const {setMode, setUserEmail} = ctx!;
     const router = useRouter();
     const logoutHandle = () => {
         setSignupOpen(false);
-		window.localStorage.removeItem('commShow');
 		setMode('Checked');
+		setUserEmail(undefined);
         signOut();
     };
 

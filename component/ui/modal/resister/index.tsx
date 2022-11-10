@@ -17,17 +17,13 @@ interface Open {
     closeMenu: () => void;
 }
 export default function LoginAndSignUp(props: Open) {
-    let commShow: string | null = null;
-    
-    if (typeof window !== 'undefined') {
-        commShow = localStorage.getItem('commShow') as string;
-    }
 	const [email, setEmail] = useState<string | null>(null)
     const [show, setShow] = useState<boolean>(false);
     const {data: session, status} = useSession();
     const {open, onClose, closeMenu} = props;
     const ctx = useCtx();
     const {mode, userEmail, setUserEmail, alreadyChk, setMode} = ctx!
+    const {provider, authUserName} = alreadyChk;
     useEffect(()=> {
         setShow(open);
     }, [open]);
@@ -38,41 +34,16 @@ export default function LoginAndSignUp(props: Open) {
             setMode(null);
         }
     }, [show]);
-
-    //-- 소셜 로그인 서약 동의
-    useEffect(()=> {
-        if(status == 'authenticated' && commShow == null) {
-            window.localStorage.setItem('commShow', 'true');
-        }
-    }, [status])
-
-    useEffect(()=> {
-        console.log('commShow', commShow)
-        if(commShow == null) {
-            setMode(null);
-        }
-        if(status == 'authenticated' && commShow == 'true') {
-            (async () => {
-                let resp = await findEmail(session?.user?.email as string);
-                if(resp?.data?.visible == null) {
-                    return setMode('Commitment');
-                }
-            })()
-        }
-    }, [commShow])
-    // -- 소셜 로그인 서약 동의
     
     useEffect(()=> {
-        console.log('mode', mode);
         if(session && mode == 'Checked') {
             setShow(false);
         }
         if(mode == 'Commitment' && show == false && session !== null) {
             setShow(true)
         }
-        if(mode == null) {
-            localStorage.removeItem('alreadyEmail');
-            localStorage.removeItem('authUserName');
+        if(mode == null && !session) {
+            setUserEmail(undefined);
         }
     }, [mode, status])
 
@@ -88,7 +59,8 @@ export default function LoginAndSignUp(props: Open) {
             title={ mode == 'Checked' && '로그인 또는 회원 가입' || 
                 mode == 'SignUp' && '회원 가입 완료하기' || mode == 'Login' && '로그인' ||
                 mode == 'PassFind' && '비밀번호를 잊으셨나요?' || 
-                mode == 'AlreadyChk' && '계정이 이미 존재합니다' ||
+                (mode == 'AlreadyChk' && provider == 'google' ) && `${authUserName}님, 다시 만나 반갑습니다 ` ||
+                (mode == 'AlreadyChk' && provider == 'credentials' ) && '계정이 이미 존재합니다' ||
                 mode == 'Commitment' && undefined
             }
             >

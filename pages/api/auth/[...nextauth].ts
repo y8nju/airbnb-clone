@@ -73,7 +73,7 @@ export const authOption: NextAuthOptions = {
 				params.append("email", email!);
 				params.append("provider", provider!);
 				params.append("providerAccountId", providerAccountId!);
-				return '/OAuth/google?'+params.toString();
+				return '/OAuth?'+params.toString();
 			}
 			return true;
 

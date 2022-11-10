@@ -54,7 +54,6 @@ export default function PassChk(props: OnClose) {
 				console.log('result', result)
 				if(result.ok == true) {
 					console.log('로그인')
-					window.localStorage.setItem('commShow', 'true');
 					onClose(false);
 					closeMenu();
 					const resp = await findEmail(userEmail as string);

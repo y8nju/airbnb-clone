@@ -196,7 +196,6 @@ export default function Signup() {
 				password: password});
 			setUserEmail(email);
 			setMode('Commitment');
-			window.localStorage.setItem('commShow', 'true');
 		}
 		setLoading(false);
 	}

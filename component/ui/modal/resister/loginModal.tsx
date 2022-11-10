@@ -13,7 +13,7 @@ export default function Login() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [emailType, setEmailType] = useState<boolean>(false);
 	const ctx = useCtx();
-	const {userEmail, setUserEmail, setMode, emailRegex, loading, setLoading, alreadyChk, setAlredayChk} = ctx!
+	const {userEmail, setUserEmail, setMode, emailRegex, loading, setLoading, setAlreadayChk} = ctx!
 	const emailChange = (text: string) => {
 		setUserEmail(text);
 		if(text.length > 0) {
@@ -36,8 +36,18 @@ export default function Login() {
 		}else {
 			console.log(userEmail)
 			let resp = await findEmail(userEmail!);
+			console.log(resp)
 			setLoading(true);
 			if(resp.result) {
+				if(resp.data.signupType == 'google') {
+					const authData = {
+						alreadyEmail: resp.data.email as string,
+						authUserName: resp.data.firstName as string,
+						provider: resp.data.provider as string
+					}
+					setAlreadayChk(authData);
+					setMode('AlreadyChk');
+				}
 				setMode('Login')
 			}else {
 				setMode('SignUp');
@@ -47,11 +57,16 @@ export default function Login() {
 	}
 	const googleSigninHandle = () => {
 		popupCenter('/OAuth/google', 'Google Login', )
-		
-		window.parentCallback = (data: AlreadyCheck) => {
-			setAlredayChk(data);
+		// 가입 여부 체크 callback
+		window.alreadyCallback = (data: AlreadyCheck) => {
+			setAlreadayChk(data);
 			console.log(data)
 		} 
+		// 서약동의 callback
+		window.commitmentCallback = (userEmail: string ) => {
+			setUserEmail(userEmail);
+			setMode('Commitment');
+		}
 	}
 
 	return (<CardContent sx={{p: 3, height: 'auto'}}>

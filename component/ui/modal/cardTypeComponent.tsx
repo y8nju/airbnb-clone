@@ -11,7 +11,7 @@ interface Props {
 	children: React.ReactNode;
 }
 
-const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
+const CardTypeComponent = React.forwardRef((props: Props, forwardRef: React.Ref<HTMLDivElement>) => {
 	const {title, onClose, children} = props;
 	const ctx = useCtx();
 	const { mode, setMode } =ctx!
@@ -19,7 +19,7 @@ const CardTypeComponent = React.forwardRef((props: Props, ref: any) => {
 		onClose(false);
 		setMode(null);
 	}
-	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxHeight: '80%' }} ref={ref}>
+	return (<Box style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxHeight: '80%' }} ref={forwardRef} tabIndex={0}>
 		<Card style={{width: 500, height: '100%', display: 'flex', flexDirection: 'column'}}>
 			<CardHeader
 				style={title && { borderBottom: '1px solid #eee' }}

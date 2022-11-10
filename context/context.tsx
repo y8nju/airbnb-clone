@@ -4,7 +4,8 @@ type SignMode = null | 'SignUp' | 'Login' | 'Checked' | 'PassFind' | 'GoogleSign
 type HeaderAlertType = 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'| null;
 export type AlreadyCheck = {
     authUserName: string | null,
-    alreadyEmail: string | null
+    alreadyEmail: string | null,
+    provider: string | null
 }
 interface ContextType {
 	userEmail: string | undefined;
@@ -19,7 +20,7 @@ interface ContextType {
         title: string | null,
         visible: boolean
     }>>
-    alreadyChk: AlreadyCheck, setAlredayChk: Dispatch<SetStateAction<AlreadyCheck>>,
+    alreadyChk: AlreadyCheck, setAlreadayChk: Dispatch<SetStateAction<AlreadyCheck>>,
     emailRegex: RegExp,
 }
 
@@ -34,9 +35,10 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         title: null, 
         visible: false
     })
-    const [alreadyChk, setAlredayChk] = useState<AlreadyCheck>({
+    const [alreadyChk, setAlreadayChk] = useState<AlreadyCheck>({
         alreadyEmail: null,
-        authUserName: null
+        authUserName: null,
+        provider: null
     })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     
@@ -45,7 +47,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         userEmail: userEmail, setUserEmail: setUserEmail, 
         loading: loading, setLoading: setLoading,
         headerAlertProps: headerAlertProps, setHeaderAlertProps: setHeaderAlertProps,
-        alreadyChk: alreadyChk, setAlredayChk: setAlredayChk,
+        alreadyChk: alreadyChk, setAlreadayChk: setAlreadayChk,
         emailRegex: emailRegex,
     }}>
         {props.children}

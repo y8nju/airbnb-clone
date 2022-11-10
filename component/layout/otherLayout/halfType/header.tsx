@@ -11,7 +11,8 @@ export default function HalfHeader (props: Props) {
     if(pathname == intro) {
         return (<Grid container sx={{height: '88px', px: '48px'}} position="absolute" top={0} alignItems="center" justifyContent="flex-end" zIndex={2000}>
             <Grid item>
-                <Button color="info" variant="contained" sx={{backgroundColor: '#222222', fontSize: '12px', borderRadius: 10, px: 2}}>나가기</Button>
+                <Button color="info" variant="contained" sx={{backgroundColor: '#222222', fontSize: '12px', borderRadius: 10, px: 2}}
+                    onClick={()=> router.push("/become-a-host")} >나가기</Button>
             </Grid>
         </Grid>)
     }

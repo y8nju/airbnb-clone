@@ -5,7 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    // domains: ['www.animal.go.kr'],
+    domains: ['images.unsplash.com'],
   }
 }
 

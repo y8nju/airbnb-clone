@@ -5,15 +5,17 @@ interface Props {
     progress: number
     nextStepHandle?: () => void;
 }
-const gradientBg = {'background-image': 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
-'background-size': '200% 200%'}
+const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
+    backgroundSize: '200% 200%'}
 export default function HalfFooter (props: Props) {
     const {progress, nextStepHandle} = props!;
     const router = useRouter();
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
+    const location = '/become-a-host/[roomid]/location';
 
-    return ( <Grid container direction="column" sx={{height: '80px'}} position="absolute" bottom={0} zIndex={2000}>
+    return ( <Grid container direction="column" sx={[{height: '80px'}, pathname == location && {backgroundColor: '#fff'}]} 
+        position="absolute" bottom={0} zIndex={2000}>
     <Grid container>
         <Box sx={{ width: '100%' }}>
             <LinearProgress variant="determinate" color="info" value={progress} sx={{height: '1px'}} />
@@ -23,7 +25,7 @@ export default function HalfFooter (props: Props) {
         {(pathname == intro) ? 
         <Grid item style={{marginLeft: "auto"}}>
             <Button variant="contained" color="info" sx={[{fontSize: '1rem', boxShadow: 'none'}, gradientBg]}
-            onClick={()=> router.push('/become-a-host/')}>시작하기</Button>
+            onClick={()=> router.push("/become-a-host/property-type-group")}>시작하기</Button>
         </Grid> : <>
         <Grid item sx={{mr: 2}}>
             <Button color="inherit" sx={{backgroundColor: "#fff", fontSize: '1rem'}} onClick={() => router.back()}>뒤로</Button>

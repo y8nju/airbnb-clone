@@ -1,29 +1,57 @@
 import { Button, Grid } from "@mui/material";
+import { Types } from "mongoose";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
 import ListItem from "../../../component/room/listItem";
+import PropertyType from "../../../interface/propertyType";
+import { createAndUpdateListing, getPropertyGroupList } from "../../../lib/api/propertyApi";
 
+interface List {
+	property: string,
+	description: string
+}
 export default function roomPropertyType () {
-	const [list, setList] = useState<PropertyType[] | null>(null)
+	const [list, setList] = useState<List[] | null>(null)
     const [group, setGroup] = useState<string>("");
+	
+    const router = useRouter();
+    const listingGroup = router.query.group;
+	console.log('listingGroup', router.query);
 
-    const router = useRouter()
-    const {roomId} = router.query;
-	const nextStepHandle = () => {
-		// new data update fetch 👉 
-        // 정상 처리가 됐다면
-        const { itemId } = router.query;
-		router.push('/become-a-host/'+ itemId +'/privacy-type')
+	useEffect(()=> {
+        !(async () => {
+            const rst = await  getPropertyGroupList(listingGroup as string);
+            if(rst) {
+                setList(rst[0]?.types)
+            }
+        })();
+    }, []);
+
+	const nextStepHandle = async () => {
+        const { roomid } = router.query;
+		const updateData = {
+			_id: new Types.ObjectId(roomid as string),
+			property: group
+		}
+        const rst = await createAndUpdateListing(updateData);
+		console.log(rst)
+		if(rst.result) {
+			router.push('/become-a-host/'+ roomid +'/privacy-type');
+		} else {
+			console.log('데이터가 정상적으로 등록되지 않았습니다');
+		}
 	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		 <><HalfHeader />
+		<><HalfHeader />
         <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 0, ml: 0}}>
-			<ListItem title="콘도" subTitle="거주자 소유의 다세대 건물 또는 단지 내의 공간을 의미합니다." type="roomType" group={group} setGroup={setGroup} />
+			{list && list.map((item: List) => {
+				return <ListItem title={item.property} subTitle={item.description} type="roomType" group={group} setGroup={setGroup} />
+			})}
         </Grid>
-        <HalfFooter progress={10} nextStepHandle={nextStepHandle} /></>
+        <HalfFooter progress={20} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 roomPropertyType.layout = "halfType";

@@ -9,7 +9,7 @@ export default function BecomeAHost () {
         <>
         <HalfHeader />
         <Grid>
-        <Link href="/become-a-host/property-type-group">
+        <Link href="/become-a-host/intro">
             <Button>새로운 숙소 등록하기</Button>
         </Link>
             <Grid sx={{p:5}}>

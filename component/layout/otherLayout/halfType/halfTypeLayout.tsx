@@ -17,20 +17,23 @@ export default function HalfTypeLayout (props: ChidrenProps) {
     
     useEffect(()=> {
         
-    switch(pathname) {
-        case '/become-a-host':
-            setTitle(`${session?.user?.name}님, 환영합니다.`);
-            break;
-        case "/become-a-host/[roomid]/property-type-group":
-            setTitle('호스팅할 숙소 유형을 알려주세요');
-            break;
-        case '/become-a-host/[roomid]/property-type':
-            setTitle('다음 중 숙소를 가장 잘 설명하는 문구는 무엇인가요?');
-            break;
-        case '/become-a-host/[roomid]/privacy-type':
-            setTitle('게스트가 머무르게 될 숙소의 종류가 무엇인가요?');
-            break
-    }
+        switch(pathname) {
+            case '/become-a-host':
+                setTitle(`${session?.user?.name}님, 환영합니다.`);
+                break;
+            case "/become-a-host/[roomid]/property-type-group":
+                setTitle('호스팅할 숙소 유형을 알려주세요');
+                break;
+            case '/become-a-host/[roomid]/property-type':
+                setTitle('다음 중 숙소를 가장 잘 설명하는 문구는 무엇인가요?');
+                break;
+            case '/become-a-host/[roomid]/privacy-type':
+                setTitle('게스트가 머무르게 될 숙소의 종류가 무엇인가요?');
+                break;
+            case '/become-a-host/[roomid]/privacy-type':
+                setTitle('숙소 위치는 어디인가요?');
+                break;
+        }
     })
     
 

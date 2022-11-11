@@ -1,4 +1,6 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState, useEffect } from "react";
+import { CoordinateType, defaultCoords } from "../interface/mapsType";
+import { createStaticMapUri } from "../lib/api/mapsApi";
 
 type SignMode = null | 'SignUp' | 'Login' | 'Checked' | 'PassFind' | 'GoogleSignUp' | 'Session' | 'Commitment' | 'AlreadyChk';
 type HeaderAlertType = 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'| null;
@@ -21,6 +23,7 @@ interface ContextType {
         visible: boolean
     }>>
     alreadyChk: AlreadyCheck, setAlreadayChk: Dispatch<SetStateAction<AlreadyCheck>>,
+    coordinate: CoordinateType, setCoordinate: Dispatch<SetStateAction<CoordinateType>>,
     emailRegex: RegExp,
 }
 
@@ -41,6 +44,24 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         provider: null
     })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords)
+
+    const [screen, setScreen] = useState<{width: number, height: number}>({width: 500, height: 900});
+
+	useEffect(() => {
+        if (typeof window !== "undefined") {
+            setScreen({width: window.outerWidth, height: window.outerHeight});
+        }
+		navigator.geolocation.getCurrentPosition(position => {
+			const coords = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude,
+			}
+            const mapUri = createStaticMapUri(coords, screen.width, screen.height);
+
+			setCoordinate({...coords, imgUrl: mapUri});
+		});
+	}, []);
     
     return <Context.Provider value={{
         mode: mode, setMode: setMode, 
@@ -48,6 +69,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         loading: loading, setLoading: setLoading,
         headerAlertProps: headerAlertProps, setHeaderAlertProps: setHeaderAlertProps,
         alreadyChk: alreadyChk, setAlreadayChk: setAlreadayChk,
+        coordinate: coordinate, setCoordinate: setCoordinate,
         emailRegex: emailRegex,
     }}>
         {props.children}

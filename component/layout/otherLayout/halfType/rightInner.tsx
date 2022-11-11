@@ -12,7 +12,6 @@ export default function RightInner (props: Props) {
     const router = useRouter();
     const pathname = router.pathname;
     const location = '/become-a-host/[roomid]/location';
-    console.log('pathname == location', pathname == location)
 
     const {children, footerShow, headerShow} = props;
     return ( <Grid container sx={[

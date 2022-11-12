@@ -52,7 +52,10 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         if (typeof window !== "undefined") {
             setScreen({width: window.outerWidth, height: window.outerHeight});
         }
-		navigator.geolocation.getCurrentPosition(position => {
+		
+	}, []);
+    useEffect(()=> {
+        navigator.geolocation.getCurrentPosition(position => {
 			const coords = {
 				lat: position.coords.latitude,
 				lng: position.coords.longitude,
@@ -61,7 +64,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
 
 			setCoordinate({...coords, imgUrl: mapUri});
 		});
-	}, []);
+    }, [screen])
     
     return <Context.Provider value={{
         mode: mode, setMode: setMode, 

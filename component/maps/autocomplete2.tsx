@@ -8,8 +8,6 @@ import useOnclickOutside  from "react-cool-onclickoutside";
 import { List, ListItem, ListItemText } from '@mui/material/';
 
 const PlacesAutocomplete = () => {
-	const [list, setList] = useState<JSX.Element[] | null>(null);
-	const [searchTxt, setSearchTxt] = useState<string | undefined>(undefined);
 	const {
 		ready,
 		value,
@@ -18,23 +16,18 @@ const PlacesAutocomplete = () => {
 		clearSuggestions,
 		} = usePlacesAutocomplete({
 		requestOptions: {
-			// componentRestrictions: { country: 'KR' },
+			componentRestrictions: { country: 'KR' },
 		},
-		debounce: 300,
+		// debounce: 300,
 	});
 	const ref = useOnclickOutside(() => {
-		clearSuggestions();
+	clearSuggestions();
 	});
 
-	useEffect(()=> {
-		renderSuggestions()
-		console.log(value)//[object Object] 오류 확인
-	}, [value])
 	const handleInput = (e: ChangeEvent<HTMLInputElement>): void => {
-		setValue(e.target.value);
-		setSearchTxt(e.target.value)
+	setValue(e.target.value);
 	};
-	const handleSelect = (description: string): void => {
+	const handleSelect = (description: any): any => {
         setValue(description, false);
         getGeocode({ address: description }).then((results) => {
             console.log(getZipCode(results[0], true));
@@ -42,17 +35,35 @@ const PlacesAutocomplete = () => {
             console.log('📍 Coordinates: ', { lat, lng });
         });
     };
-	
-	const renderSuggestions = () => {
-		const searchList = data.map((suggestion) => {
-			return (
-				<ListItem key={suggestion.place_id} onClick={handleSelect(suggestion)}>
-					<ListItemText primary={suggestion.structured_formatting.main_text} secondary={suggestion.structured_formatting.secondary_text} />
-				</ListItem>
-			);
-		});
-		setList(searchList);
-	}
+	// const handleSelect = (val: string): void => {
+	// 	setValue(val, false);
+	// };
+	const renderSuggestions = () =>
+		data.map((suggestion) => {
+			const {
+				place_id,
+				structured_formatting: { main_text, secondary_text },
+			} = suggestion;
+
+		return (
+			<ListItem key={place_id} onClick={handleSelect(suggestion)}>
+				<ListItemText primary={main_text} secondary={secondary_text} />
+			</ListItem>
+		);
+	});
+	// const renderSuggestions = () =>
+	// 	data.map((suggestion) => {
+	// 		const {
+	// 			place_id,
+	// 			structured_formatting: { main_text, secondary_text },
+	// 		} = suggestion;
+
+	// 	return (
+	// 		<ListItem key={place_id} onClick={handleSelect(suggestion)}>
+	// 			<ListItemText primary={main_text} secondary={secondary_text} />
+	// 		</ListItem>
+	// 	);
+	// });
 
 
 
@@ -60,14 +71,14 @@ const PlacesAutocomplete = () => {
 		<div ref={ref}>
 			<input
 				style={{ width: 300, maxWidth: '90%' }}
-				value={searchTxt}
+				value={value}
 				onChange={handleInput}
 				disabled={!ready}
 				placeholder="Where are you going?"
 			/>
-			<List>{list}</List>
-			
-			 {/* <ul>
+			{/* <List>{renderSuggestions()}</List>
+			 */}
+			 <ul>
                 {data.map((list, index) => (
                     <li
                         key={list.place_id}
@@ -79,7 +90,7 @@ const PlacesAutocomplete = () => {
                         {list.description}
                     </li>
                 ))}
-            </ul> */}
+            </ul>
 		</div>
 		);
 };

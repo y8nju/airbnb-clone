@@ -29,12 +29,10 @@ export default function RoomLocation () {
 		<Grid container direction="column" position="relative" sx={{width: 1, mt: 0, ml: 0}}>
 			<Box sx={{width: 1, height: '100%'}} position="absolute">
 				{/* <Image src={coordinate.imgUrl} fill alt="Maps" style={{objectFit: 'cover'}} /> */}
-				<img src={coordinate.imgUrl} alt="Maps" width="100%" height="100%" style={{objectFit: 'cover'}} />
+				<img src={coordinate.imgUrl} alt="Maps" width="100%" height="100%" style={{objectFit: 'cover', verticalAlign: 'bottom'}} />
 			</Box>
 			<Grid sx={{width: 1, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}} position="relative" top="0" zIndex={100}>
-				<Box>
-					<PlacesAutocomplete />
-				</Box>
+				<PlacesAutocomplete />
 			</Grid>
 		</Grid>
 		<HalfFooter progress={40} nextStepHandle={nextStepHandle} /></>

@@ -46,25 +46,17 @@ export const ContextProvider = (props: {children: ReactNode}) => {
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords)
 
-    const [screen, setScreen] = useState<{width: number, height: number}>({width: 500, height: 900});
-
-	useEffect(() => {
-        if (typeof window !== "undefined") {
-            setScreen({width: window.outerWidth, height: window.outerHeight});
-        }
-		
-	}, []);
     useEffect(()=> {
         navigator.geolocation.getCurrentPosition(position => {
 			const coords = {
 				lat: position.coords.latitude,
 				lng: position.coords.longitude,
 			}
-            const mapUri = createStaticMapUri(coords, screen.width, screen.height);
+            const mapUri = createStaticMapUri(coords);
 
 			setCoordinate({...coords, imgUrl: mapUri});
 		});
-    }, [screen])
+    }, [])
     
     return <Context.Provider value={{
         mode: mode, setMode: setMode, 

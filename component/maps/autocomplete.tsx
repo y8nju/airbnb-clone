@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from 'react';
+import React, { ChangeEvent, Dispatch, MouseEventHandler, SetStateAction, useEffect, useState } from 'react';
 import usePlacesAutocomplete, {
 	getGeocode,
 	getLatLng,
@@ -13,7 +13,12 @@ import { grey } from '@mui/material/colors';
 import { useCtx } from '../../context/context';
 import { createStaticMapUri } from '../../lib/api/mapsApi';
 
-const PlacesAutocomplete = () => {
+interface Props {
+	setShowMap: Dispatch<SetStateAction<boolean>>
+}
+
+export default function PlacesAutocomplete(props: Props) {
+	const {setShowMap} = props;
 	const [searchTxt, setSearchTxt] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [nowLocationShow, setNowlocationShow] = useState<boolean>(false);
@@ -59,6 +64,7 @@ const PlacesAutocomplete = () => {
 	
 	const handleSelect = ({ description }: any): MouseEventHandler<HTMLLIElement> => (): void => {
 	  setValue(description, false);
+	  setShowMap(true);
 	  clearSuggestions();
 
 	  console.log(description);
@@ -155,5 +161,3 @@ const PlacesAutocomplete = () => {
 		</Box>
 		);
 };
-
-export default PlacesAutocomplete;

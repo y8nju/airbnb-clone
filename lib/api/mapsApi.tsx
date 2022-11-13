@@ -1,4 +1,3 @@
-import axios from "axios";
 import { CoordinateType, CoorsType } from "../../interface/mapsType";
 const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
 

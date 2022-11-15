@@ -1,29 +1,33 @@
 import React, { ChangeEvent, Dispatch, MouseEventHandler, SetStateAction, useEffect, useState } from 'react';
 import usePlacesAutocomplete, {
+	getDetails,
 	getGeocode,
 	getLatLng,
 	getZipCode,
 } from "use-places-autocomplete";
 import useOnclickOutside  from "react-cool-onclickoutside";
-import { Avatar, Box, CircularProgress, InputAdornment, List, ListItem, ListItemAvatar, ListItemText, TextField } from '@mui/material/';
+import { Avatar, Box, Button, CircularProgress, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, TextField } from '@mui/material/';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { grey } from '@mui/material/colors';
 import { useCtx } from '../../context/context';
-import { createStaticMapUri } from '../../lib/api/mapsApi';
+import { createStaticMapUri, nowLocationAddress } from '../../lib/api/mapsApi';
 
 interface Props {
 	setShowMap: Dispatch<SetStateAction<boolean>>
+	setOpen: Dispatch<SetStateAction<boolean>>
 }
 
+const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
+
 export default function PlacesAutocomplete(props: Props) {
-	const {setShowMap} = props;
+	const {setShowMap, setOpen} = props;
 	const [searchTxt, setSearchTxt] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [nowLocationShow, setNowlocationShow] = useState<boolean>(false);
     const ctx = useCtx();
-    const {coordinate, setCoordinate} = ctx!;
+    const {coordinate, setCoordinate, setAddress} = ctx!;
 	const {
 		ready,
 		value,
@@ -56,32 +60,40 @@ export default function PlacesAutocomplete(props: Props) {
 	}, [searchTxt]);
 
 	const handleInput = (e: any): void => {
-		setLoading(true);
+		if(data.length > 0) {
+			setLoading(false);
+		}else {
+			setLoading(true);
+		}
 		setNowlocationShow(false);
 		setValue(e.target.value);
 		setSearchTxt(e.target.value)
 	};
 	
-	const handleSelect = ({ description }: any): MouseEventHandler<HTMLLIElement> => (): void => {
+	const handleSelect = (suggestion: google.maps.places.AutocompletePrediction): MouseEventHandler<HTMLLIElement> => (): void => {
+		const {description} = suggestion;
 	  setValue(description, false);
-	  setShowMap(true);
+	//   setShowMap(true); 내용 등록이 완료 시에 지도가 보여야함
 	  clearSuggestions();
 
-	  console.log(description);
+	  console.log('suggestion', suggestion);
 	  getGeocode({ address: description }).then((results) => {
 		console.log(getZipCode(results[0], true));
 		const { lat, lng } = getLatLng(results[0]);
 		console.log("📍 Coordinates: ", { lat, lng });
-		navigator.geolocation.getCurrentPosition(position => {
+		navigator.geolocation.getCurrentPosition(async (position) => {
 			const coords = {
 				lat: lat,
 				lng: lng,
 			}
             const mapUri = createStaticMapUri(coords);
-
 			setCoordinate({...coords, imgUrl: mapUri});
+			const data = await nowLocationAddress(coords);
+			setAddress(data);
+			console.log(data)
 		});
 	  });
+	  setOpen(true);
 	};
 	
 	const renderSuggestions = () => data?.map((suggestion: google.maps.places.AutocompletePrediction) => {
@@ -89,13 +101,15 @@ export default function PlacesAutocomplete(props: Props) {
 		place_id,
 		structured_formatting: { main_text, secondary_text },
 		} = suggestion;
-		return (<ListItem key={place_id} onClick={handleSelect(suggestion)}>
-			<ListItemAvatar>
-				<Avatar sx={{backgroundColor: grey[200]}}>
-					<HomeWorkIcon fontSize="small" color="info" />
-				</Avatar>
-			</ListItemAvatar>
-			<ListItemText primary={main_text} secondary={secondary_text} />
+		return (<ListItem key={place_id} onClick={handleSelect(suggestion)} sx={{p: 0}}>
+			<ListItemButton >
+				<ListItemAvatar>
+					<Avatar sx={{backgroundColor: grey[200]}}>
+						<HomeWorkIcon fontSize="small" color="info" />
+					</Avatar>
+				</ListItemAvatar>
+				<ListItemText primary={main_text} secondary={secondary_text} />
+			</ListItemButton>
 		</ListItem>);
 	});
 	const focusHandle = () => {
@@ -103,17 +117,32 @@ export default function PlacesAutocomplete(props: Props) {
 			setNowlocationShow(true);
 		}
 	}
+	const nowLocationHandle = () => {
+		navigator.geolocation.getCurrentPosition(async (position) => {
+			const coords = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude,
+			}
+            const mapUri = createStaticMapUri(coords);
+			setCoordinate({...coords, imgUrl: mapUri});
+
+			const data = await nowLocationAddress(coords);
+			setAddress(data);
+		});
+		setOpen(true);
+	}
 	const NowLocation = () => {
-		return (<ListItem>
-			<ListItemAvatar>
-				<Avatar sx={{backgroundColor: grey[200]}}>
-					<NearMeIcon fontSize="small" color="info" />
-				</Avatar>
-			</ListItemAvatar>
-			<ListItemText primary="현재 위치 사용" />
+		return (<ListItem onClick={nowLocationHandle} sx={{p: 0}}>
+			<ListItemButton >
+				<ListItemAvatar>
+					<Avatar sx={{backgroundColor: grey[200]}}>
+						<NearMeIcon fontSize="small" color="info" />
+					</Avatar>
+				</ListItemAvatar>
+				<ListItemText primary="현재 위치 사용" />
+			</ListItemButton>
 		</ListItem>)
 	}
-
 
 	return (
 		<Box ref={ref} sx={{width: '80%', backgroundColor: '#fff', borderRadius: 2}} position="absolute" top="200px">
@@ -134,7 +163,7 @@ export default function PlacesAutocomplete(props: Props) {
 				placeholder="주소를 입력하세요"
 				style={{borderRadius: '8px'}}
 				onFocus={focusHandle}
-				onBlur={() => setNowlocationShow(false)}
+				onBlur={() => setTimeout(() => setNowlocationShow(false), 500)}
 			/>
 			<List sx={[{p: 0}, (nowLocationShow || status === "OK") && {py: 1}]}>
 				{status === "OK" && <>
@@ -143,21 +172,6 @@ export default function PlacesAutocomplete(props: Props) {
 				</>}
 				{nowLocationShow && <NowLocation />}
 			</List>
-
-			
-			 {/* <ul>
-				{data.map((list, index) => (
-					<li
-						key={list.place_id}
-						onClick={(e) => {
-							console.log(data[index]);
-							handleSelect((e.target as HTMLElement).innerText);
-						}}
-					>
-						{list.description}
-					</li>
-				))}
-			</ul> */}
 		</Box>
 		);
 };

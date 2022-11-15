@@ -15,7 +15,7 @@ export default function SignpDialog (props: Open) {
                     style={{fontWeight: 600}}>
                     에어비앤비에 오신 것을 환영합니다.
                 </Typography>
-                <TextField fullWidth label="이메일" id="fullWidth" sx={{mt: 2}} />
+                <ield fullWidth label="이메일" id="fullWidth" sx={{mt: 2}} />
                 <Button variant="contained" disableElevation
                     sx={{ width: 1, my: 2, bgcolor: red[600], p:1.4}}>
                     계속

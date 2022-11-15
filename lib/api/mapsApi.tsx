@@ -12,3 +12,10 @@ let height: number = 980;
 export function createStaticMapUri(coordinate: CoorsType) {
     return `https://maps.googleapis.com/maps/api/staticmap?center=${coordinate.lat},${coordinate.lng}&zoom=14&size=${width/2}x${height}&key=${appKey}`
 }
+export async function nowLocationAddress(coordinate: CoorsType) {
+    const endPoint = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate.lat},${coordinate.lng}&key=${appKey}`
+    const response = await fetch(endPoint);
+    const data = await response.json();
+    console.log('data', data)
+    return data.results[0].address_components
+}

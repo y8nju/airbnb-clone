@@ -25,9 +25,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(2),
   },
   '& .MuiDialog-paper': {
-    width: '80%',
-    maxWidth: '80%',
-    marginTop: '-5rem'
+    width: '80%'
   }
 }));
 export interface DialogProps {
@@ -45,7 +43,7 @@ export default function BasicDialog(props: DialogProps) {
         onClose={() => onClose(!open)}
         aria-labelledby={id}
         open={open}
-        // TransitionComponent={Transition}
+        TransitionComponent={Transition}
         hideBackdrop={true}
         sx={{position: 'absolute', left: 'auto', width: '50%'}}
       >

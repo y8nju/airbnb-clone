@@ -1,5 +1,6 @@
 import { Divider, MenuItem, Typography } from "@mui/material";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { SetStateAction } from "react";
 import { useCtx } from "../../context/context";
@@ -35,7 +36,9 @@ export default function AnchorUser(props: AnchorAction) {
 	</MenuItem>
 	<Divider />
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Typography>숙소 호스트 되기</Typography>
+		<Typography>
+			<Link href="/become-a-host">숙소 호스트 되기</Link>
+		</Typography>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
 		<Typography>체험 호스팅 하기</Typography>

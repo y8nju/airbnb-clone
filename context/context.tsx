@@ -24,6 +24,7 @@ interface ContextType {
     }>>
     alreadyChk: AlreadyCheck, setAlreadayChk: Dispatch<SetStateAction<AlreadyCheck>>,
     coordinate: CoordinateType, setCoordinate: Dispatch<SetStateAction<CoordinateType>>,
+    address: object[] | null, setAddress: Dispatch<SetStateAction<object[] | null>>,
     emailRegex: RegExp,
 }
 
@@ -44,7 +45,8 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         provider: null
     })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords)
+    const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords);
+    const [address, setAddress] = useState<object[] | null>(null)
 
     useEffect(()=> {
         navigator.geolocation.getCurrentPosition(position => {
@@ -65,6 +67,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         headerAlertProps: headerAlertProps, setHeaderAlertProps: setHeaderAlertProps,
         alreadyChk: alreadyChk, setAlreadayChk: setAlreadayChk,
         coordinate: coordinate, setCoordinate: setCoordinate,
+        address: address, setAddress: setAddress,
         emailRegex: emailRegex,
     }}>
         {props.children}

@@ -12,7 +12,7 @@ export default function HalfTypeLayout (props: ChidrenProps) {
     const [title, setTitle] = useState<string>('')
     const {data: session} = useSession();
     const router = useRouter();
-    console.log(router);
+    // console.log(router);
     const pathname = router.pathname;
     
     useEffect(()=> {
@@ -30,7 +30,7 @@ export default function HalfTypeLayout (props: ChidrenProps) {
             case '/become-a-host/[roomid]/privacy-type':
                 setTitle('게스트가 머무르게 될 숙소의 종류가 무엇인가요?');
                 break;
-            case '/become-a-host/[roomid]/privacy-type':
+            case '/become-a-host/[roomid]/location':
                 setTitle('숙소 위치는 어디인가요?');
                 break;
         }

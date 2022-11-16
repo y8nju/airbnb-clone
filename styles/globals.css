@@ -43,6 +43,10 @@ input[type="date"]:focus:-webkit-datetime-edit-year-field {
 #birth:focus ~ .MuiInputAdornment-root .datePlaceHolder {
   display: none
 }
+.mdl-textfield__input:-webkit-autofill + .mdl-textfield__label {
+  top: -20px;
+  transform: scale(0.75);
+}
 
 @media (prefers-color-scheme: dark) {
   html {

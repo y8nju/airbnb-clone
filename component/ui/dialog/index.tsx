@@ -19,15 +19,16 @@ const Transition = React.forwardRef(function Transition(
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    // padding: theme.spacing(3),
+    padding: `${theme.spacing(2)} ${theme.spacing(4)} ${theme.spacing(1)}`,
+    maxHeight: '55vh'
   },
   '& .MuiDialogActions-root': {
-    padding: theme.spacing(2),
+    padding: `${theme.spacing(2)} ${theme.spacing(3)} ${theme.spacing(4)}`,
   },
   '& .MuiDialog-paper': {
     width: '80%',
-    maxWidth: '80%',
-    marginTop: '-5rem'
+    maxWidth: '600px',
+    marginTop: '-2rem'
   }
 }));
 export interface DialogProps {

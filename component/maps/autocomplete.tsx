@@ -15,19 +15,21 @@ import { useCtx } from '../../context/context';
 import { createStaticMapUri, nowLocationAddress } from '../../lib/api/mapsApi';
 
 interface Props {
-	setShowMap: Dispatch<SetStateAction<boolean>>
-	setOpen: Dispatch<SetStateAction<boolean>>
+	setShowMap: Dispatch<SetStateAction<boolean>>;
+	setOpen: Dispatch<SetStateAction<boolean>>;
+	disabled: boolean;
+    setDisabled: Dispatch<SetStateAction<boolean>>;
 }
 
 const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
 
 export default function PlacesAutocomplete(props: Props) {
-	const {setShowMap, setOpen} = props;
+	const {setShowMap, setOpen, disabled} = props;
 	const [searchTxt, setSearchTxt] = useState<string | undefined>(undefined);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [nowLocationShow, setNowlocationShow] = useState<boolean>(false);
     const ctx = useCtx();
-    const {coordinate, setCoordinate, setAddress} = ctx!;
+    const {coordinate, setCoordinate, setAddress, hostLocation, address} = ctx!;
 	const {
 		ready,
 		value,
@@ -38,6 +40,7 @@ export default function PlacesAutocomplete(props: Props) {
 		} = usePlacesAutocomplete({
 		requestOptions: {
 			componentRestrictions: { country: 'KR' },
+			// types: ['address']
 		},
 		debounce: 300,
 	});
@@ -58,7 +61,11 @@ export default function PlacesAutocomplete(props: Props) {
 			setNowlocationShow(true);
 		}
 	}, [searchTxt]);
-
+	useEffect(()=> {
+		if(address){
+			setSearchTxt(address.formatted_address)
+		}
+	}, [disabled])
 	const handleInput = (e: any): void => {
 		if(data.length > 0) {
 			setLoading(false);
@@ -75,7 +82,6 @@ export default function PlacesAutocomplete(props: Props) {
 	  setValue(description, false);
 	//   setShowMap(true); 내용 등록이 완료 시에 지도가 보여야함
 	  clearSuggestions();
-
 	  console.log('suggestion', suggestion);
 	  getGeocode({ address: description }).then((results) => {
 		console.log(getZipCode(results[0], true));
@@ -90,7 +96,7 @@ export default function PlacesAutocomplete(props: Props) {
 			setCoordinate({...coords, imgUrl: mapUri});
 			const data = await nowLocationAddress(coords);
 			setAddress(data);
-			console.log(data)
+			console.log('data', data)	
 		});
 	  });
 	  setOpen(true);
@@ -151,7 +157,7 @@ export default function PlacesAutocomplete(props: Props) {
 				variant="outlined"
 				value={searchTxt}
 				onChange={handleInput}
-				disabled={!ready}
+				disabled={disabled}
 				color="info"
 				InputProps={{
 					startAdornment: (

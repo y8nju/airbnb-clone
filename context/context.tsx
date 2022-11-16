@@ -1,4 +1,5 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState, useEffect } from "react";
+import { HostAddressType } from "../interface/hostingType";
 import { CoordinateType, defaultCoords } from "../interface/mapsType";
 import { createStaticMapUri } from "../lib/api/mapsApi";
 
@@ -24,7 +25,8 @@ interface ContextType {
     }>>
     alreadyChk: AlreadyCheck, setAlreadayChk: Dispatch<SetStateAction<AlreadyCheck>>,
     coordinate: CoordinateType, setCoordinate: Dispatch<SetStateAction<CoordinateType>>,
-    address: object[] | null, setAddress: Dispatch<SetStateAction<object[] | null>>,
+    address: object | null, setAddress: Dispatch<SetStateAction<object | null>>,
+    hostLocation: HostAddressType | null, setHostLocation: Dispatch<SetStateAction<HostAddressType | null>>,
     emailRegex: RegExp,
 }
 
@@ -46,7 +48,8 @@ export const ContextProvider = (props: {children: ReactNode}) => {
     })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords);
-    const [address, setAddress] = useState<object[] | null>(null)
+    const [address, setAddress] = useState<object | null>(null)
+    const [hostLocation, setHostLocation]=useState<HostAddressType | null>(null)
 
     useEffect(()=> {
         navigator.geolocation.getCurrentPosition(position => {
@@ -68,6 +71,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         alreadyChk: alreadyChk, setAlreadayChk: setAlreadayChk,
         coordinate: coordinate, setCoordinate: setCoordinate,
         address: address, setAddress: setAddress,
+        hostLocation: hostLocation, setHostLocation: setHostLocation,
         emailRegex: emailRegex,
     }}>
         {props.children}

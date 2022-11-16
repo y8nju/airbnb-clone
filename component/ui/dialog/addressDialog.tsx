@@ -6,7 +6,9 @@ import { useCtx } from "../../../context/context";
 
 interface Open {
 	open: boolean;
-	onClose: Dispatch<SetStateAction<boolean>>
+	onClose: Dispatch<SetStateAction<boolean>>;
+	setShowMap: Dispatch<SetStateAction<boolean>>;
+    setDisabled: Dispatch<SetStateAction<boolean>>;
 }
 const CssTextField = styled(TextField)({
     '&': {
@@ -35,22 +37,76 @@ const CssTextField = styled(TextField)({
     }
   });
 export default function AddressDialog (props: Open) {
-    const {open, onClose} = props;
+    const {open, onClose, setShowMap, setDisabled} = props;
     const ctx= useCtx();
-    const {address} = ctx!
+    const {address, setHostLocation, coordinate} = ctx!
     const [state, setState] = useState<string | null>(null);
     const [city, setCity] = useState<string | null>(null);
     const [street, setStreet] = useState<string | null>(null);
     const [apt, setApt] = useState<string | null>(null);
-    const [zipcode, setZipCode] = useState<string | null>(null);
+    const [zipCode, setZipCode] = useState<string | null>(null);
+    const [lastChange, setLastChange] = useState<Date>(new Date())
     useEffect(() => {
         if(address) {
-            setState(address[4].long_name)
-            setCity(address[2].long_name)
-            setStreet(address[0].long_name)
-            setZipCode(address[address.length-1].long_name)
+            address.address_components.forEach(one => {
+                one.types.forEach(type => {
+                    switch(type) {
+                        case 'administrative_area_level_1': {
+                            setState(one.long_name);
+                            break;
+                        }
+                        case 'sublocality_level_1': {
+                            setCity(one.long_name);
+                            break;
+                        }
+                        case 'sublocality_level_2': {
+                            setStreet(one.long_name);
+                            break;
+                        }
+                        case 'sublocality_level_4': {
+                            setStreet(one.long_name);
+                            break;
+                        }
+                        case  'postal_code': {
+                            setZipCode(one.long_name);
+                            break;
+                        }
+                    }
+                })
+            })
         }
+        setLastChange(new Date());
     }, [address])
+    useEffect(()=> {
+        if(street) {
+            address.address_components.forEach(one => {
+                one.types.forEach(type => {
+                    switch(type) {
+                        case 'premise': {
+                            setStreet(street.concat(one.long_name));
+                            break;
+                        }
+                    }
+                })
+            })
+        }
+    }, [lastChange])
+    const submitHandle = () => {
+        onClose(false);
+        setShowMap(true)
+        setDisabled(true)
+        setHostLocation({
+            uri: coordinate.imgUrl,
+            placeId: address!.place_id,
+            state: state,
+            city: city,
+            street: street,
+            apt: apt,
+            zipCode: zipCode,
+            lat: coordinate.lat,
+            lng: coordinate.lng,
+        })
+    }
     return (<BasicDialog onClose={onClose} open={open} title="주소확인" id="address">
             <DialogContent dividers sx={{borderBottomWidth: 0}}>
                 <Box sx={{ border: 1, borderRadius: 3, borderColor: grey[700], overflow: 'hidden', pt: 1}}>
@@ -100,8 +156,8 @@ export default function AddressDialog (props: Open) {
                         autoComplete="current-password"
                         variant="standard"
                         color="info"
-                        value={zipcode}
-                        onChange={(e) => setZipcode(e.target.value)}
+                        value={zipCode}
+                        onChange={(e) => setZipCode(e.target.value)}
                         sx={[{p: 0, border: 0,},
                         ]}
                     />
@@ -112,6 +168,7 @@ export default function AddressDialog (props: Open) {
         </DialogContent>
         <DialogActions>
             <Button variant="contained" disableElevation
+                onClick={submitHandle}
                 color="info" sx={{ my: 2, mr: 'auto', ml: 1, p:1.4}}>
                 확인
             </Button>

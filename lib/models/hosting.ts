@@ -9,7 +9,18 @@ const hostingSchema = new mongoose.Schema<HostingType>({
     },
     group: String, 
     property: String, 
-    privacy: String
+    privacy: String,
+    location: {
+      state: String,
+      city: String,
+      street: String,
+      apt: String,
+      zipCode: String,
+      lat: Number,
+      lng: Number,
+      uri: String,
+      placeId: String
+    },
 })
 
 export default mongoose.models.Hosting as mongoose.Model<HostingType> ||

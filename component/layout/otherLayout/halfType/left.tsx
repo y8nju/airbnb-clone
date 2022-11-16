@@ -1,4 +1,4 @@
-import {useState, useRef, useEffect} from 'react';
+import {useState, useRef, useEffect, Dispatch, SetStateAction} from 'react';
 import {Box, Grid, Typography, IconButton} from "@mui/material/";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,13 +7,14 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 
 interface Props {
-    title: string
+    title: string;
+    setTitle: Dispatch<SetStateAction<string>>
 }
 
 export default function Left ( props: Props) {
-    const [nowPlay, setNowPlay] = useState<boolean>(false);
-    const playRef = useRef<HTMLVideoElement>(null)
     const {title} = props;
+    const [nowPlay, setNowPlay] = useState<boolean>(false);
+    const playRef = useRef<HTMLVideoElement>(null);
     const router = useRouter();
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'

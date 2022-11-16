@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import { ChidrenProps } from "../../../../interface/propsType";
 import Left from "./left";
 import Right from "./right";
+import { useCtx } from '../../../../context/context';
 
 
 
@@ -14,9 +15,10 @@ export default function HalfTypeLayout (props: ChidrenProps) {
     const router = useRouter();
     // console.log(router);
     const pathname = router.pathname;
+    const ctx = useCtx();
+    const {hostLocation} = ctx!;
     
     useEffect(()=> {
-        
         switch(pathname) {
             case '/become-a-host':
                 setTitle(`${session?.user?.name}님, 환영합니다.`);
@@ -36,9 +38,15 @@ export default function HalfTypeLayout (props: ChidrenProps) {
         }
     })
     
+    useEffect(()=> {
+        console.log('aaaaaaaaa')
+        console.log('title', title)
+        setTitle('핀이 놓인 위치가 정확한가요?');
+    }, [hostLocation]); 
+    
 
     return ( <Grid container sx={{height: '100vh', overflow: 'hidden'}}>
-        <Left title={title} />
+        <Left title={title} setTitle={setTitle} />
         <Right>
             {props.children}
         </Right>

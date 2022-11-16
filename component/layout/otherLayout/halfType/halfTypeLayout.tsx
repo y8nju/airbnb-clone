@@ -35,13 +35,16 @@ export default function HalfTypeLayout (props: ChidrenProps) {
             case '/become-a-host/[roomid]/location':
                 setTitle('숙소 위치는 어디인가요?');
                 break;
+            case '/become-a-host/[roomid]/floor-plan':
+                setTitle('숙소에서 맞이할 최대 인원수를 알려주세요.');
+                break;
         }
-    })
+    }, [pathname])
     
     useEffect(()=> {
-        console.log('aaaaaaaaa')
-        console.log('title', title)
-        setTitle('핀이 놓인 위치가 정확한가요?');
+        if(pathname == '/become-a-host/[roomid]/location' && hostLocation) {
+            setTitle('핀이 놓인 위치가 정확한가요?');
+        }
     }, [hostLocation]); 
     
 

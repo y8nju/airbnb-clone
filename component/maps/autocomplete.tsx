@@ -18,7 +18,6 @@ interface Props {
 	setShowMap: Dispatch<SetStateAction<boolean>>;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 	disabled: boolean;
-    setDisabled: Dispatch<SetStateAction<boolean>>;
 }
 
 const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;

@@ -13,7 +13,7 @@ interface List {
 	property: string,
 	description: string
 }
-export default function roomPropertyType () {
+export default function RoomPropertyType () {
 	const [list, setList] = useState<List[] | null>(null)
     const [group, setGroup] = useState<string>("");
 	
@@ -54,4 +54,4 @@ export default function roomPropertyType () {
         <HalfFooter progress={20} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
-roomPropertyType.layout = "halfType";
+RoomPropertyType.layout = "halfType";

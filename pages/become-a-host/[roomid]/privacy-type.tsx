@@ -9,7 +9,7 @@ import ListItem from "../../../component/room/listItem";
 import { createAndUpdateListing } from "../../../lib/api/propertyApi";
 
 const PrivacyType = ['공간전체', '개인실', '다인실']
-export default function roomPrivacyType () {
+export default function RoomPrivacyType () {
     const [group, setGroup] = useState<string>("");
     const router = useRouter()
     const {roomid} = router.query;
@@ -38,4 +38,4 @@ export default function roomPrivacyType () {
         <HalfFooter progress={30} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
-roomPrivacyType.layout = "halfType";
+RoomPrivacyType.layout = "halfType";

@@ -45,7 +45,7 @@ export default function RoomLocation () {
 		console.log(rst)
 		
 		if(rst.result) {
-			router.push('/become-a-host/'+roomid+'/location');
+			router.push('/become-a-host/'+roomid+'/floor-plan');
 		} else {
 			console.log('데이터가 정상적으로 등록되지 않았습니다');
 		}

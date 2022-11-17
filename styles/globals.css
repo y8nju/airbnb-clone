@@ -57,3 +57,11 @@ input[type="date"]:focus:-webkit-datetime-edit-year-field {
     background: black;
   }
 }
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

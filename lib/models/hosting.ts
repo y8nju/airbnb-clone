@@ -21,6 +21,12 @@ const hostingSchema = new mongoose.Schema<HostingType>({
       uri: String,
       placeId: String
     },
+    floorPlan: {
+        guests: Number,
+        beds: Number,
+        bedrooms: Number, 
+        bathrooms: Number,
+    }
 })
 
 export default mongoose.models.Hosting as mongoose.Model<HostingType> ||

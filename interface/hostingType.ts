@@ -11,6 +11,12 @@ export interface HostAddressType {
     lat?: number;
     lng?: number;
 }
+export interface FloorPlanType {
+    guests: number,
+    beds: number,
+    bedrooms?: number, 
+    bathrooms: number,
+}
 export interface HostingType {
     _id?: Types.ObjectId,
     hostname?: string,
@@ -18,5 +24,6 @@ export interface HostingType {
     group?: string, 
     property?: string, 
     privacy?: string,
-    location?: HostAddressType
+    location?: HostAddressType,
+    floorPlan?: FloorPlanType
 }

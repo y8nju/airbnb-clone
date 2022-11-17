@@ -38,6 +38,12 @@ export default function HalfTypeLayout (props: ChidrenProps) {
             case '/become-a-host/[roomid]/floor-plan':
                 setTitle('숙소에서 맞이할 최대 인원수를 알려주세요.');
                 break;
+            case '/become-a-host/[roomid]/amenities':
+                setTitle('숙소 편의시설 정보를 추가하세요');
+                break;
+            case '/become-a-host/[roomid]/photos':
+                setTitle('이제 숙소 사진을 올릴 차례입니다');
+                break;
         }
     }, [pathname])
     

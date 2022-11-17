@@ -8,34 +8,41 @@ import RightInner from "../../../component/layout/otherLayout/halfType/rightInne
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { createAndUpdateListing } from "../../../lib/api/propertyApi";
+import { FloorPlanType } from "../../../interface/hostingType";
 
 export default function RoomFloorPlan () {
-	const [group, setGroup] = useState<string>("");
 	const router = useRouter()
 	const {roomid} = router.query;
-	const [guests, setGuests] = useState<number>(0);
-	const [beds, setBeds] = useState<number>(0);
-	const [bedrooms, setBedrooms] = useState<number>(0);
-	const [bathrooms, setBathrooms] = useState<number>(0);
-	const [bathroomType, setBathroomType] = useState<string|nulll>(null);
+	const [guests, setGuests] = useState<number>(1);
+	const [beds, setBeds] = useState<number>(1);
+	const [bedrooms, setBedrooms] = useState<number>(1);
+	const [bathrooms, setBathrooms] = useState<number>(1);
+	const [bathroomType, setBathroomType] = useState<string|null>(null);
 
+	/* // 개인실의 경우 사용 👉 해당 부분 사용 시, 스키마 및 타입 수정
+	// 체크가 되어야 다음 버튼 disabled가 풀림
 	const bathroomTypeHandle = (event: ChangeEvent<HTMLInputElement>) => {
 		setBathroomType((event.target as HTMLInputElement).value);
-	};
+	}; */
 
 	const nextStepHandle = async () => {
 		console.log(router.query);
-		// const updateData = {
-		// 	_id: new Types.ObjectId(roomid as string),
-		// 	property: group
-		// }
-		// const rst = await createAndUpdateListing(updateData);
-		// console.log(rst)
-		// if(rst.result) {
-		// 	router.push('/become-a-host/'+roomid+'/location');
-		// } else {
-		// 	console.log('데이터가 정상적으로 등록되지 않았습니다');
-		// }
+		const updateData = {
+			_id: new Types.ObjectId(roomid as string),
+			floorPlan: {
+				guests: guests,
+				beds: beds,
+				bedrooms: bedrooms,
+				bathrooms: bathrooms
+			} as FloorPlanType
+		}
+		const rst = await createAndUpdateListing(updateData);
+		console.log(rst)
+		if(rst.result) {
+			router.push('/become-a-host/'+roomid+'/amenities');
+		} else {
+			console.log('데이터가 정상적으로 등록되지 않았습니다');
+		}
 	}
 	return ( <RightInner footerShow={true} headerShow={true} >
 		<><HalfHeader />
@@ -98,7 +105,7 @@ export default function RoomFloorPlan () {
 							<RemoveIcon fontSize="small" />
 						</IconButton>
 						<Typography variant="body1" minWidth={32}textAlign="center">
-							{bathrooms}
+							{bedrooms}
 						</Typography>
 						<IconButton
 							color="info"
@@ -129,6 +136,7 @@ export default function RoomFloorPlan () {
 						</IconButton>
 					</Grid>
 				</Grid>
+				{/* // 개인실의 경우 노출
 				<Grid container alignItems="center" flex={1} sx={{mt: 2}}>
 					<FormControl>
 						<FormLabel id="bathroomType">
@@ -155,10 +163,11 @@ export default function RoomFloorPlan () {
 								} />
 						</RadioGroup>
 					</FormControl>
-				</Grid>
+				</Grid> */}
 			</Grid>
 		</Grid>
 		<HalfFooter progress={50} nextStepHandle={nextStepHandle} /></>
+		
 	</RightInner> )
 }
 RoomFloorPlan.layout = "halfType";

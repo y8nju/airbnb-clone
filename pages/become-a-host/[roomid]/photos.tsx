@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import { createContext, useState } from "react";
+import { ChangeEventHandler, createContext, Dispatch, DragEventHandler, RefObject, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
@@ -12,12 +12,19 @@ type tPhotosCtx = {
     files: File[];
     addFiles: (frag: File[]) => void;
     removeFiles: (t: File) => void;
+    draged: boolean;
+    setDraged: Dispatch<SetStateAction<boolean>>;
+    ref: RefObject<HTMLInputElement>;
+    dropHandle: DragEventHandler<Element>;
+    fileSelectHandle: ChangeEventHandler<HTMLInputElement>;
 }
 
 export const PhotosContext = createContext<tPhotosCtx | null>(null);
 
 export default function RoomPhotos () {
     const [files, setFiles] = useState<File[]>([]);
+    const [draged, setDraged] = useState(false)
+    const ref = useRef<HTMLInputElement>(null);
     const router = useRouter();
 	const {roomid} = router.query;
     
@@ -28,6 +35,20 @@ export default function RoomPhotos () {
         setFiles((curr) => {
             return curr.filter((one) => one !== t);
         })
+    }
+    const dropHandle: React.DragEventHandler = (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+        console.log(evt.dataTransfer.files); 
+        const fileArray = Array.from(evt.dataTransfer.files); // File[]
+        addFiles(fileArray)
+    }
+    const fileSelectHandle:React.ChangeEventHandler<HTMLInputElement> = (evt) => {
+        console.log(evt.target.files);
+        if(evt.target.files) {
+            const fileArray = Array.from(evt.target.files!); // File[]
+            addFiles(fileArray);
+        }
     }
 
     const nextStepHandle = async () => {
@@ -49,7 +70,7 @@ export default function RoomPhotos () {
 		<Grid container direction="column" spacing={2} 
 			 alignItems="center"
 			 sx={{px: 6, width: 1, mt: 0, ml: 0}}>
-                <PhotosContext.Provider value={{files, addFiles,removeFiles}}>
+                <PhotosContext.Provider value={{files, addFiles, removeFiles, draged, setDraged, ref, dropHandle, fileSelectHandle }}>
                     {files.length == 0 && <EmptyPhotoWrap />}
                     {files.length !== 0 && <PreviewPhotoWrap />}
                 </PhotosContext.Provider>

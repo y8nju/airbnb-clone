@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Box } from "@mui/system"
 import { grey, red } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
-import InsertPhotoOutlinedIcon  from '@mui/icons-material/InsertPhotoOutlined';
-import { Typography } from "@mui/material";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { CircularProgress, Fab, Grid, IconButton, Typography } from "@mui/material";
 
 interface Props {
     target: File,
@@ -23,35 +23,63 @@ const PreviewPhoto = styled(Box) ({
     '& img': {
         width: '100%', 
         height: '100%', 
-        objectFit: 'contain'
+        objectFit: 'cover'
     },
-    '&:first-child': {
+    '&:first-of-type': {
         width: '100%',
         height: '400px',
-    },
-    '&:first-child img': {
-        objectFit: 'cover'
+    }
+})
+const IconBtn = styled(Fab) ({
+    '&': {
+        marginLeft: 'auto', 
+        backgroundColor: '#fff', 
+        width: 32, 
+        minHeight: 32, 
+        height: 32,
+        boxShadow: '0px 3px 5px -1px rgb(0 0 0 / 10%), 0px 6px 10px 0px rgb(0 0 0 / 6%), 0px 1px 18px 0px rgb(0 0 0 / 6%)',
+        position: 'relative',
+        zIndex: 1
     }
 })
 
 export default function PreviewPhotoItem (props: Props) {
     const {target, isCover} = props;
-    console.log(isCover)
     const [imageUri, setImageUri] = useState<string>('');
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     useEffect(()=> {
         const fileReader = new FileReader();
         fileReader.readAsDataURL(target);
+        fileReader.onprogress = (evt) => {
+            console.log(evt)
+            const percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+            // Increase the progress bar length.
+            if (percentLoaded < 100) {
+                setLoaded(true);
+                console.log('시작')
+            }else {
+                setLoaded(false);
+                console.log('끝')
+            }
+        };
         fileReader.onload = (rst) => {
         // file read 후 결과 출력
         console.log(rst.target!.result);
         setImageUri(rst.target!.result as string);
-    }
+        }
     }, []);
     return ( <PreviewPhoto>
-        {isCover && <Typography variant="body1" sx={{
-            position: 'absolute', left: 20, top: 16, backgroundColor: '#fff', py: 1, px: 1.4, borderRadius: 1, lineHeight: 1
-        }}>커버사진</Typography>}
+        <Grid container position="absolute" left={0} top={16} justifyContent="space-between" alignItems="center" sx={{px: 2}}>
+            {isCover && <Typography variant="body1" sx={{ py: 1, px: 1.4, borderRadius: 1, lineHeight: 1, backgroundColor: '#fff'
+            }}>커버사진</Typography>}
+            <IconBtn aria-label="delete">
+                <DeleteOutlineOutlinedIcon fontSize="small" />
+            </IconBtn>
+        </Grid>
         {imageUri && <img src={imageUri} />}
+        {loaded && <p>로딩 중</p>}
+        <CircularProgress color="info" size={30}
+        sx={{position: 'absolute', top: 10, left: 10, backgroundColor: '#bdbdbdaa', p: 0.5, borderRadius: 5}} />
     </PreviewPhoto> )
 }

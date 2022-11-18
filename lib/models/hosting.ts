@@ -27,7 +27,8 @@ const hostingSchema = new mongoose.Schema<HostingType>({
         beds: Number,
         bedrooms: Number, 
         bathrooms: Number,
-    }
+    },
+    photos: Array
 })
 
 export default mongoose.models.Hosting as mongoose.Model<HostingType> ||

@@ -34,3 +34,13 @@ export async function createAndUpdateListing(doc: HostingType) {
     const data = await response.json();
     return data;
 }
+
+export async function fileUpload(doc: FormData) {
+    let endPoint = serverURI + '/api/property/uploadPhotos'
+    const response = await fetch(endPoint, {
+        method: 'POST',
+        body: doc
+    });
+    const data = await response.json();
+    return data;
+}

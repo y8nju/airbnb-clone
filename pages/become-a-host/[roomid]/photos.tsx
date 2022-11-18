@@ -6,6 +6,8 @@ import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
 import EmptyPhotoWrap from "../../../component/room/photos/emptyPhotoWrap";
 import PreviewPhotoWrap from "../../../component/room/photos/PreviewPhotoWrap";
+import { createAndUpdateListing, fileUpload } from "../../../lib/api/propertyApi";
+import { Types } from "mongoose";
 
 type tPhotosCtx = {
     files: File[];
@@ -25,7 +27,6 @@ export default function RoomPhotos () {
     const [draged, setDraged] = useState(false)
     const ref = useRef<HTMLInputElement>(null);
     const router = useRouter();
-	const {roomid} = router.query;
     
     const addFiles = (frag: File[]) => {
         setFiles((curr) => [...curr, ...frag]);
@@ -52,18 +53,25 @@ export default function RoomPhotos () {
     }
 
     const nextStepHandle = async () => {
-        // console.log(router.query);
-        // const updateData = {
-        // 	_id: new Types.ObjectId(roomid as string),
-        // 	floorPlan: {			}
-        // }
-        // const rst = await createAndUpdateListing(updateData);
-        // console.log(rst)
-        // if(rst.result) {
-        // 	router.push('/become-a-host/'+roomid+'/amenities');
-        // } else {
-        // 	console.log('데이터가 정상적으로 등록되지 않았습니다');
-        // }
+        const {roomid} = router.query;
+        const formData = new FormData()
+        formData.append('roomid', roomid as string);
+        files.forEach((file) => {
+            formData.append('photos', file);
+        })
+        const response = await fileUpload(formData);
+        console.log('response', response);
+        const updateData = {
+        	_id: new Types.ObjectId(roomid as string),
+        	photos: response.data
+        }
+        const rst = await createAndUpdateListing(updateData);
+        console.log(rst)
+        if(rst.result) {
+        	router.push('/become-a-host/'+roomid+'/amenities');
+        } else {
+        	console.log('데이터가 정상적으로 등록되지 않았습니다');
+        }
     }
     return ( <RightInner footerShow={true} headerShow={true} >
 		<><HalfHeader />

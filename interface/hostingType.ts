@@ -25,5 +25,6 @@ export interface HostingType {
     property?: string, 
     privacy?: string,
     location?: HostAddressType,
+    amenities?: string[],
     floorPlan?: FloorPlanType
 }

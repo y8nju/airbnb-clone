@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
-import PhotoLibraryOutlinedIcon from '@mui/icons-material/PhotoLibraryOutlined';
 import EmptyPhotoWrap from "../../../component/room/photos/emptyPhotoWrap";
 import PreviewPhotoWrap from "../../../component/room/photos/PreviewPhotoWrap";
 
@@ -31,11 +30,11 @@ export default function RoomPhotos () {
     const addFiles = (frag: File[]) => {
         setFiles((curr) => [...curr, ...frag]);
     }
-    const removeFiles =(t: File) => {
-        setFiles((curr) => {
-            return curr.filter((one) => one !== t);
-        })
-    }
+    const removeFiles = (t: File) => {
+        setFiles((current) => {
+        return current.filter((one) => one !== t);
+        });
+    };
     const dropHandle: React.DragEventHandler = (evt) => {
         evt.preventDefault();
         evt.stopPropagation();
@@ -44,6 +43,7 @@ export default function RoomPhotos () {
         addFiles(fileArray)
     }
     const fileSelectHandle:React.ChangeEventHandler<HTMLInputElement> = (evt) => {
+        console.log('aaaaa')
         console.log(evt.target.files);
         if(evt.target.files) {
             const fileArray = Array.from(evt.target.files!); // File[]

@@ -21,6 +21,7 @@ const hostingSchema = new mongoose.Schema<HostingType>({
       uri: String,
       placeId: String
     },
+    amenities: Array,
     floorPlan: {
         guests: Number,
         beds: Number,

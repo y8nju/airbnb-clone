@@ -12,7 +12,6 @@ export default function RightInner (props: Props) {
     const router = useRouter();
     const pathname = router.pathname;
     const location = '/become-a-host/[roomid]/location';
-
     const {children, footerShow, headerShow} = props;
     return ( <Grid container sx={[
         (!headerShow || pathname == location) && {height: 'calc( 100vh - 80px)', mb: '80px', overflowY: 'scroll'} ||

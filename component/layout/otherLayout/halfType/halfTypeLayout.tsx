@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, createContext, Dispatch, SetStateAction} from 'react'
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Grid from "@mui/material/Grid";
@@ -7,11 +7,17 @@ import Left from "./left";
 import Right from "./right";
 import { useCtx } from '../../../../context/context';
 
+interface HalfCtx {
+    nextBtnDisabled: boolean,
+    setNextBtnDisabled: Dispatch<SetStateAction<boolean>>
+}
 
+export const HalfLayoutContext = createContext<HalfCtx|null>(null)
 
 export default function HalfTypeLayout (props: ChidrenProps) {
     const [title, setTitle] = useState<string>('')
     const {data: session} = useSession();
+    const [nextBtnDisabled, setNextBtnDisabled] = useState<boolean>(false);
     const router = useRouter();
     // console.log(router);
     const pathname = router.pathname;
@@ -56,9 +62,11 @@ export default function HalfTypeLayout (props: ChidrenProps) {
 
     return ( <Grid container sx={{height: '100vh', overflow: 'hidden'}}>
         <Left title={title} setTitle={setTitle} />
-        <Right>
-            {props.children}
-        </Right>
+        <HalfLayoutContext.Provider value={{nextBtnDisabled, setNextBtnDisabled}}>
+            <Right>
+                {props.children}
+            </Right>
+        </HalfLayoutContext.Provider>
     </Grid> )
 }
 

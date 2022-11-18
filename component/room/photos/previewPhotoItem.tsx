@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Box } from "@mui/system"
 import { grey, red } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { CircularProgress, Fab, Grid, IconButton, Typography } from "@mui/material";
+import { PhotosContext } from "../../../pages/become-a-host/[roomid]/photos";
 
 interface Props {
     target: File,
@@ -47,6 +48,9 @@ export default function PreviewPhotoItem (props: Props) {
     const {target, isCover} = props;
     const [imageUri, setImageUri] = useState<string>('');
     const [loaded, setLoaded] = useState<boolean>(false);
+    const fileCtx = useContext(PhotosContext);
+    const {removeFiles} = fileCtx!;
+    const ref = useRef<HTMLDivElement>();
 
     useEffect(()=> {
         const fileReader = new FileReader();
@@ -69,17 +73,24 @@ export default function PreviewPhotoItem (props: Props) {
         setImageUri(rst.target!.result as string);
         }
     }, []);
-    return ( <PreviewPhoto>
+    
+    const removeHandle = () => {
+        //console.log(ref.current?.style.);
+        ref.current?.style.setProperty("animation", "fadeout 1.5s");
+        setTimeout(() => {
+        removeFiles(props.target);
+        }, 1000);
+    };
+    return ( <PreviewPhoto ref={ref}>
         <Grid container position="absolute" left={0} top={16} justifyContent="space-between" alignItems="center" sx={{px: 2}}>
             {isCover && <Typography variant="body1" sx={{ py: 1, px: 1.4, borderRadius: 1, lineHeight: 1, backgroundColor: '#fff'
             }}>커버사진</Typography>}
-            <IconBtn aria-label="delete">
+            <IconBtn aria-label="delete" onClick={removeHandle}>
                 <DeleteOutlineOutlinedIcon fontSize="small" />
             </IconBtn>
         </Grid>
         {imageUri && <img src={imageUri} />}
-        {loaded && <p>로딩 중</p>}
-        <CircularProgress color="info" size={30}
-        sx={{position: 'absolute', top: 10, left: 10, backgroundColor: '#bdbdbdaa', p: 0.5, borderRadius: 5}} />
+        {loaded && <CircularProgress color="info" size={30}
+        sx={{position: 'absolute', top: 10, left: 10, backgroundColor: '#bdbdbdaa', p: 0.5, borderRadius: 5}} />}
     </PreviewPhoto> )
 }

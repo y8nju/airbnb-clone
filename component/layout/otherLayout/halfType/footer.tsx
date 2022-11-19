@@ -1,6 +1,7 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useRef, useState } from 'react';
 import {Box, Button, Grid, LinearProgress } from "@mui/material/";
 import { useRouter } from 'next/router';
+import { HalfLayoutContext } from './halfTypeLayout';
 interface Props {
     progress: number
     nextStepHandle?: () => void;
@@ -13,6 +14,13 @@ export default function HalfFooter (props: Props) {
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
     const location = '/become-a-host/[roomid]/location';
+    const layoutCtx = useContext(HalfLayoutContext);
+    const {nextBtnDisabled, setNextBtnDisabled} = layoutCtx!;
+
+    const backHandle = () =>{
+        setNextBtnDisabled(false);
+        router.back();
+    }
 
     return ( <Grid container direction="column" sx={[{height: '80px'}, pathname == location && {backgroundColor: '#fff'}]} 
         position="absolute" bottom={0} zIndex={2000}>
@@ -28,10 +36,13 @@ export default function HalfFooter (props: Props) {
             onClick={()=> router.push("/become-a-host/property-type-group")}>시작하기</Button>
         </Grid> : <>
         <Grid item sx={{mr: 2}}>
-            <Button color="inherit" sx={{backgroundColor: "#fff", fontSize: '1rem'}} onClick={() => router.back()}>뒤로</Button>
+            <Button color="inherit" sx={{backgroundColor: "#fff", fontSize: '1rem', textDecoration: 'underline'}} onClick={backHandle}>뒤로</Button>
         </Grid>
         <Grid item>
-            <Button variant="contained" color="info" sx={{fontSize: '1rem', boxShadow: 'none'}} onClick={nextStepHandle}>다음</Button>
+            <Button variant="contained" color="info" 
+                disabled={nextBtnDisabled}
+                sx={{fontSize: '1rem', boxShadow: 'none'}} 
+                onClick={nextStepHandle}>다음</Button>
         </Grid></>}
     </Grid>
 </Grid> )

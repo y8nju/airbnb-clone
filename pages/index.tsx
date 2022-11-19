@@ -1,16 +1,14 @@
-import {useEffect, useState} from 'react'
-import { Typography } from '@mui/material'
+
 import { useSession } from 'next-auth/react';
 import Head from 'next/head'
-import Image from 'next/image'
-import { useCtx } from '../context/context';
 import styles from '../styles/Home.module.css'
-import { findEmail } from '../lib/api/accountApi';
 
 export default function Home() {
 	const {data: session, status} = useSession();
-  const ctx = useCtx();
-  return (
+  return (<>
+    <Head>
+      <title>여행은 살아보는 거야 - 에어비앤비</title>
+    </Head>
     <div className={styles.container}>
       <main className={styles.main}>
         <h1 className={styles.title}>
@@ -19,8 +17,7 @@ export default function Home() {
         <p>
         {status} - {JSON.stringify(session)}</p>
       </main>
-
     </div>
-  )
+  </>)
 }
 Home.layout = "default";

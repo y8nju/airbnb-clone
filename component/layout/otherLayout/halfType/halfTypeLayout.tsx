@@ -17,7 +17,7 @@ export const HalfLayoutContext = createContext<HalfCtx|null>(null)
 export default function HalfTypeLayout (props: ChidrenProps) {
     const [title, setTitle] = useState<string>('')
     const {data: session} = useSession();
-    const [nextBtnDisabled, setNextBtnDisabled] = useState<boolean>(false);
+    const [nextBtnDisabled, setNextBtnDisabled] = useState<boolean>(true);
     const router = useRouter();
     // console.log(router);
     const pathname = router.pathname;
@@ -49,6 +49,18 @@ export default function HalfTypeLayout (props: ChidrenProps) {
                 break;
             case '/become-a-host/[roomid]/photos':
                 setTitle('이제 숙소 사진을 올릴 차례입니다');
+                break;
+            case '/become-a-host/[roomid]/title':
+                setTitle('숙소 이름을 지어주세요');
+                break;
+            case '/become-a-host/[roomid]/description':
+                setTitle('숙소 설명을 작성해주세요');
+                break;
+            case '/become-a-host/[roomid]/price':
+                setTitle('이제 요금을 설정하실 차례입니다');
+                break;
+            case '/become-a-host/[roomid]/receipt':
+                setTitle('등록하실 숙소 정보를 검토하세요');
                 break;
         }
     }, [pathname])

@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { createAndUpdateListing } from "../../../lib/api/propertyApi";
 import { FloorPlanType } from "../../../interface/hostingType";
+import Head from "next/head";
 
 export default function RoomFloorPlan () {
 	const router = useRouter()
@@ -48,7 +49,10 @@ export default function RoomFloorPlan () {
 		<><HalfHeader />
 		<Grid container direction="column" spacing={2} 
 			 alignItems="center" justifyContent="center"
-			 sx={{px: 6, width: 1, mt: 0, ml: 0}}>
+			 sx={{px: 6, width: 1, mt: 0, ml: 0, animation: 'fadein 1s'}}>
+			<Head>
+				<title>수용 가능 인원 선택 - 에어비앤비</title>
+			</Head>
 			<Grid container direction="column" alignItems="center" justifyContent="center" 
 				width="95%"
 				sx={{gap: 3, animation: "fadein 1.5s"}}>

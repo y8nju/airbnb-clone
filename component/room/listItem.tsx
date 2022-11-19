@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import { Grid, ToggleButton, Typography } from "@mui/material";
 import { Types } from "mongoose";
 import Image from "next/image";
@@ -12,14 +13,24 @@ interface Props {
     image?: string,
     id?: string,
 }
-const buttonHover = {"&:hover": {
-    border: '2px solid #333'
-  }}
+const ItemBtn = styled(ToggleButton) ({
+    '&': {
+        minHeight: "5.5rem", 
+        paddingRight: '16px', 
+        paddingLeft:'24px', 
+        borderRadius: '12px', 
+        marginBottom: '16px'
+    }, 
+    '&.Mui-selected, &:hover': {
+        borderColor: 'transparent !important',
+        backgroundColor: '#66666608 !important',
+        boxShadow: '0 0 0 2px #333'
+    }
+})
 export default function ListItem(props: Props) {
     const {type, title, subTitle, group, setGroup, id, image} = props;
-    console.log(group, title)
-    return(<ToggleButton fullWidth
-        sx={[{minHeight: "5.5rem", pr: 2, pl:3, borderRadius: 3, mb: 2 }, group === title && {border: '2px solid #333'}, buttonHover]}
+    return(<ItemBtn fullWidth
+        sx={[type == 'roomGroup' && {height: '5.5rem'}]}
         value={id ? id : title}
         color={"info"}
         onClick={() => setGroup(title)}
@@ -44,5 +55,5 @@ export default function ListItem(props: Props) {
             <Typography variant="h6" align="left" color="text.primary">{title}</Typography>
             {subTitle && <Typography variant="body2" align="left" color="text.secondary">{subTitle}</Typography> }
         </Grid>}
-      </ToggleButton>)
+      </ItemBtn>)
 }

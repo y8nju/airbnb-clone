@@ -1,7 +1,7 @@
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { Box } from "@mui/material";
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
-import { useCtx } from "../../context/context";
+import { useCtx } from "../../../context/context";
 
 interface MapProps extends google.maps.MapOptions {
 	// onClick?: (e: google.maps.MapMouseEvent) => void;

@@ -31,7 +31,7 @@ const PreviewPhoto = styled(Box) ({
 export default function NotPhotoItem (props: Props) {
     const ref = useRef<HTMLInputElement>(null);
     const fileCtx = useContext(PhotosContext);
-    const {addFiles, dropHandle, setDraged, fileSelectHandle} = fileCtx!;
+    const {fileSelectHandle} = fileCtx!;
     
     return ( <PreviewPhoto onClick={() => {
         ref.current?.click();

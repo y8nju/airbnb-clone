@@ -14,8 +14,8 @@ export default function PhotosInner (props: ChidrenProps) {
         setDraged(false);
     }, [files])
 
-    return ( <Grid container width="90%" minHeight='70%' position="relative"
-        sx={{my: 'auto'}}>
+    return ( <Grid container width="90%" minHeight='95%' position="relative"
+        sx={{mb: 'auto'}}>
         <Grid position="absolute" width="100%" height="100%"
             onDragOver={(evt)=> {
                 evt.preventDefault();
@@ -32,7 +32,7 @@ export default function PhotosInner (props: ChidrenProps) {
                 console.log('leave')
             })}
             onDrop={dropHandle}
-            sx={draged && {zIndex: 4000}}></Grid>
+            sx={[draged && {zIndex: 4000}]}></Grid>
         {props.children}
         <input type="file" 
             accept="image/*" multiple ref={ref} style={{display: 'none'}}

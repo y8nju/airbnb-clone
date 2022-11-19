@@ -19,6 +19,9 @@ export default function PreviewPhotoWrap () {
             console.log('a')
             setNotFiles(Array.from(Array(4 - files.length), (x, index) => <NotPhotoItem key={index} />))
         }
+        if(files.length > 4) {
+            setNotFiles(null)
+        }
     }, [files])
     useEffect(() => {
         console.log(notFiles)
@@ -29,7 +32,7 @@ export default function PreviewPhotoWrap () {
         <Grid container flexWrap="wrap" alignItems="center"
             sx={{gap: '10px', mb: 2}}>
             { files.map((file, index) => {
-                return <PreviewPhotoItem target={file} key={file.lastModified} isCover={index == 0} />
+                return <PreviewPhotoItem target={file} key={file.lastModifiedDate} isCover={index == 0} />
             }) }
             {notFiles !== null && notFiles}
             <NotPhotoItem isLast={true}/>

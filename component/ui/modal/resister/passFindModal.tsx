@@ -9,7 +9,7 @@ interface OnClose {
 }
 
 export default function PassFind(props: OnClose) {
-    const [email, setEmail] = useState<string | undefined>(undefined);
+    const [email, setEmail] = useState<string | null>(null);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [emailType, setEmailType] = useState<boolean>(false);
 	const {onClose} = props;
@@ -41,7 +41,7 @@ export default function PassFind(props: OnClose) {
 		</Typography>
         <TextField fullWidth label="이메일" id="email" sx={{mt: 2}} color="info" 
             error={emailType}
-            value={email}
+            value={email || ''}
             helperText={errorMsg}
             onChange={(e) => setEmail(e.target.value)} />
         <Button variant="contained" disableElevation

@@ -1,4 +1,5 @@
 import { Button, Grid } from "@mui/material"
+import Head from "next/head";
 import Link from "next/link"
 import { useRouter } from "next/router";
 import HalfHeader from "../../component/layout/otherLayout/halfType/header";
@@ -8,7 +9,10 @@ export default function BecomeAHost () {
     return ( <RightInner footerShow={false} headerShow={true} >
         <>
         <HalfHeader />
-        <Grid>
+        <Grid sx={{animation: 'fadein 1s'}}>
+            <Head>
+                <title>호스팅 시작하기 - 에어비앤비</title>
+            </Head>
         <Link href="/become-a-host/intro">
             <Button>새로운 숙소 등록하기</Button>
         </Link>

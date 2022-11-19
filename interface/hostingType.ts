@@ -17,6 +17,11 @@ export interface FloorPlanType {
     bedrooms?: number, 
     bathrooms: number,
 }
+
+export interface DescriptionType {
+    description: string,
+    descGroup?: string[] | null
+}
 export interface HostingType {
     _id?: Types.ObjectId,
     hostname?: string,
@@ -27,5 +32,8 @@ export interface HostingType {
     location?: HostAddressType,
     amenities?: string[],
     floorPlan?: FloorPlanType,
-    photos?: string[]
+    photos?: string[],
+    title?: string,
+    description?: DescriptionType,
+    price?: number
 }

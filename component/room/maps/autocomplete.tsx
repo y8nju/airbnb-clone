@@ -11,8 +11,8 @@ import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { grey } from '@mui/material/colors';
-import { useCtx } from '../../context/context';
-import { createStaticMapUri, nowLocationAddress } from '../../lib/api/mapsApi';
+import { useCtx } from '../../../context/context';
+import { createStaticMapUri, nowLocationAddress } from '../../../lib/api/mapsApi';
 
 interface Props {
 	setShowMap: Dispatch<SetStateAction<boolean>>;
@@ -24,7 +24,7 @@ const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
 
 export default function PlacesAutocomplete(props: Props) {
 	const {setShowMap, setOpen, disabled} = props;
-	const [searchTxt, setSearchTxt] = useState<string | undefined>(undefined);
+	const [searchTxt, setSearchTxt] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [nowLocationShow, setNowlocationShow] = useState<boolean>(false);
     const ctx = useCtx();
@@ -154,7 +154,7 @@ export default function PlacesAutocomplete(props: Props) {
 			<TextField
 				fullWidth
 				variant="outlined"
-				value={searchTxt}
+				value={searchTxt || ''}
 				onChange={handleInput}
 				disabled={disabled}
 				color="info"

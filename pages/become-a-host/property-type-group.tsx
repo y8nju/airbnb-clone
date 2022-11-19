@@ -1,9 +1,11 @@
 import { Grid } from "@mui/material";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HalfFooter from "../../component/layout/otherLayout/halfType/footer";
+import { HalfLayoutContext } from "../../component/layout/otherLayout/halfType/halfTypeLayout";
 import HalfHeader from "../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../component/layout/otherLayout/halfType/rightInner";
 import ListItem from "../../component/room/listItem";
@@ -13,10 +15,20 @@ import PropertyType from "../../interface/propertyType";
 import { createAndUpdateListing, getPropertyGroupList } from "../../lib/api/propertyApi";
 
 export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPropsType<typeof getStaticProps>) {
-    const [group, setGroup] = useState<string>("");
+    const [group, setGroup] = useState<string>('');
     const router = useRouter();
     const {data: session} = useSession();
+    const layoutCtx = useContext(HalfLayoutContext);
+    const {setNextBtnDisabled} = layoutCtx!;
+
+    useEffect(()=> {
+        if(group !== '') {
+            setNextBtnDisabled(false)
+        }
+    }, [group])
+
     const nextStepHandle = async () => {
+        setNextBtnDisabled(true)
         const newListingData = {
             hostname: session?.user?.email as string,
             group: group 
@@ -32,11 +44,14 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPr
         } else {
             console.log('데이터가 정상적으로 등록되지 않았습니다')
         }
-      };
+    };
 
     return ( <RightInner footerShow={true} headerShow={true} >
         <><HalfHeader />
-        <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 0, ml: 0}}>
+        <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 1, ml: 0, animation: 'fadein 1s'}}>
+            <Head>
+                <title>건물 종류 선택 - 에어비앤비</title>
+            </Head>
             {propertyGroup && propertyGroup?.map((item) => {
                 return <ListItem title={item.group} type="roomGroup" group={group} setGroup={setGroup}
                 image={item.image} id={String(item._id)}/>

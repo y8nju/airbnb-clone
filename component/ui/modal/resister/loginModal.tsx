@@ -78,7 +78,7 @@ export default function Login() {
 			<TextField fullWidth label="이메일" id="email" sx={{mt: 2}} color="info" 
 				error={emailType}
 				helperText={errorMsg}
-				value={userEmail}
+				value={userEmail || ''}
 				onChange={(e)=>emailChange(e.target.value)} />
 			<LoadingButton variant="contained" disableElevation
 				loading={loading}

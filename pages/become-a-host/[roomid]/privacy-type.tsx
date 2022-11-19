@@ -1,8 +1,10 @@
 import { Button, Grid } from "@mui/material";
 import { Types } from "mongoose";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
+import { HalfLayoutContext } from "../../../component/layout/otherLayout/halfType/halfTypeLayout";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
 import ListItem from "../../../component/room/listItem";
@@ -13,8 +15,17 @@ export default function RoomPrivacyType () {
     const [group, setGroup] = useState<string>("");
     const router = useRouter()
     const {roomid} = router.query;
+    const layoutCtx = useContext(HalfLayoutContext);
+    const {setNextBtnDisabled} = layoutCtx!;
+
+    useEffect(()=> {
+        if(group !== '') {
+            setNextBtnDisabled(false)
+        }
+    }, [group])
 
 	const nextStepHandle = async () => {
+        setNextBtnDisabled(true)
 		console.log(router.query);
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
@@ -30,7 +41,10 @@ export default function RoomPrivacyType () {
 	}
 	return ( <RightInner footerShow={true} headerShow={true} >
 		<><HalfHeader />
-        <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 0, ml: 0}}>
+        <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 1, ml: 0, animation: 'fadein 1s'}}>
+			<Head>
+				<title>숙소 유형 선택 - 에어비앤비</title>
+			</Head>
 			{PrivacyType && PrivacyType.map((item: string) => {
 				return <ListItem title={item} type="roomType" group={group} setGroup={setGroup} />
 			})}

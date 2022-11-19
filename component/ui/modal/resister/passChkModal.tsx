@@ -15,7 +15,7 @@ interface OnClose {
 }
 export default function PassChk(props: OnClose) {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
-	const [password, setPassword] = useState<string | undefined>(undefined);
+	const [password, setPassword] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [inpError, setInpError] = useState<boolean>(false);
 	const [diffrent, setDiffrent] = useState<boolean>(false);
@@ -88,7 +88,7 @@ export default function PassChk(props: OnClose) {
 				<OutlinedInput
 					id="password"
 					type={showPassword ? 'text' : 'password'}
-					value={password}
+					value={password || ''}
 					error={inpError}
 					onChange={(e)=>setPassword(e.target.value)}
 					label="비밀번호"

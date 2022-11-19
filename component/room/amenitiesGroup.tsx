@@ -8,6 +8,7 @@ import { TbBeach } from "react-icons/tb";
 import { FaShower } from "react-icons/fa";
 import { WiFire } from "react-icons/wi";
 import styled from "@emotion/styled";
+import { grey } from "@mui/material/colors";
 
 const group1 = [
     {title:'무선 인터넷', icon: <WifiRounded /> },
@@ -49,7 +50,8 @@ const SelectButton = styled(ToggleButton) ({
         justifyContent: 'center',
         alignItems: 'center',
         width: 'calc((100% - (16px*2))/3)',
-        height: '80px'
+        height: '80px', 
+        color: grey[800]
     },
     '&.MuiToggleButtonGroup-grouped:not(:first-of-type)': {
         border: '1px solid #0000001f',  
@@ -58,8 +60,10 @@ const SelectButton = styled(ToggleButton) ({
     '&.MuiToggleButtonGroup-grouped:not(:last-of-type)': {
         borderRadius: '4px'
     },
-    '&.Mui-selected': {
-        border: '2px solid #000000de !important'
+    '&.Mui-selected, &:hover': {
+        borderColor: 'transparent !important',
+        backgroundColor: '#66666608 !important',
+        boxShadow: '0 0 0 2px #333'
     }
 })
 interface Props {

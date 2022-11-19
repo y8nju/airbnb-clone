@@ -1,9 +1,9 @@
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { Box } from "@mui/material";
 import { Children, cloneElement, FC, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
-import { useCtx } from "../../context/context";
+import { useCtx } from "../../../context/context";
 import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
-import { createStaticMapUri } from "../../lib/api/mapsApi";
+import { createStaticMapUri } from "../../../lib/api/mapsApi";
 
 function MapComponent() {
     const ctx = useCtx();
@@ -30,7 +30,7 @@ function MapComponent() {
         streetViewControl: false,
       });
       const image = {
-        url: "/images/icons/marker.png",
+        url: "/images/icons/marker.svg",
         scaledSize: new google.maps.Size(60, 60), // scaled size
     };
       const marker = new google.maps.Marker({

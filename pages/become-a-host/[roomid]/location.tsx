@@ -1,31 +1,39 @@
-import {useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Box, Button, Grid } from "@mui/material";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
-import PlacesAutocomplete from "../../../component/maps/autocomplete"
+import PlacesAutocomplete from "../../../component/room/maps/autocomplete"
 import { useCtx } from '../../../context/context';
-import GoogleMaps from '../../../component/maps/googleMaps';
-import AddressDialog from '../../../component/ui/dialog/addressDialog';
+import GoogleMaps from '../../../component/room/maps/googleMaps';
+import AddressDialog from '../../../component/room/maps/addressDialog';
 import { Types } from 'mongoose';
 import { createAndUpdateListing } from '../../../lib/api/propertyApi';
+import { HalfLayoutContext } from '../../../component/layout/otherLayout/halfType/halfTypeLayout';
+import Head from 'next/head';
 declare global {
     interface Window {
         initMap: () => void;
     }
 }
 export default function RoomLocation () {
+	const [showMap, setShowMap] = useState<boolean>(false);
+	const [open, setOpen] = useState<boolean>(false);
+	const [disabled, setDisabled] = useState<boolean>(false);
     const router = useRouter()
     const {roomid} = router.query;
 	const ctx = useCtx();
 	const {coordinate, setHostLocation, hostLocation} = ctx!
-	const [showMap, setShowMap] = useState<boolean>(false);
-	const [open, setOpen] = useState<boolean>(false);
-	const [disabled, setDisabled] = useState<boolean>(false);
+    const layoutCtx = useContext(HalfLayoutContext);
+    const {setNextBtnDisabled} = layoutCtx!;
+
 	useEffect(()=> {
 		console.log('hostLocation', hostLocation);
+		if(hostLocation) {
+			setNextBtnDisabled(false);
+		}
 	}, [hostLocation])
 
 	const nextStepHandle = async () => {
@@ -54,7 +62,10 @@ export default function RoomLocation () {
 	// const staticUri = createStaticMapUri()
 	return ( <RightInner footerShow={true} headerShow={true} >
 		<><HalfHeader />
-		<Grid container direction="column" position="relative" sx={{width: 1, mt: 0, ml: 0}}>
+		<Grid container direction="column" position="relative" sx={{width: 1, mt: 0, ml: 0, animation: 'fadein 1s's}}>
+			<Head>
+				<title>숙소 위치 입력 - 에어비앤비</title>
+			</Head>
 			<Box sx={{width: 1, height: '100%'}} position="absolute">
 				{/* <Image src={coordinate.imgUrl} fill alt="Maps" style={{objectFit: 'cover'}} /> */}
 				{showMap ? <GoogleMaps /> :

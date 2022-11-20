@@ -33,7 +33,7 @@ export default function RoomPhotos () {
     const ref = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
     
     useEffect(() => {
         if(files.length >= 5) {
@@ -80,7 +80,8 @@ export default function RoomPhotos () {
         console.log('response', response);
         const updateData = {
         	_id: new Types.ObjectId(roomid as string),
-        	photos: response.data
+        	photos: response.data,
+            step: roomStep
         }
         const rst = await createAndUpdateListing(updateData);
         console.log(rst)
@@ -103,7 +104,7 @@ export default function RoomPhotos () {
                     {files.length !== 0 && <PreviewPhotoWrap />}
                 </PhotosContext.Provider>
 		</Grid>
-		<HalfFooter progress={70} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomPhotos.layout = 'halfType'

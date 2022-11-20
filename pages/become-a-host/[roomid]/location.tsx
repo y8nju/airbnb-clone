@@ -22,12 +22,12 @@ export default function RoomLocation () {
 	const [showMap, setShowMap] = useState<boolean>(false);
 	const [open, setOpen] = useState<boolean>(false);
 	const [disabled, setDisabled] = useState<boolean>(false);
-    const router = useRouter()
+    const router = useRouter();
     const {roomid} = router.query;
 	const ctx = useCtx();
-	const {coordinate, setHostLocation, hostLocation} = ctx!
+	const {coordinate, setHostLocation, hostLocation} = ctx!;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 
 	useEffect(()=> {
 		console.log('hostLocation', hostLocation);
@@ -46,7 +46,8 @@ export default function RoomLocation () {
 		setHostLocation(newLocation);
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			location: newLocation
+			location: newLocation,
+            step: roomStep
 		}
 
         const rst = await createAndUpdateListing(updateData);
@@ -76,7 +77,7 @@ export default function RoomLocation () {
 			</Grid>
 			<AddressDialog open={open} onClose={setOpen} setShowMap={setShowMap} setDisabled={setDisabled} />
 		</Grid>
-		<HalfFooter progress={40} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomLocation.layout = "halfType";

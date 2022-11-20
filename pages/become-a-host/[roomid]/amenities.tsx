@@ -15,14 +15,15 @@ export default function roomAmenities () {
 	const router = useRouter()
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 
     const nextStepHandle = async () => {
         setNextBtnDisabled(true)
 		console.log(router.query);
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			amenities: amenities
+			amenities: amenities,
+            step: roomStep
 		}
 		const rst = await createAndUpdateListing(updateData);
 		console.log(rst)
@@ -41,7 +42,7 @@ export default function roomAmenities () {
 			</Head>
 			<AmenitiesGroup amenities={amenities} setAmenities={setAmenities} />
 		</Grid>
-		<HalfFooter progress={60} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 roomAmenities.layout = "halfType"

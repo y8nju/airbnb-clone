@@ -1,30 +1,38 @@
 import { Grid } from "@mui/material";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetStaticPaths, GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import HalfFooter from "../../component/layout/otherLayout/halfType/footer";
-import { HalfLayoutContext } from "../../component/layout/otherLayout/halfType/halfTypeLayout";
-import HalfHeader from "../../component/layout/otherLayout/halfType/header";
-import RightInner from "../../component/layout/otherLayout/halfType/rightInner";
-import ListItem from "../../component/room/listItem";
-import { useCtx } from "../../context/context";
-import { HostingType } from "../../interface/hostingType";
-import PropertyType from "../../interface/propertyType";
-import { createAndUpdateListing, getPropertyGroupList } from "../../lib/api/propertyApi";
+import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
+import { HalfLayoutContext } from "../../../component/layout/otherLayout/halfType/halfTypeLayout";
+import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
+import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
+import ListItem from "../../../component/room/listItem";
+import { useCtx } from "../../../context/context";
+import { HostingType } from "../../../interface/hostingType";
+import PropertyType from "../../../interface/propertyType";
+import { createAndUpdateListing, getHostingList, getPropertyGroupList } from "../../../lib/api/propertyApi";
 
 export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPropsType<typeof getStaticProps>) {
     const [group, setGroup] = useState<string>('');
     const router = useRouter();
+    const { roomid } = router.query;
     const {data: session} = useSession();
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 
+    useEffect(() => {
+        if(savedData) {
+            console.log('savedData.group', savedData.group)
+            setGroup(savedData.group as string);
+        }
+    }, [savedData])
     useEffect(()=> {
         if(group !== '') {
             setNextBtnDisabled(false)
         }
+        console.log(group)
     }, [group])
 
     const nextStepHandle = async () => {
@@ -64,9 +72,23 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPr
 }
 roomPropertyTypeGroup.layout = "halfType";
 
+export const getStaticPaths: GetStaticPaths = async () => {
+    const res = await getHostingList();
+    const paths = res.datas.map((one) => {
+        return {
+            params: {
+                roomid: one._id
+            }
+        }
+    })
+    return {
+        paths: paths,
+        fallback: true
+    }
+}
+
 export const getStaticProps: GetStaticProps<{propertyGroup: PropertyType[]}> = async (context) => {
-    const response = await  getPropertyGroupList();
-    const propertyGroup = response;
+    const propertyGroup = await getPropertyGroupList();
     return {
         props: {
             propertyGroup

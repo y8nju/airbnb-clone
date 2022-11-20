@@ -35,7 +35,7 @@ export default function RoomTitle() {
 	const router = useRouter()
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
-	const {setNextBtnDisabled} = layoutCtx!;
+	const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 	const errType = price !== null && price < 13400 || price !== null && price > 13399127
 	useEffect(()=> {
 		if(errType) {
@@ -65,7 +65,8 @@ export default function RoomTitle() {
 		setNextBtnDisabled(true)
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			price: price
+			price: price,
+            step: roomStep
 		}
 		const rst = await createAndUpdateListing(updateData);
 		console.log(rst)
@@ -121,7 +122,7 @@ export default function RoomTitle() {
 				</Grid>
 			</Grid>
 		</Grid>
-		<HalfFooter progress={80} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomTitle.layout = 'halfType'

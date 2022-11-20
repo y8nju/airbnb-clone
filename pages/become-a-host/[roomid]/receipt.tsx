@@ -1,5 +1,6 @@
 import { Grid, TextField } from "@mui/material";
 import { Types } from "mongoose";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
@@ -12,13 +13,14 @@ export default function RoomReceipt() {
     const router = useRouter()
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
     
     const nextStepHandle = async () => {
         setNextBtnDisabled(true)
 		// const updateData = {
 		// 	_id: new Types.ObjectId(roomid as string),
-		// 	amenities: amenities
+		// 	amenities: amenities,
+            // step: roomStep
 		// }
 		// const rst = await createAndUpdateListing(updateData);
 		// console.log(rst)
@@ -38,7 +40,7 @@ export default function RoomReceipt() {
 			sx={{px: 6, width: 1, mt: 0, ml: 0, pb: 4, animation: 'fadein 1s'}} >
             <TextField />
 		</Grid>
-		<HalfFooter progress={80} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomReceipt.layout = 'halfType'

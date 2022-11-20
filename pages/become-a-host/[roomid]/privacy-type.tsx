@@ -16,7 +16,7 @@ export default function RoomPrivacyType () {
     const router = useRouter()
     const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 
     useEffect(()=> {
         if(group !== '') {
@@ -29,7 +29,8 @@ export default function RoomPrivacyType () {
 		console.log(router.query);
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			property: group
+			property: group,
+            step: roomStep
 		}
         const rst = await createAndUpdateListing(updateData);
 		console.log(rst)
@@ -49,7 +50,7 @@ export default function RoomPrivacyType () {
 				return <ListItem title={item} type="roomType" group={group} setGroup={setGroup} />
 			})}
         </Grid>
-        <HalfFooter progress={30} nextStepHandle={nextStepHandle} /></>
+        <HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomPrivacyType.layout = "halfType";

@@ -3,7 +3,9 @@ import { HostingType } from "../../interface/hostingType";
 
 const hostingSchema = new mongoose.Schema<HostingType>({
     hostname: String,
-    createdAt: {
+    createdAt: Date,
+    step: Number,
+    updatedAt: {
         type: Date,
         default: Date.now
     },

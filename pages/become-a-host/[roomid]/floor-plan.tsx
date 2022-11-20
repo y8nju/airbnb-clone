@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Typography } from "@mui/material";
 import { Types } from "mongoose";
 import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
@@ -10,6 +10,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { createAndUpdateListing } from "../../../lib/api/propertyApi";
 import { FloorPlanType } from "../../../interface/hostingType";
 import Head from "next/head";
+import { HalfLayoutContext } from "../../../component/layout/otherLayout/halfType/halfTypeLayout";
 
 export default function RoomFloorPlan () {
 	const router = useRouter()
@@ -19,6 +20,8 @@ export default function RoomFloorPlan () {
 	const [bedrooms, setBedrooms] = useState<number>(1);
 	const [bathrooms, setBathrooms] = useState<number>(1);
 	const [bathroomType, setBathroomType] = useState<string|null>(null);
+    const layoutCtx = useContext(HalfLayoutContext);
+	const {roomStep ,progressPer} = layoutCtx!;
 
 	/* // 개인실의 경우 사용 👉 해당 부분 사용 시, 스키마 및 타입 수정
 	// 체크가 되어야 다음 버튼 disabled가 풀림
@@ -35,7 +38,8 @@ export default function RoomFloorPlan () {
 				beds: beds,
 				bedrooms: bedrooms,
 				bathrooms: bathrooms
-			} as FloorPlanType
+			} as FloorPlanType,
+            step: roomStep
 		}
 		const rst = await createAndUpdateListing(updateData);
 		console.log(rst)
@@ -170,7 +174,7 @@ export default function RoomFloorPlan () {
 				</Grid> */}
 			</Grid>
 		</Grid>
-		<HalfFooter progress={50} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 		
 	</RightInner> )
 }

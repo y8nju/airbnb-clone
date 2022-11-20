@@ -21,7 +21,7 @@ export default function RoomPropertyType () {
     const router = useRouter();
     const listingGroup = router.query.group;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 
 	useEffect(()=> {
         !(async () => {
@@ -31,6 +31,13 @@ export default function RoomPropertyType () {
             }
         })();
     }, []);
+	
+    useEffect(() => {
+        if(savedData) {
+			console.log('savedData', savedData);
+            setGroup(savedData.property as string);
+        }
+    }, [savedData])
 
     useEffect(()=> {
         if(group !== '') {
@@ -43,7 +50,8 @@ export default function RoomPropertyType () {
         const { roomid } = router.query;
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			property: group
+			property: group,
+            step: roomStep
 		}
         const rst = await createAndUpdateListing(updateData);
 		console.log(rst)
@@ -60,10 +68,11 @@ export default function RoomPropertyType () {
 				<title>건물 유형 선택 - 에어비앤비</title>
 			</Head>
 			{list && list.map((item: List) => {
-				return <ListItem title={item.property} subTitle={item.description} type="roomType" group={group} setGroup={setGroup} />
+				return <ListItem key={item.property}
+					title={item.property} subTitle={item.description} type="roomType" group={group} setGroup={setGroup} />
 			})}
         </Grid>
-        <HalfFooter progress={20} nextStepHandle={nextStepHandle} /></>
+        <HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomPropertyType.layout = "halfType";

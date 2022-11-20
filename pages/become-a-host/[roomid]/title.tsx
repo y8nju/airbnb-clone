@@ -27,7 +27,7 @@ export default function RoomTitle() {
     const router = useRouter()
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 
 	useEffect(()=> {
 		setCnt(roomTitle.length)
@@ -42,7 +42,8 @@ export default function RoomTitle() {
         setNextBtnDisabled(false)
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			title: roomTitle
+			title: roomTitle,
+            step: roomStep
 		}
 		const rst = await createAndUpdateListing(updateData);
 		console.log(rst)
@@ -76,7 +77,7 @@ export default function RoomTitle() {
 					<span>32자까지 입력하실 수 있습니다</span>
 				</FormHelperText>}
 		</Grid>
-		<HalfFooter progress={80} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomTitle.layout = 'halfType'

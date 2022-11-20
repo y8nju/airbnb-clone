@@ -31,7 +31,7 @@ export default function RoomDescription() {
 	const router = useRouter()
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
-	const {setNextBtnDisabled} = layoutCtx!;
+	const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 
 	useEffect(()=> {
 		setNextBtnDisabled(false);
@@ -57,7 +57,8 @@ export default function RoomDescription() {
 				description: {
 					description: roomDesc,
 					descGroup: descGroup.length > 0 ? descGroup : null
-				}
+				},
+				step: roomStep
 			}
 			const rst = await createAndUpdateListing(updateData);
 			console.log(rst)
@@ -96,7 +97,7 @@ export default function RoomDescription() {
 				</FormHelperText>}    
 			</Grid>}
 		</Grid>
-		<HalfFooter progress={80} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
 	</RightInner> )
 }
 RoomDescription.layout = 'halfType'

@@ -11,6 +11,7 @@ const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, r
 export default function HalfFooter (props: Props) {
     const {progress, nextStepHandle} = props!;
     const router = useRouter();
+    const { roomid } = router.query;
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
     const location = '/become-a-host/[roomid]/location';
@@ -19,7 +20,40 @@ export default function HalfFooter (props: Props) {
 
     const backHandle = () =>{
         setNextBtnDisabled(false);
-        router.back();
+        switch(pathname) {
+            case "/become-a-host/[roomid]/property-type-group":
+                router.push('/become-a-host');
+            case '/become-a-host/[roomid]/property-type':
+                router.push(`/become-a-host/${roomid}/property-type-group`);
+                break;
+            case '/become-a-host/[roomid]/privacy-type':
+                router.push(`/become-a-host/${roomid}/property-type`);
+                break;
+            case '/become-a-host/[roomid]/location':
+                router.push(`/become-a-host/${roomid}/privacy-type`);
+                break;
+            case '/become-a-host/[roomid]/floor-plan':
+                router.push(`/become-a-host/${roomid}/location`);
+                break;
+            case '/become-a-host/[roomid]/amenities':
+                router.push(`/become-a-host/${roomid}/floor-plan`);
+                break;
+            case '/become-a-host/[roomid]/photos':
+                router.push(`/become-a-host/${roomid}/amenities`);
+                break;
+            case '/become-a-host/[roomid]/title':
+                router.push(`/become-a-host/${roomid}/photos`);
+                break;
+            case '/become-a-host/[roomid]/description':
+                router.push(`/become-a-host/${roomid}/title`);
+                break;
+            case '/become-a-host/[roomid]/price':
+                router.push(`/become-a-host/${roomid}/description`);
+                break;
+            case '/become-a-host/[roomid]/receipt':
+                router.push(`/become-a-host/${roomid}/price`);
+                break;
+        }
     }
 
     return ( <Grid container direction="column" sx={[{height: '80px'}, pathname == location && {backgroundColor: '#fff'}]} 

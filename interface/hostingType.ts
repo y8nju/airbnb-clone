@@ -26,6 +26,8 @@ export interface HostingType {
     _id?: Types.ObjectId,
     hostname?: string,
     createdAt?: Date,
+    updatedAt?: Date,
+    step?: number,
     group?: string, 
     property?: string, 
     privacy?: string,

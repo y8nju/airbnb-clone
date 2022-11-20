@@ -49,8 +49,7 @@ export default function ListItem(props: Props) {
                 style={{ borderRadius: "0.5rem", verticalAlign: 'bottom' }}
             />
         </Grid>
-        </Grid> : 
-
+        </Grid> :
         <Grid container direction="column" justifyContent="center">
             <Typography variant="h6" align="left" color="text.primary">{title}</Typography>
             {subTitle && <Typography variant="body2" align="left" color="text.secondary">{subTitle}</Typography> }

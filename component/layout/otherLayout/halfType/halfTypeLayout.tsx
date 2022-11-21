@@ -107,8 +107,8 @@ export default function HalfTypeLayout (props: ChidrenProps) {
     
 
     return ( <Grid container sx={{height: '100vh', overflow: 'hidden'}}>
-        <Left title={title} setTitle={setTitle} />
         <HalfLayoutContext.Provider value={{nextBtnDisabled, setNextBtnDisabled, roomStep, setRoomStep, savedData, setSavedData, progressPer}}>
+            <Left title={title} setTitle={setTitle} />
             <Right>
                 {props.children}
             </Right>

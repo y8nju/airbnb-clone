@@ -16,7 +16,7 @@ export default function RoomPrivacyType () {
     const router = useRouter()
     const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+    const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 
 	useEffect(() => {
 		if(savedData) {
@@ -48,8 +48,15 @@ export default function RoomPrivacyType () {
 			console.log('데이터가 정상적으로 등록되지 않았습니다');
 		}
 	}
+	const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle;
+		} else {
+			return;
+		}
+	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle}/>
         <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 1, ml: 0, animation: 'fadein 1s'}}>
 			<Head>
 				<title>숙소 유형 선택 - 에어비앤비</title>

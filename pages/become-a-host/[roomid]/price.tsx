@@ -35,7 +35,7 @@ export default function RoomTitle() {
 	const router = useRouter()
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
-	const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+	const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 	const errType = price !== null && price < 13400 || price !== null && price > 13399127
 	useEffect(() => {
 		if(savedData) {
@@ -53,21 +53,25 @@ export default function RoomTitle() {
 	}, [price])
 	const priceAddHandle = () => {
 		if(price < 13400) {
-			setPrice(13400)
+			setPrice(13400);
+		} else if(price + 1000 > 13399127) {
+			setPrice(13399127);
 		} else {
-			setPrice((num) => num + 1000)
+			setPrice((num) => num + 1000);
 		}
 	}
 	const priceMinusHandel = () => {
 		if( price > 13399127) {
-			setPrice(13399127)
+			setPrice(13399127);
+		} else if(price - 1000 < 13400) {
+			setPrice(13400);
 		} else {
-			setPrice((num) => num - 1000)
+			setPrice((num) => num - 1000);
 		}
 	}
 	
 	const nextStepHandle = async () => {
-		setNextBtnDisabled(true)
+		setNextBtnDisabled(false)
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
 			price: price,
@@ -81,8 +85,15 @@ export default function RoomTitle() {
 			console.log('데이터가 정상적으로 등록되지 않았습니다');
 		}
 	}
+	const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle;
+		} else {
+			return;
+		}
+	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle} />
 		<Head>
 			<title>요금 설정 - 에어비앤비</title>
 		</Head>

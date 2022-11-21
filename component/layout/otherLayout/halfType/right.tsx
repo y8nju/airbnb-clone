@@ -12,11 +12,12 @@ export default function Right (props: Props) {
     const router = useRouter();
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
+    const celebration = '/become-a-host/[roomid]/publish-celebration';
 
     const {children} = props;
     return (
         <Grid item flex={1} position="relative" sx={[{overflow: 'hidden'},
-            (pathname == intro) && { backgroundColor: '#000'}]}>
+            ((pathname == intro) || (pathname == celebration)) && { backgroundColor: '#000'}]}>
             {children}
         </Grid> )
 }

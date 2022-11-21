@@ -48,7 +48,7 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPr
     };
 
     return ( <RightInner footerShow={true} headerShow={true} >
-        <><HalfHeader />
+        <><HalfHeader saveHandle={nextStepHandle} />
         <Grid container direction="column" spacing={2} sx={{px: 6, width: 1, mt: 1, ml: 0, animation: 'fadein 1s'}}>
             <Head>
                 <title>건물 종류 선택 - 에어비앤비</title>

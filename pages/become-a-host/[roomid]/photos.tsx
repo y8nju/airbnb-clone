@@ -36,13 +36,17 @@ export default function RoomPhotos () {
     const ref = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+    const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 
     useEffect(() => {
 		if(savedData) {
-            if(savedData.photos) {
-                setSavedImgUri(savedData.photos);
+            if(savedData?.photos) {
                 console.log('savedData.photos', savedData.photos)
+                if(savedData?.photos.length > 0) {
+                    setSavedImgUri(savedData.photos!);
+                } else {
+                    setSavedImgUri(null);
+                }
             }
 		}
 	}, [savedData]);
@@ -137,8 +141,15 @@ export default function RoomPhotos () {
         	console.log('데이터가 정상적으로 등록되지 않았습니다');
         }
     }
+    const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle;
+		} else {
+			return;
+		}
+	}
     return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle} />
 		<Grid container direction="column" spacing={2} 
 			 alignItems="center"
 			 sx={{px: 6, width: 1, mt: 0, ml: 0, animation: 'fadein 1s'}}>
@@ -146,8 +157,8 @@ export default function RoomPhotos () {
                     <title>사진 추가 - 에어비앤비</title>
                 </Head>
                 <PhotosContext.Provider value={{files, addFiles, removeFiles, draged, setDraged, ref, dropHandle, fileSelectHandle, loaded, setLoaded, savedImgUri, setSavedImgUri }}>
-                    {(files.length == 0 && !savedData) && <EmptyPhotoWrap />}
-                    {(files.length !== 0 || savedData) && <PreviewPhotoWrap />}
+                    {(files.length == 0 && !savedImgUri) && <EmptyPhotoWrap />}
+                    {(files.length !== 0 || savedImgUri) && <PreviewPhotoWrap />}
                 </PhotosContext.Provider>
 		</Grid>
 		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>

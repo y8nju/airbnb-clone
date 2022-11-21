@@ -27,7 +27,7 @@ export default function RoomLocation () {
 	const ctx = useCtx();
 	const {coordinate, setHostLocation, hostLocation} = ctx!;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+    const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer} = layoutCtx!;
 
 	useEffect(()=> {
 		console.log('hostLocation', hostLocation);
@@ -59,10 +59,16 @@ export default function RoomLocation () {
 			console.log('데이터가 정상적으로 등록되지 않았습니다');
 		}
 	}
-	
+	const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle;
+		} else {
+			return;
+		}
+	}
 	// const staticUri = createStaticMapUri()
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle} />
 		<Grid container direction="column" position="relative" sx={{width: 1, mt: 0, ml: 0, animation: 'fadein 1s'}}>
 			<Head>
 				<title>숙소 위치 입력 - 에어비앤비</title>

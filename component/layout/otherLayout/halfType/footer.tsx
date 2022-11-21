@@ -15,6 +15,7 @@ export default function HalfFooter (props: Props) {
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
     const location = '/become-a-host/[roomid]/location';
+    const celebration = '/become-a-host/[roomid]/publish-celebration';
     const layoutCtx = useContext(HalfLayoutContext);
     const {nextBtnDisabled, setNextBtnDisabled} = layoutCtx!;
 
@@ -65,10 +66,16 @@ export default function HalfFooter (props: Props) {
     </Grid>
     <Grid container sx={{px: '48px'}} flex={1} alignItems="center" justifyContent="space-between">
         {(pathname == intro) ? 
-        <Grid item style={{marginLeft: "auto"}}>
-            <Button variant="contained" color="info" sx={[{fontSize: '1rem', boxShadow: 'none'}, gradientBg]}
-            onClick={()=> router.push("/become-a-host/property-type-group")}>시작하기</Button>
-        </Grid> : <>
+            <Grid item style={{marginLeft: "auto"}}>
+                <Button variant="contained" color="info" sx={[{fontSize: '1rem', boxShadow: 'none'}, gradientBg]}
+                onClick={()=> router.push("/become-a-host/property-type-group")}>시작하기</Button>
+            </Grid> : 
+        ((pathname == celebration) ? 
+            <Grid item style={{marginLeft: "auto"}}>
+                <Button variant="contained" color="info" sx={[{fontSize: '1rem', boxShadow: 'none'}, gradientBg]}
+                onClick={()=> router.push("/become-a-host")}>시작하기</Button>
+            </Grid>: 
+        <>
         <Grid item sx={{mr: 2}}>
             <Button color="inherit" sx={{backgroundColor: "#fff", fontSize: '1rem', textDecoration: 'underline'}} onClick={backHandle}>뒤로</Button>
         </Grid>
@@ -77,7 +84,7 @@ export default function HalfFooter (props: Props) {
                 disabled={nextBtnDisabled}
                 sx={{fontSize: '1rem', boxShadow: 'none'}} 
                 onClick={nextStepHandle}>다음</Button>
-        </Grid></>}
+        </Grid></>)}
     </Grid>
 </Grid> )
 }

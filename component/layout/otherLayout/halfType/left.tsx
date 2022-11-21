@@ -1,10 +1,11 @@
-import {useState, useRef, useEffect, Dispatch, SetStateAction} from 'react';
+import {useState, useRef, useEffect, Dispatch, SetStateAction, useContext} from 'react';
 import {Box, Grid, Typography, IconButton} from "@mui/material/";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SiAirbnb } from "react-icons/si";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import { HalfLayoutContext } from './halfTypeLayout';
 
 interface Props {
     title: string;
@@ -15,9 +16,13 @@ export default function Left ( props: Props) {
     const {title} = props;
     const [nowPlay, setNowPlay] = useState<boolean>(false);
     const playRef = useRef<HTMLVideoElement>(null);
+	const layoutCtx = useContext(HalfLayoutContext);
+    const { savedData } = layoutCtx!
     const router = useRouter();
     const pathname = router.pathname;
     const intro = '/become-a-host/intro'
+    const celebration = '/become-a-host/[roomid]/publish-celebration';
+    
 
     const nowPlayHandle = () => {
         if(nowPlay) {
@@ -44,6 +49,13 @@ export default function Left ( props: Props) {
             {/* {!nowPlay && <Box style={{backgroundImage:'url(https://a0.muscache.com/pictures/f47aefea-4345-4b4d-bfbc-c28acbe9d0ae.jpg)', backgroundSize:'cover', backgroundPosition: '0px 25%',
                 position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh' }}>
             </Box>} */}
+        </Grid>)
+    }
+    if(pathname == celebration && savedData) {
+        return (<Grid item flex={1}
+            sx={{backgroundImage:`url(${savedData?.photos[0]})`,
+                backgroundPosition: 'center', backgroundSize: 'cover'}}>
+
         </Grid>)
     }
 

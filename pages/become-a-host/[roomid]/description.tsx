@@ -31,14 +31,16 @@ export default function RoomDescription() {
 	const router = useRouter()
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
-	const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+	const {setNextBtnDisabled, nextBtnDisabled,  roomStep, progressPer, savedData} = layoutCtx!;
 
 	useEffect(()=> {
 		setNextBtnDisabled(false);
 		if(savedData) {
 			if(savedData.description) {	
-				setDescStep(1);
-				setRoomDesc(savedData.description.description);
+				if(savedData.description.descGroup.length > 0) {
+					setDescStep(1);
+					setRoomDesc(savedData.description.description);
+				}
 			}
 		}
 	}, [savedData]);
@@ -75,8 +77,15 @@ export default function RoomDescription() {
 			}
 		}
 	}
+	const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle;
+		} else {
+			return;
+		}
+	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle} />
 		<Grid container justifyContent="center" alignItems="center"
 			sx={{px: 6, width: 1, mt: 0, ml: 0, pb: 4}} >
 			<Head>

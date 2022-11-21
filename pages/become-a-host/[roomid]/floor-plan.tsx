@@ -21,7 +21,7 @@ export default function RoomFloorPlan () {
 	const [bathrooms, setBathrooms] = useState<number>(1);
 	const [bathroomType, setBathroomType] = useState<string|null>(null);
     const layoutCtx = useContext(HalfLayoutContext);
-	const {roomStep ,progressPer, savedData} = layoutCtx!;
+	const {roomStep,nextBtnDisabled, progressPer, savedData} = layoutCtx!;
 
 	/* // 개인실의 경우 사용 👉 해당 부분 사용 시, 스키마 및 타입 수정
 	// 체크가 되어야 다음 버튼 disabled가 풀림
@@ -59,8 +59,15 @@ export default function RoomFloorPlan () {
 			console.log('데이터가 정상적으로 등록되지 않았습니다');
 		}
 	}
+	const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle;
+		} else {
+			return;
+		}
+	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle} />
 		<Grid container direction="column" spacing={2} 
 			 alignItems="center" justifyContent="center"
 			 sx={{px: 6, width: 1, mt: 0, ml: 0, animation: 'fadein 1s'}}>

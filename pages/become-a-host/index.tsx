@@ -68,7 +68,6 @@ export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<type
             {hostingList.length > 0 && <Grid container direction="column">
                 <Typography variant="h6" sx={{mb: 2}}>숙소 등록 완료하기</Typography>
                 {hostingList.reverse().map((room: HostingType, index: number) => {
-                    console.log(room)
                     if(!showAll) {
                         if(index < 3) {
                             return <HostingButton

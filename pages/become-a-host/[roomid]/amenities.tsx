@@ -15,7 +15,7 @@ export default function roomAmenities () {
 	const router = useRouter()
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+    const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 	
 	useEffect(()=> {
         setNextBtnDisabled(false);
@@ -45,8 +45,15 @@ export default function roomAmenities () {
 			console.log('데이터가 정상적으로 등록되지 않았습니다');
 		}
 	}
+	const saveHandle = () =>{
+		if(!nextBtnDisabled) {
+			nextStepHandle();
+		} else {
+			return;
+		}
+	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader />
+		<><HalfHeader saveHandle={saveHandle}/>
 		<Grid container direction="column" spacing={2} 
 			 sx={{px: 6, width: 1, mt: 0, ml: 0, pb: 4, animation: 'fadein 1s'}} >
 			<Head>

@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { Types } from "mongoose";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import { HalfLayoutContext } from "../../../component/layout/otherLayout/halfType/halfTypeLayout";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
@@ -15,7 +15,19 @@ export default function roomAmenities () {
 	const router = useRouter()
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+	
+	useEffect(()=> {
+        setNextBtnDisabled(false);
+	}, [])
+
+	useEffect(() => {
+		if(savedData) {
+			if(savedData.amenities) {
+				setAmenities(savedData.amenities);
+			}
+		}
+	}, [savedData])
 
     const nextStepHandle = async () => {
         setNextBtnDisabled(true)

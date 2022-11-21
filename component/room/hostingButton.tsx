@@ -11,6 +11,7 @@ interface Props {
     title: string, // 이름
     image?: string,
     id?: string,
+    img?: string,
     children?: ReactNode;
     onClick: (data: string) => void;
 }
@@ -31,7 +32,8 @@ const ItemBtn = styled(Button) ({
     }
 })
 export default function HostingButton(props: Props) {
-    const {type, title, id, image, children, onClick} = props;
+    const {type, title, id, img, children, onClick} = props;
+    console.log('img', img)
     
     const onClickHandle = () => {
         onClick(title);
@@ -45,7 +47,10 @@ export default function HostingButton(props: Props) {
       >
         <Grid item alignItems="center" sx={{display: 'flex'}}>
             {type == 'add' && <AddHomeOutlinedIcon fontSize="large" />}
-            {type == 'room' && <MdHomeFilled size="35px"/>}
+            {type == 'room' && (
+                !img ? <MdHomeFilled size="35px"/>:
+                <img src={img} width="35px" height="35px" style={{borderRadius: '4px'}}></img>
+            )}
         </Grid>
         <Grid item flex="1" alignItems="center" sx={{display: 'flex', gap: 1}}>
             {children}

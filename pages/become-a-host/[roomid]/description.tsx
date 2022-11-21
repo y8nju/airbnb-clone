@@ -31,11 +31,17 @@ export default function RoomDescription() {
 	const router = useRouter()
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
-	const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+	const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 
 	useEffect(()=> {
 		setNextBtnDisabled(false);
-	}, []);
+		if(savedData) {
+			if(savedData.description) {	
+				setDescStep(1);
+				setRoomDesc(savedData.description.description);
+			}
+		}
+	}, [savedData]);
 
 	useEffect(()=> {
 		setCnt(roomDesc.length)

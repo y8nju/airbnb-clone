@@ -44,7 +44,7 @@ export default function HalfTypeLayout (props: ChidrenProps) {
             setSavedData(rst.datas);
             console.log('rst.datas', rst.datas)
         })();
-    }, []);
+    }, [roomid, pathname]);
     
     useEffect(()=> {
         switch(pathname) {

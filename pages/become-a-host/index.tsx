@@ -67,13 +67,15 @@ export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<type
             sx={{gap: 3, px: 6, width: 1, mt: 1, ml: 0, animation: 'fadein 1s'}}>
             {hostingList.length > 0 && <Grid container direction="column">
                 <Typography variant="h6" sx={{mb: 2}}>숙소 등록 완료하기</Typography>
-                {hostingList.map((room: HostingType, index: number) => {
+                {hostingList.reverse().map((room: HostingType, index: number) => {
+                    console.log(room)
                     if(!showAll) {
                         if(index < 3) {
                             return <HostingButton
                                 key={String(room._id)}
                                 onClick={() => linkHandle(String(room._id))}
                                 title={room.title ? room.title : room.group}
+                                img={room.photos ? room.photos[0] : undefined}
                                 type="room">
                             </HostingButton>
                         }
@@ -82,6 +84,7 @@ export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<type
                             key={String(room._id)}
                             onClick={() => linkHandle(String(room._id))}
                             title={room.title ? room.title : room.group}
+                            img={room.photos ? room.photos[0] : undefined}
                             type="room">
                         </HostingButton>
                     }

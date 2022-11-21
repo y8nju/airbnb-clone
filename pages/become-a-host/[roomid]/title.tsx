@@ -27,8 +27,15 @@ export default function RoomTitle() {
     const router = useRouter()
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 
+	useEffect(()=> {
+		if(savedData) {
+			if(savedData.title) {
+				setRoomtitle(savedData.title)
+			}
+		}
+	}, [])
 	useEffect(()=> {
 		setCnt(roomTitle.length)
 		if(roomTitle.length == 0 || roomTitle.length > 32) {

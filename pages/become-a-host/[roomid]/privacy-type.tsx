@@ -16,7 +16,15 @@ export default function RoomPrivacyType () {
     const router = useRouter()
     const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+
+	useEffect(() => {
+		if(savedData) {
+			if(savedData.privacy) {
+				setGroup(savedData.privacy);
+			}
+		}
+	}, [savedData])
 
     useEffect(()=> {
         if(group !== '') {
@@ -29,7 +37,7 @@ export default function RoomPrivacyType () {
 		console.log(router.query);
 		const updateData = {
 			_id: new Types.ObjectId(roomid as string),
-			property: group,
+			privacy: group,
             step: roomStep
 		}
         const rst = await createAndUpdateListing(updateData);
@@ -47,7 +55,8 @@ export default function RoomPrivacyType () {
 				<title>숙소 유형 선택 - 에어비앤비</title>
 			</Head>
 			{PrivacyType && PrivacyType.map((item: string) => {
-				return <ListItem title={item} type="roomType" group={group} setGroup={setGroup} />
+				return <ListItem key={item}
+					title={item} type="roomType" group={group} setGroup={setGroup} />
 			})}
         </Grid>
         <HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>

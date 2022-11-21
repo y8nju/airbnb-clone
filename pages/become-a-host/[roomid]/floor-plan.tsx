@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Typography } from "@mui/material";
 import { Types } from "mongoose";
 import { useRouter } from "next/router";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import HalfFooter from "../../../component/layout/otherLayout/halfType/footer";
 import HalfHeader from "../../../component/layout/otherLayout/halfType/header";
 import RightInner from "../../../component/layout/otherLayout/halfType/rightInner";
@@ -21,7 +21,7 @@ export default function RoomFloorPlan () {
 	const [bathrooms, setBathrooms] = useState<number>(1);
 	const [bathroomType, setBathroomType] = useState<string|null>(null);
     const layoutCtx = useContext(HalfLayoutContext);
-	const {roomStep ,progressPer} = layoutCtx!;
+	const {roomStep ,progressPer, savedData} = layoutCtx!;
 
 	/* // 개인실의 경우 사용 👉 해당 부분 사용 시, 스키마 및 타입 수정
 	// 체크가 되어야 다음 버튼 disabled가 풀림
@@ -29,6 +29,16 @@ export default function RoomFloorPlan () {
 		setBathroomType((event.target as HTMLInputElement).value);
 	}; */
 
+	useEffect(() => {
+		if(savedData) {
+			if(savedData.floorPlan) {
+				setGuests(savedData.floorPlan.guests);
+				setBeds(savedData.floorPlan.beds);
+				setBedrooms(savedData.floorPlan.bedrooms);
+				setBathrooms(savedData.floorPlan.bathrooms);
+			}
+		}
+	}, [savedData])
 	const nextStepHandle = async () => {
 		console.log(router.query);
 		const updateData = {

@@ -63,7 +63,7 @@ export default function RoomLocation () {
 	// const staticUri = createStaticMapUri()
 	return ( <RightInner footerShow={true} headerShow={true} >
 		<><HalfHeader />
-		<Grid container direction="column" position="relative" sx={{width: 1, mt: 0, ml: 0, animation: 'fadein 1s's}}>
+		<Grid container direction="column" position="relative" sx={{width: 1, mt: 0, ml: 0, animation: 'fadein 1s'}}>
 			<Head>
 				<title>숙소 위치 입력 - 에어비앤비</title>
 			</Head>

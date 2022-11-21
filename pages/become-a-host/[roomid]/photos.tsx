@@ -21,7 +21,9 @@ type tPhotosCtx = {
     dropHandle: DragEventHandler<Element>;
     fileSelectHandle: ChangeEventHandler<HTMLInputElement>;
     loaded: boolean;
-    setLoaded: Dispatch<SetStateAction<boolean>>
+    setLoaded: Dispatch<SetStateAction<boolean>>;
+    savedImgUri?: string[] | null;
+    setSavedImgUri?: Dispatch<SetStateAction<string[] | null>>;
 }
 
 export const PhotosContext = createContext<tPhotosCtx | null>(null);
@@ -30,18 +32,42 @@ export default function RoomPhotos () {
     const [files, setFiles] = useState<File[]>([]);
     const [draged, setDraged] = useState(false);
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [savedImgUri, setSavedImgUri] = useState<string[] | null>(null);
     const ref = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const layoutCtx = useContext(HalfLayoutContext);
-    const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
-    
+    const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
+
     useEffect(() => {
-        if(files.length >= 5) {
-            setNextBtnDisabled(false);
-        }else {
-            setNextBtnDisabled(true);
+		if(savedData) {
+            if(savedData.photos) {
+                setSavedImgUri(savedData.photos);
+                console.log('savedData.photos', savedData.photos)
+            }
+		}
+	}, [savedData]);
+
+    useEffect(() => {
+        if(files) {
+            if(files.length >= 5) {
+                setNextBtnDisabled(false);
+            }else {
+                setNextBtnDisabled(true);
+            }
         }
-    }, [files])
+        if(savedImgUri !== null)  {
+            console.log('savedImgUri.length', savedImgUri.length)
+            if(savedImgUri.length >= 5) {
+                setNextBtnDisabled(false);
+            } else if(files.length > 0) {
+                if(savedImgUri.length + files.length >= 5) {
+                    setNextBtnDisabled(false);
+                }
+            } else {
+                setNextBtnDisabled(true);
+            }
+        }
+    }, [files, savedImgUri])
 
     const addFiles = (frag: File[]) => {
         setFiles((curr) => [...curr, ...frag]);
@@ -71,17 +97,37 @@ export default function RoomPhotos () {
     const nextStepHandle = async () => {
         setNextBtnDisabled(true);
         const {roomid} = router.query;
-        const formData = new FormData()
-        formData.append('roomid', roomid as string);
-        files.forEach((file) => {
-            formData.append('photos', file);
-        })
-        const response = await fileUpload(formData);
-        console.log('response', response);
-        const updateData = {
-        	_id: new Types.ObjectId(roomid as string),
-        	photos: response.data,
-            step: roomStep
+        let response;
+        if(files.length > 0) {
+            const formData = new FormData()
+            formData.append('roomid', roomid as string);
+            files.forEach((file) => {
+                formData.append('photos', file);
+            })
+            response = await fileUpload(formData);
+            console.log('response', response);
+        }
+        let updateData: object;
+        if(savedImgUri !== null) {
+            if(response !== undefined) {
+                updateData = {
+                    _id: new Types.ObjectId(roomid as string),
+                    photos: [ ...savedImgUri, ...response.data],
+                    step: roomStep
+                }
+            } else {
+                updateData = {
+                    _id: new Types.ObjectId(roomid as string),
+                    photos: [ ...savedImgUri],
+                    step: roomStep
+                }
+            }
+        } else {
+            updateData = {
+                _id: new Types.ObjectId(roomid as string),
+                photos: response.data,
+                step: roomStep
+            }
         }
         const rst = await createAndUpdateListing(updateData);
         console.log(rst)
@@ -99,9 +145,9 @@ export default function RoomPhotos () {
                 <Head>
                     <title>사진 추가 - 에어비앤비</title>
                 </Head>
-                <PhotosContext.Provider value={{files, addFiles, removeFiles, draged, setDraged, ref, dropHandle, fileSelectHandle, loaded, setLoaded }}>
-                    {files.length == 0 && <EmptyPhotoWrap />}
-                    {files.length !== 0 && <PreviewPhotoWrap />}
+                <PhotosContext.Provider value={{files, addFiles, removeFiles, draged, setDraged, ref, dropHandle, fileSelectHandle, loaded, setLoaded, savedImgUri, setSavedImgUri }}>
+                    {(files.length == 0 && !savedData) && <EmptyPhotoWrap />}
+                    {(files.length !== 0 || savedData) && <PreviewPhotoWrap />}
                 </PhotosContext.Provider>
 		</Grid>
 		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>

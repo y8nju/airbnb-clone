@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/system"
 import { grey, red } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
@@ -7,8 +7,9 @@ import { CircularProgress, Fab, Grid, IconButton, Typography } from "@mui/materi
 import { PhotosContext } from "../../../pages/become-a-host/[roomid]/photos";
 
 interface Props {
-    target: File,
-    isCover: boolean
+    target?: File,
+    isCover?: boolean,
+    savedUri?: string
 }
 
 const PreviewPhoto = styled(Box) ({
@@ -45,40 +46,49 @@ const IconBtn = styled(Fab) ({
 })
 
 export default function PreviewPhotoItem (props: Props) {
-    const {target, isCover} = props;
-    const [imageUri, setImageUri] = useState<string>('');
+    const {target, isCover, savedUri} = props;
+    const [imageUri, setImageUri] = useState<string | null>('');
     const fileCtx = useContext(PhotosContext);
-    const {removeFiles, loaded, setLoaded} = fileCtx!;
+    const {removeFiles, loaded, setLoaded, savedImgUri, setSavedImgUri} = fileCtx!;
     const ref = useRef<HTMLDivElement>();
 
     useEffect(()=> {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(target);
-        // fileReader.onprogress = (evt) => {
-        //     console.log(evt)
-        //     const percentLoaded = Math.round((evt.loaded / evt.total) * 100);
-        //     // Increase the progress bar length.
-        //     if (percentLoaded < 100) {
-        //         setLoaded(true);
-        //         console.log('시작')
-        //     }else {
-        //         setLoaded(false);
-        //         console.log('끝')
-        //     }
-        // };
-        fileReader.onload = (rst) => {
-            // file read 후 결과 출력
-            // console.log(rst.target!.result);
-            setImageUri(rst.target!.result as string);
-            setLoaded(false);
+        if(target) {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(target);
+            // fileReader.onprogress = (evt) => {
+            //     console.log(evt)
+            //     const percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+            //     // Increase the progress bar length.
+            //     if (percentLoaded < 100) {
+            //         setLoaded(true);
+            //         console.log('시작')
+            //     }else {
+            //         setLoaded(false);
+            //         console.log('끝')
+            //     }
+            // };
+            fileReader.onload = (rst) => {
+                // file read 후 결과 출력
+                // console.log(rst.target!.result);
+                setImageUri(rst.target!.result as string);
+                setLoaded(false);
+            }
+        }
+        if(savedUri) {
+            setImageUri(savedUri);
         }
     }, []);
     
     const removeHandle = () => {
         //console.log(ref.current?.style.);
+        const newUri = savedImgUri!.filter(one => one !== imageUri)
         ref.current?.style.setProperty("animation", "fadeout 1.5s");
         setTimeout(() => {
-        removeFiles(props.target);
+        removeFiles(target);
+        if( savedImgUri ) {
+            setSavedImgUri(newUri!)
+        }
         }, 1000);
     };
     return ( <PreviewPhoto ref={ref}>

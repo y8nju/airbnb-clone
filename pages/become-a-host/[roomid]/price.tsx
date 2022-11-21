@@ -35,8 +35,13 @@ export default function RoomTitle() {
 	const router = useRouter()
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
-	const {setNextBtnDisabled, roomStep, progressPer} = layoutCtx!;
+	const {setNextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
 	const errType = price !== null && price < 13400 || price !== null && price > 13399127
+	useEffect(() => {
+		if(savedData) {
+			setPrice(savedData.price as number)
+		}
+	}, [savedData])
 	useEffect(()=> {
 		if(errType) {
 			setNextBtnDisabled(true)

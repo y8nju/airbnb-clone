@@ -1,7 +1,8 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Layout from '../component/layout'
-import { createTheme, ThemeProvider } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
+import createTheme from '@mui/material/styles/createTheme';
 import { grey } from '@mui/material/colors';
 import { ContextProvider } from '../context/context';
 import { SessionProvider } from 'next-auth/react';

@@ -6,7 +6,17 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['images.unsplash.com', 'maps.googleapis.com'],
-  }
+  },
+  experimental: {
+    modularizeImports: {
+      '@mui/material/?(((\\w*)?/?)*)': {
+        transform: '@mui/material/{{ matches.[1] }}/{{member}}'
+      },
+      '@mui/icons-material/?(((\\w*)?/?)*)': {
+        transform: '@mui/icons-material/{{ matches.[1] }}/{{member}}'
+      }
+    }
+  },
 }
 
 module.exports = () => {

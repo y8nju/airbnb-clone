@@ -20,13 +20,12 @@ export default function GoogleOAuth () {
 				.catch((e) => (console.log(e)))
 		}
 		if(session) {
-			(async () => {
+			!(async () => {
 				let resp = await findEmail(session.user!.email as string);
-				console.log(resp)
+				console.log('resp', resp)
 				setLoading(false);
 				if(resp.result) {
-					console.log('a')
-					console.log('openrEvent', window.opener )
+					console.log('resp.result', resp.result)
 					window.opener.commitmentCallback(session.user!.email);
 					window.close();
 				}

@@ -1,6 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material"
 import { Box } from "@mui/system";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Link from "next/link"
 import { useRouter } from "next/router";
@@ -11,14 +11,14 @@ import HostingButton from "../../component/room/hostingButton";
 import { HostingType } from "../../interface/hostingType";
 import { getHostingList } from "../../lib/api/propertyApi";
 
-export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function BecomeAHost ({hostingList}: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [showAll, setShowAll] = useState<boolean>(false)
     const router = useRouter();
     const linkHandle = async (roomid: string) => {
         const rst = await getHostingList(roomid as string);
         const step = rst.datas.step;
         switch(step) {
-            case 1: 
+            case 0: case 1: 
                 router.push(`/become-a-host/${roomid}/property-type-group`);
                 break;
             case 2:
@@ -107,13 +107,12 @@ export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<type
 }
 BecomeAHost.layout = "halfType";
 
-export const getStaticProps: GetStaticProps = async(context) => {
+export const getServerSideProps: GetServerSideProps = async(context) => {
     const response = await getHostingList();
     const hostingList = response.datas;
     return {
         props: {
             hostingList
-        },
-        revalidate: 20
+        }
     }
 }

@@ -1,10 +1,9 @@
-import { Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Grid, styled, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { BedroomBabyOutlined} from '@mui/icons-material/';
 import { GrGroup, GrLocation } from "react-icons/gr";
 import { TbBuildingLighthouse, TbBuildingSkyscraper } from "react-icons/tb";
 import { GiSlippers } from "react-icons/gi";
-import styled from "@emotion/styled";
 import { grey } from "@mui/material/colors";
 
 const group = [

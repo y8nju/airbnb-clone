@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import { HostingType } from "../../../interface/hostingType";
 import PropertyType from "../../../interface/propertyType";
 import { createAndUpdateListing, getHostingList, getPropertyGroupList } from "../../../lib/api/propertyApi";
 
-export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function roomPropertyTypeGroup ({propertyGroup}: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [group, setGroup] = useState<string>('');
     const router = useRouter();
     const { roomid } = router.query;
@@ -79,27 +79,26 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPr
 }
 roomPropertyTypeGroup.layout = "halfType";
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const res = await getHostingList();
-    const paths = res.datas.map((one: { _id: any; }) => {
-        return {
-            params: {
-                roomid: one._id
-            }
-        }
-    })
-    return {
-        paths: paths,
-        fallback: true
-    }
-}
+// export const getStaticPaths: GetStaticPaths = async () => {
+//     const res = await getHostingList();
+//     const paths = res.datas.map((one: { _id: any; }) => {
+//         return {
+//             params: {
+//                 roomid: one._id
+//             }
+//         }
+//     })
+//     return {
+//         paths: paths,
+//         fallback: true
+//     }
+// }
 
-export const getStaticProps: GetStaticProps<{propertyGroup: PropertyType[]}> = async (context) => {
+export const getServerSideProps: GetServerSideProps<{propertyGroup: PropertyType[]}> = async (context) => {
     const propertyGroup = await getPropertyGroupList();
     return {
         props: {
             propertyGroup
-        },
-        revalidate: 20
+        }
     }
 }

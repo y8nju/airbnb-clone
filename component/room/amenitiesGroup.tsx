@@ -1,4 +1,4 @@
-import { Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Grid, ToggleButton, styled, ToggleButtonGroup, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {WifiRounded, TvRounded, DirectionsCarRounded, SpeedRounded, LocalLaundryServiceRounded, CountertopsRounded, AcUnitRounded, DeskRounded, Pool, HotTubRounded, DeckRounded,
     OutdoorGrillRounded, BalconyRounded, FireExtinguisherRounded, FireplaceRounded, FitnessCenterRounded, HouseboatRounded, DownhillSkiingRounded, MedicalServicesRounded} from '@mui/icons-material/';
@@ -7,7 +7,6 @@ import { GiGrandPiano } from "react-icons/gi";
 import { TbBeach } from "react-icons/tb";
 import { FaShower } from "react-icons/fa";
 import { WiFire } from "react-icons/wi";
-import styled from "@emotion/styled";
 import { grey } from "@mui/material/colors";
 
 const group1 = [

@@ -1,5 +1,4 @@
-import styled from "@emotion/styled";
-import { Grid, ToggleButton, Typography } from "@mui/material";
+import { Grid, ToggleButton, styled, Typography } from "@mui/material";
 import { Types } from "mongoose";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";

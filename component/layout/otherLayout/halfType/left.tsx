@@ -52,12 +52,14 @@ export default function Left ( props: Props) {
             </Box>} */}
         </Grid>)
     }
-    if(pathname == celebration && savedData) {
-        return (<Grid item flex={1}
-            sx={{backgroundImage:`url(${savedData!.photos[0]! as string})`,
-                backgroundPosition: 'center', backgroundSize: 'cover'}}>
-
-        </Grid>)
+    if(pathname == celebration) {
+        
+        if(savedData.photos) {
+            return (<Grid item flex={1}
+                sx={{backgroundImage:`url(${savedData.photos[0] as string})`,
+                    backgroundPosition: 'center', backgroundSize: 'cover'}}>
+            </Grid>)
+        }
     }
 
     return ( 

@@ -1,4 +1,4 @@
-import { FormHelperText, Grid, IconButton, TextField, Typography } from "@mui/material";
+import { FormHelperText, Grid, styled, IconButton, TextField, Typography } from "@mui/material";
 import { Types } from "mongoose";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -11,8 +11,6 @@ import { createAndUpdateListing } from "../../../lib/api/propertyApi";
 import { Error } from '@mui/icons-material/';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import styled from "@emotion/styled";
-import { Box } from "@mui/system";
 
 const PriceInput = styled(TextField)({
 	'&': {
@@ -21,7 +19,7 @@ const PriceInput = styled(TextField)({
 	},
 	'& input': {
 		borderRadius: '8px',
-		textAlign: 'center',
+		textAlign: 'center',  
 		fontSize: '40px',
 		fontWeight: 500,
 	},
@@ -30,7 +28,7 @@ const PriceInput = styled(TextField)({
 	},
 });
 
-export default function RoomTitle() {
+export default function RoomPrice() {
 	const [price, setPrice] = useState<number | undefined>(undefined)
 	const router = useRouter()
 	const {roomid} = router.query;
@@ -93,13 +91,14 @@ export default function RoomTitle() {
 		}
 	}
 	return ( <RightInner footerShow={true} headerShow={true} >
-		<><HalfHeader saveHandle={saveHandle} />
-		<Head>
-			<title>요금 설정 - 에어비앤비</title>
-		</Head>
+		<>
+		<HalfHeader saveHandle={saveHandle} />
 		<Grid container direction="column"
 			justifyContent="center" alignItems="center"
 			sx={{px: 6, width: 1, mt: 0, ml: 0, pb: 4, animation: 'fadein 1s'}} >
+			<Head>
+				<title>요금 설정 - 에어비앤비</title>
+			</Head>
 			<Grid container direction="column" alignItems="center" spacing={1} maxWidth="540px"> 
 				<Grid item alignItems="center" sx={{display: 'flex'}} >
 					<IconButton
@@ -110,8 +109,7 @@ export default function RoomTitle() {
 						<RemoveIcon fontSize="small" />
 					</IconButton>
 					<PriceInput placeholder="00" 
-						type="number"
-						value={price || ''}
+						value={price || undefined}
 						error={errType ? true : false}
 						color="info"
 						onChange={(e) => setPrice(Number(e.target.value))} />
@@ -138,7 +136,8 @@ export default function RoomTitle() {
 				</Grid>
 			</Grid>
 		</Grid>
-		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} /></>
+		<HalfFooter progress={progressPer(roomStep)} nextStepHandle={nextStepHandle} />
+		</>
 	</RightInner> )
 }
-RoomTitle.layout = 'halfType'
+RoomPrice.layout = 'halfType'

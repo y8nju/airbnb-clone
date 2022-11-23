@@ -1,5 +1,4 @@
-import styled from "@emotion/styled";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, styled, Typography } from "@mui/material";
 import Image from "next/image";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -33,7 +32,6 @@ const ItemBtn = styled(Button) ({
 })
 export default function HostingButton(props: Props) {
     const {type, title, id, img, children, onClick} = props;
-    console.log('img', img)
     
     const onClickHandle = () => {
         onClick(title);

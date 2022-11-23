@@ -6,7 +6,6 @@ import { Grid, Typography } from "@mui/material"
 import { useSession } from "next-auth/react";
 
 export default function RoomPublishCelebration () {
-    const {data: session} = useSession();
     
     return ( <RightInner footerShow={true} headerShow={true} >
         <>
@@ -16,7 +15,7 @@ export default function RoomPublishCelebration () {
         <Grid container justifyContent="center" alignItems="center" direction="column" sx={{color: '#fff'}}>
             <Grid sx={{width: '480px', textAlign: 'center'}}>
                 <Typography variant="h3" align="left" sx={{fontWeight: 600}}>
-                    {session?.user?.name}님,
+                 
                 </Typography>
                 <Typography variant="h3" align="left" sx={{fontWeight: 600, mb: 4}}>
                     축하합니다!

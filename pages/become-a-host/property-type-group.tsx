@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import { HostingType } from "../../interface/hostingType";
 import PropertyType from "../../interface/propertyType";
 import { createAndUpdateListing, getPropertyGroupList } from "../../lib/api/propertyApi";
 
-export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function roomPropertyTypeGroup ({propertyGroup}: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [group, setGroup] = useState<string>('');
     const router = useRouter();
     const {data: session} = useSession();
@@ -64,13 +64,12 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetStaticPr
 }
 roomPropertyTypeGroup.layout = "halfType";
 
-export const getStaticProps: GetStaticProps<{propertyGroup: PropertyType[]}> = async (context) => {
+export const getServerSideProps: GetServerSideProps<{propertyGroup: PropertyType[]}> = async (context) => {
     const response = await  getPropertyGroupList();
     const propertyGroup = response;
     return {
         props: {
             propertyGroup
-        },
-        revalidate: 20
+        }
     }
 }

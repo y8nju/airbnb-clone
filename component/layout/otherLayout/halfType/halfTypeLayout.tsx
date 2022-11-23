@@ -52,6 +52,7 @@ export default function HalfTypeLayout (props: ChidrenProps) {
                 setRoomStep(0)
                 setTitle(`${session?.user?.name}님, 환영합니다.`);
                 break;
+            case "/become-a-host/property-type-group":
             case "/become-a-host/[roomid]/property-type-group":
                 setRoomStep(1)
                 setTitle('호스팅할 숙소 유형을 알려주세요');

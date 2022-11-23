@@ -22,7 +22,7 @@ function HostingPreviewItem({ hosting }: { hosting: HostingType }) {
       color: "gray",
     }}
   />
-  <CardContent sx={{p: 1}}>
+  <CardContent sx={{p: 1}}> 
     <Typography variant="subtitle1" sx={{fontWeight: 500, lineHeight: 1  }}>
       {hosting.location!.city!}, {hosting.location!.state!}
     </Typography>

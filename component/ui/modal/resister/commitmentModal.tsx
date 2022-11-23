@@ -16,7 +16,7 @@ export default function Commitment(props: OnClose) {
 
 	const submitHandle = async () => {
 		const data = {
-			email: userEmail! || session?.user.email,
+			email: userEmail! || session?.user?.email as string,
 			visible: new Date()
 		}
 		const resp = await commitment(data);

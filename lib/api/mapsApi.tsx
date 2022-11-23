@@ -18,7 +18,7 @@ export async function nowLocationAddress(coordinate: CoorsType) {
     const data = await response.json();
     console.log('data', data)
     let result;
-    data.results.forEach(one => {
+    data.results.forEach((one: { types: any[]; }) => {
         one.types.forEach(type => {
             switch(type) {
                 case "street_address": {

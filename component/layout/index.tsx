@@ -36,7 +36,9 @@ export default function Layout (props: DefaultProps) {
 			</AppBar>
 			</>
 		</ElevationScroll>
-		{children}
+		<Container maxWidth={false} sx={{pt: 2}}>
+			{children}
+		</Container>
 		<Footer />
 	</Container> )
 }

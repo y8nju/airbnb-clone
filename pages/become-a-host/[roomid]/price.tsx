@@ -36,7 +36,7 @@ export default function RoomTitle() {
 	const {roomid} = router.query;
 	const layoutCtx = useContext(HalfLayoutContext);
 	const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
-	const errType = price !== null && price < 13400 || price !== null && price > 13399127
+	const errType = price !== undefined && price as number < 13400 || price !== null && price as number > 13399127
 	useEffect(() => {
 		if(savedData) {
 			setPrice(savedData.price as number)
@@ -52,21 +52,21 @@ export default function RoomTitle() {
 		}
 	}, [price])
 	const priceAddHandle = () => {
-		if(price < 13400) {
+		if(price as number < 13400) {
 			setPrice(13400);
-		} else if(price + 1000 > 13399127) {
+		} else if(price as number + 1000 > 13399127) {
 			setPrice(13399127);
 		} else {
-			setPrice((num) => num + 1000);
+			setPrice((num) => num as number + 1000);
 		}
 	}
 	const priceMinusHandel = () => {
-		if( price > 13399127) {
+		if( price as number > 13399127) {
 			setPrice(13399127);
-		} else if(price - 1000 < 13400) {
+		} else if(price as number - 1000 < 13400) {
 			setPrice(13400);
 		} else {
-			setPrice((num) => num - 1000);
+			setPrice((num) => num as number - 1000);
 		}
 	}
 	
@@ -105,8 +105,8 @@ export default function RoomTitle() {
 					<IconButton
 						color="info"
 						onClick={priceMinusHandel}
-						disabled={price <= 13400}
-						sx={{border: 1, p: 0.5, p: 1}}>
+						disabled={price  as number <= 13400}
+						sx={{border: 1, p: 0.5}}>
 						<RemoveIcon fontSize="small" />
 					</IconButton>
 					<PriceInput placeholder="00" 
@@ -118,8 +118,8 @@ export default function RoomTitle() {
 					<IconButton
 						color="info"
 						onClick={priceAddHandle}
-						disabled={price >= 13399127}
-						sx={{border: 1, p: 0.5, p: 1}}>
+						disabled={price  as number >= 13399127}
+						sx={{border: 1, p: 1}}>
 						<AddIcon fontSize="small" />
 					</IconButton>
 				</Grid>
@@ -129,7 +129,7 @@ export default function RoomTitle() {
 				<Grid item>
 					{errType && <FormHelperText 
 						sx={{display: 'flex', alignItems: 'center', color:"#d32f2f"}}>
-						<Error sx={{mr: 1, mt: 0.5}} fontSize="small" />
+						<Error sx={{mr: 1, mt: 1}} fontSize="small" />
 						<span>기본 요금으로 ₩13,400~₩13,399,127 사이의 값을 입력해 주세요.</span>
 					</FormHelperText>}
 				</Grid>

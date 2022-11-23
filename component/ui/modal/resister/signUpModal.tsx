@@ -69,7 +69,7 @@ export default function Signup() {
 		}
 	}, [firstName])
 	useEffect(()=> {
-		if((!emailRegex.test(email!) || password.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
+		if((!emailRegex.test(email!) || password!.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
 			setEssentialData(true);
 		} else {
 			setEssentialData(false);
@@ -170,7 +170,7 @@ export default function Signup() {
 			setEmailHelperText('이메일이 필요합니다');
 			setEmailType(true);
 		}
-		if(password.length == 0) {
+		if(password!.length == 0) {
 			setPassError(true);
 		}
 		if(!termsChk) {
@@ -240,7 +240,7 @@ export default function Signup() {
 				</Grid>
 				<Grid item xs={12} style={{paddingTop: 0}}>
 					<FormHelperText
-						sx={nameError && {color:"#d32f2f"}}>
+						sx={[nameError && {color:"#d32f2f"}]}>
 						{nameError && <ErrorIcon />}
 						{nameHelperText}
 					</FormHelperText>
@@ -279,7 +279,7 @@ export default function Signup() {
 						disabled={mode == 'GoogleSignUp' ? true : false}
 						onChange={(e) => emailHandle(e.target.value)} />
 					<FormHelperText
-						sx={emailType && {color:"#d32f2f"}}>
+						sx={[emailType && {color:"#d32f2f"}]}>
 						{emailType && <ErrorIcon />}
 						{emailHelperText}
 					</FormHelperText>
@@ -322,9 +322,9 @@ export default function Signup() {
 								>{passType.length >= 8 ? <CheckCircleIcon /> : <CancelIcon /> } 
 								최소 8자</FormHelperText>
 							<FormHelperText 
-								error={!passSubRegx.test(password) ? true : false}
-								sx={passSubRegx.test(password) ? {color: "#2e7d32"} : (passType.length == 0 ? {color:'#d32f2f'} :undefined)}
-								> {passSubRegx.test(password) ? <CheckCircleIcon /> : <CancelIcon /> } 
+								error={!passSubRegx.test(password as string) ? true : false}
+								sx={passSubRegx.test(password as string) ? {color: "#2e7d32"} : (passType.length == 0 ? {color:'#d32f2f'} :undefined)}
+								> {passSubRegx.test(password as string) ? <CheckCircleIcon /> : <CancelIcon /> } 
 								숫자나 기호를 포함하세요</FormHelperText>
 						</>}
 						{passError && <FormHelperText

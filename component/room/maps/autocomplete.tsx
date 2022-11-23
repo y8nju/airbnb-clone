@@ -53,10 +53,10 @@ export default function PlacesAutocomplete(props: Props) {
 		if(data.length > 0) {
 			setLoading(false);
 		}
-		if(searchTxt?.length > 0 ) {
+		if(searchTxt!.length > 0 ) {
 			setNowlocationShow(false);
 		}
-		if(searchTxt?.length == 0) {
+		if(searchTxt!.length == 0) {
 			setNowlocationShow(true);
 		}
 	}, [searchTxt]);

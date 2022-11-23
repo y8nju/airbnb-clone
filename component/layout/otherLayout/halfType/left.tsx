@@ -6,6 +6,7 @@ import { SiAirbnb } from "react-icons/si";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { HalfLayoutContext } from './halfTypeLayout';
+import { HostingType } from '../../../../interface/hostingType';
 
 interface Props {
     title: string;
@@ -53,7 +54,7 @@ export default function Left ( props: Props) {
     }
     if(pathname == celebration && savedData) {
         return (<Grid item flex={1}
-            sx={{backgroundImage:`url(${savedData?.photos[0]})`,
+            sx={{backgroundImage:`url(${savedData!.photos[0]! as string})`,
                 backgroundPosition: 'center', backgroundSize: 'cover'}}>
 
         </Grid>)

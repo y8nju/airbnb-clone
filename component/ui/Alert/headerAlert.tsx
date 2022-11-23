@@ -25,7 +25,7 @@ export default function HeaderAlert() {
             </Grid>
             <Grid item>
                 <IconButton onClick={closeHandle}>
-                    <Close fontSize="small" sx={ type == 'error' && {color: '#b2725f'}} />
+                    <Close fontSize="small" sx={ [type == 'error' && {color: '#b2725f'}]} />
                 </IconButton>
             </Grid>
         </Grid>

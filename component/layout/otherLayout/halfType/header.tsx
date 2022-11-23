@@ -11,7 +11,7 @@ export default function HalfHeader (props: Props) {
     const location = '/become-a-host/[roomid]/location';
     const {saveHandle} = props;
     const savedAndCloseHandle = () => {
-        saveHandle();
+        saveHandle!();
         setTimeout(() => {
             router.push("/become-a-host", undefined, { shallow: true });
         }, 50);

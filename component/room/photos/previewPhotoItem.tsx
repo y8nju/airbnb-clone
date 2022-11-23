@@ -85,7 +85,7 @@ export default function PreviewPhotoItem (props: Props) {
         const newUri = savedImgUri!.filter(one => one !== imageUri)
         ref.current?.style.setProperty("animation", "fadeout 1.5s");
         setTimeout(() => {
-        removeFiles(target);
+        removeFiles(target as File);
         if( savedImgUri ) {
             setSavedImgUri(newUri!)
         }

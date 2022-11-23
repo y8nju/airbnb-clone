@@ -14,8 +14,8 @@ interface HalfCtx {
     setNextBtnDisabled: Dispatch<SetStateAction<boolean>>,
     roomStep: number,
     setRoomStep: Dispatch<SetStateAction<number>>,
-    savedData: HostingType | null,
-    setSavedData: Dispatch<SetStateAction<HostingType | null>>,
+    savedData: HostingType | any,
+    setSavedData: Dispatch<SetStateAction<HostingType | any>>,
     progressPer: (num: number) => number
 }
 
@@ -24,7 +24,7 @@ export const HalfLayoutContext = createContext<HalfCtx|null>(null)
 export default function HalfTypeLayout (props: ChidrenProps) {
     const [title, setTitle] = useState<string>('')
     const [nextBtnDisabled, setNextBtnDisabled] = useState<boolean>(true);
-    const [savedData, setSavedData] = useState<HostingType | null>(null);
+    const [savedData, setSavedData] = useState<HostingType | any>({});
     const [roomStep, setRoomStep] = useState<number>(0);
     const {data: session} = useSession();
     const router = useRouter();

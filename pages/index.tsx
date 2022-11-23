@@ -1,23 +1,41 @@
-
+import { Container, Grid } from "@mui/material";
+import { GetServerSideProps } from "next";
 import { useSession } from 'next-auth/react';
 import Head from 'next/head'
+import HostingPreviewItem from "../component/card/hostingPreviewItem";
+import { HostingType } from "../interface/hostingType";
+import Hosting from "../lib/models/hosting";
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
-	const {data: session, status} = useSession();
-  return (<>
-    <Head>
-      <title>여행은 살아보는 거야 - 에어비앤비</title>
-    </Head>
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-        <p>
-        {status} - {JSON.stringify(session)}</p>
-      </main>
-    </div>
-  </>)
+export default function Home({ hostings }: { hostings: HostingType[] }) {
+
+  return (
+    <Container maxWidth="xl">
+      <Grid container spacing={2} >
+      {hostings.map((one) => (
+        <Grid
+          item
+          lg={2}
+          md={3}
+          sm={6}
+          xs={12}
+          key={one._id as unknown as string}
+        >
+          <HostingPreviewItem hosting={one} />
+        </Grid>
+      ))}
+    </Grid>
+  </Container>)
 }
-Home.layout = "default";
+export const getServerSideProps: GetServerSideProps = async () => {
+  const hostings = await Hosting.find({ step: 11 });
+  console.log(hostings)
+
+  return {
+    props: {
+      hostings: JSON.parse(JSON.stringify(hostings)),
+    },
+  };
+};
+
+Home.layout = "defaultType";

@@ -25,7 +25,7 @@ interface ContextType {
     }>>
     alreadyChk: AlreadyCheck, setAlreadayChk: Dispatch<SetStateAction<AlreadyCheck>>,
     coordinate: CoordinateType, setCoordinate: Dispatch<SetStateAction<CoordinateType>>,
-    address: object | null, setAddress: Dispatch<SetStateAction<object | null>>,
+    address: {} | any, setAddress: Dispatch<SetStateAction<{} | any>>,
     hostLocation: HostAddressType | null, setHostLocation: Dispatch<SetStateAction<HostAddressType | null>>,
     emailRegex: RegExp,
 }
@@ -48,7 +48,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
     })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords);
-    const [address, setAddress] = useState<object | null>(null)
+    const [address, setAddress] = useState<{} | any>({})
     const [hostLocation, setHostLocation]=useState<HostAddressType | null>(null)
 
     useEffect(()=> {

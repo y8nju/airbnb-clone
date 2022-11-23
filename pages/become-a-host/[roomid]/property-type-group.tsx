@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { GetStaticPaths, GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -81,7 +81,7 @@ roomPropertyTypeGroup.layout = "halfType";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const res = await getHostingList();
-    const paths = res.datas.map((one) => {
+    const paths = res.datas.map((one: { _id: any; }) => {
         return {
             params: {
                 roomid: one._id

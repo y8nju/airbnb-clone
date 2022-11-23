@@ -22,8 +22,8 @@ type tPhotosCtx = {
     fileSelectHandle: ChangeEventHandler<HTMLInputElement>;
     loaded: boolean;
     setLoaded: Dispatch<SetStateAction<boolean>>;
-    savedImgUri?: string[] | null;
-    setSavedImgUri?: Dispatch<SetStateAction<string[] | null>>;
+    savedImgUri: string[] | null;
+    setSavedImgUri: Dispatch<SetStateAction<string[] | null>>;
 }
 
 export const PhotosContext = createContext<tPhotosCtx | null>(null);

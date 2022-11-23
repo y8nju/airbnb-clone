@@ -43,7 +43,7 @@ export default function ListItem(props: Props) {
         <Grid item>
             <Image
                 alt={title}
-                src={image}
+                src={image as string}
                 width={64}
                 height={64}
                 style={{ borderRadius: "0.5rem", verticalAlign: 'bottom' }}

@@ -73,7 +73,7 @@ export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<type
                             return <HostingButton
                                 key={String(room._id)}
                                 onClick={() => linkHandle(String(room._id))}
-                                title={room.title ? room.title : room.group}
+                                title={room.title ? room.title as string : room.group as string}
                                 img={room.photos ? room.photos[0] : undefined}
                                 type="room">
                             </HostingButton>
@@ -82,7 +82,7 @@ export default function BecomeAHost ({hostingList}: InferGetStaticPropsType<type
                         return <HostingButton
                             key={String(room._id)}
                             onClick={() => linkHandle(String(room._id))}
-                            title={room.title ? room.title : room.group}
+                            title={room.title ? room.title as string : room.group as string}
                             img={room.photos ? room.photos[0] : undefined}
                             type="room">
                         </HostingButton>

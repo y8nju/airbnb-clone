@@ -6,7 +6,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 
 interface Props {
-	title?: string, 
+	title?: string | boolean, 
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;
 	children: React.ReactNode;
 }

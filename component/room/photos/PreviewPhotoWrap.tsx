@@ -58,12 +58,12 @@ export default function PreviewPhotoWrap () {
         <Grid container flexWrap="wrap" alignItems="center"
             sx={{gap: '10px', mb: 2}}>
                 {(!savedImgUri) ? files.map((file, index) => {
-                    return <PreviewPhotoItem target={file} key={file.lastModifiedDate} isCover={index == 0} />
+                    return <PreviewPhotoItem target={file} key={file.lastModified} isCover={index == 0} />
                 }) : ( (savedImgUri && files) ? <>{savedImgUri.map((uri, index) => {
                         return <PreviewPhotoItem savedUri={uri} key={index} isCover={index == 0} />
                     })}
                     {files.map((file, index) => {
-                        return <PreviewPhotoItem target={file} key={file.lastModifiedDate} />
+                        return <PreviewPhotoItem target={file} key={file.lastModified} />
                     })} </>: 
                     savedImgUri.map((uri, index) => {
                         return <PreviewPhotoItem savedUri={uri} key={index} isCover={index == 0} />

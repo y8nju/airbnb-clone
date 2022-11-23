@@ -40,13 +40,13 @@ const SelectButton = styled(ToggleButton) ({
 })
 interface Props {
     descGroup: string[],
-    setDescGroup: Dispatch<SetStateAction<string[]>>
+     setDescGroup: Dispatch<SetStateAction<string[]>>
 }
 export default function DescriptionGroup (props: Props) {
     const {descGroup, setDescGroup} = props
     const handleFormat = (
         event: React.MouseEvent<HTMLElement>,
-        newFormats: string[],
+        newFormats: string[] | any,
       ) => {
         console.log(newFormats)
         if(newFormats.length >= 3 ) {

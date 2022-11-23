@@ -77,11 +77,13 @@ export default function AlreadyCheck(props: OnClose) {
 	const googleSigninHandle = () => {
 		popupCenter('/OAuth/google', 'Google Login', )
 		// 가입 여부 체크 callback
+		//@ts-ignore
 		window.alreadyCallback = (data: AlreadyCheck) => {
 			setAlreadayChk(data);
 			console.log(data)
 		} 
 		// 서약동의 callback
+		//@ts-ignore
 		window.commitmentCallback = (userEmail: string ) => {
 			setUserEmail(userEmail);
 			setMode('Commitment');
@@ -95,7 +97,7 @@ export default function AlreadyCheck(props: OnClose) {
 
     return (<CardContent sx={{p: 3, height: 'auto'}}>
         <Grid container spacing={2} sx={{mb: 4}}>
-            <Grid item xs={12} sx={{ mb: 1}} sx={{textAlign: 'center'}} >
+            <Grid item xs={12} sx={{ mb: 1, textAlign: 'center'}} >
 				<Typography variant='body2' sx={{mb: 1.5}}>
 					{provider == 'credentials' && '회원님 소유의 계정이 존재합니다. 계정으로 로그인하시기 바랍니다.'}
 				</Typography>

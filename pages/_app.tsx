@@ -10,22 +10,15 @@ import HalfTypeLayout from '../component/layout/otherLayout/halfType/halfTypeLay
 import NoLayout from '../component/layout/noLayout';
 import { ChidrenProps, DefaultProps } from '../interface/propsType';
 
-const layouts = {
-	default: Layout,
-	halfType: HalfTypeLayout,
-	noLayout: NoLayout
+const layouts: {[key: string] : any}= {
+	'defaultType': Layout,
+	'halfType': HalfTypeLayout,
+	'noLayout': NoLayout
 }
-
-export type PageWithLayoutType =
-NextPage & ((props:DefaultProps) => JSX.Element)
- | NextPage & ((props:ChidrenProps) => JSX.Element)
- | NextPage & ((props:ChidrenProps) => JSX.Element)
-
 type AppLayoutProps = AppProps & {
-	Component: PageWithLayoutType
+	Component: {layout: string}
 	pageProps: any
-  }
-
+}
 export default function App({ Component, pageProps }: AppLayoutProps) {
 	// console.log('App', Component);
 	// const { isLayout } = Component as NextPage & {isLayout: boolean};

@@ -66,7 +66,7 @@ export const authOption: NextAuthOptions = {
 			const findEmail = await account.findOne({email: email});
 			console.log(findEmail)
 			if(!findEmail){
-				return `/OAuth/googleSignup?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}`
+				return `/OAuth/gOAuthSignup?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}`
 			}
 			if(findEmail.signupType == 'email' && provider == 'google') {
 				console.log('계정 가입 타입 확인')

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef, Dispatch, SetStateAction } from "react";
 import { Box } from "@mui/system"
 import { grey, red } from '@mui/material/colors';
-import { styled } from '@mui/material/styles';
+import styled from '@mui/material/styles/styled';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { CircularProgress, Fab, Grid, IconButton, Typography } from "@mui/material";
 import { PhotosContext } from "../../../pages/become-a-host/[roomid]/photos";

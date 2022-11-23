@@ -1,4 +1,5 @@
-import { Grid, ToggleButton, styled, ToggleButtonGroup, Typography } from "@mui/material";
+import { Grid, ToggleButton,  ToggleButtonGroup, Typography } from "@mui/material";
+import styled from '@mui/material/styles/styled';
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {WifiRounded, TvRounded, DirectionsCarRounded, SpeedRounded, LocalLaundryServiceRounded, CountertopsRounded, AcUnitRounded, DeskRounded, Pool, HotTubRounded, DeckRounded,
     OutdoorGrillRounded, BalconyRounded, FireExtinguisherRounded, FireplaceRounded, FitnessCenterRounded, HouseboatRounded, DownhillSkiingRounded, MedicalServicesRounded} from '@mui/icons-material/';

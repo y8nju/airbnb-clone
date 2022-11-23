@@ -1,4 +1,5 @@
-import { Grid, styled, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Grid, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import styled from '@mui/material/styles/styled';
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { BedroomBabyOutlined} from '@mui/icons-material/';
 import { GrGroup, GrLocation } from "react-icons/gr";

@@ -1,4 +1,5 @@
-import { Box, Button, DialogActions, DialogContent, Divider, Grid, styled, Switch, SwitchProps, TextField, Typography } from "@mui/material";
+import { Box, Button, DialogActions, DialogContent, Divider, Grid, Switch, SwitchProps, TextField, Typography } from "@mui/material";
+import styled from '@mui/material/styles/styled';
 import React, { useState, Dispatch, SetStateAction, useEffect, useRef } from "react";
 import BasicDialog from "../../ui/dialog";
 import { grey, pink, red } from '@mui/material/colors';

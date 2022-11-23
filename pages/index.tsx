@@ -31,7 +31,6 @@ export default function Home({ hostings }: { hostings: HostingType[] }) {
 export const getServerSideProps: GetServerSideProps = async () => {
   await dbConnect();
   const hostings = await Hosting.find({ step: 11 });
-  console.log(hostings)
 
   return {
     props: {

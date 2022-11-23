@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { Box } from "@mui/system"
 import { grey, red } from '@mui/material/colors';
-import { styled } from '@mui/material/styles';
+import styled from '@mui/material/styles/styled';
 import InsertPhotoOutlinedIcon  from '@mui/icons-material/InsertPhotoOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { Typography } from "@mui/material";

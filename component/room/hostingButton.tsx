@@ -1,4 +1,5 @@
-import { Box, Button, Grid, styled, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import styled from '@mui/material/styles/styled';
 import Image from "next/image";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";

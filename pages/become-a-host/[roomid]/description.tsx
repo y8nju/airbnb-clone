@@ -1,4 +1,5 @@
-import { FormHelperText, Grid, styled, TextField, Typography } from "@mui/material";
+import { FormHelperText, Grid, TextField, Typography } from "@mui/material";
+import styled from '@mui/material/styles/styled';
 import { Box } from "@mui/system";
 import { Types } from "mongoose";
 import { useRouter } from "next/router";

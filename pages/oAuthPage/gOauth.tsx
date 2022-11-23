@@ -25,6 +25,8 @@ export default function GoogleOAuth () {
 				console.log(resp)
 				setLoading(false);
 				if(resp.result) {
+					console.log('a')
+					console.log('openrEvent', window.opener )
 					window.opener.commitmentCallback(session.user!.email);
 					window.close();
 				}

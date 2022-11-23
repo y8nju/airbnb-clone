@@ -4,10 +4,16 @@ import { formatDistance } from "date-fns";
 import { ko } from "date-fns/locale";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { HostingType } from "../../interface/hostingType";
+import { useRouter } from "next/router";
 
 function HostingPreviewItem({ hosting }: { hosting: HostingType }) {
-  const { data } = useSession();
-  return (<Card sx={{ position: "relative", cursor: "pointer", boxShadow: 'none' }}>
+  const router = useRouter();
+  const clickHandle = () => {
+    router.push("/rooms/" + hosting._id);
+  };
+
+  return (<Card onClick={clickHandle}
+    sx={{ position: "relative", cursor: "pointer", boxShadow: 'none' }}>
   {hosting && <><CardMedia
     sx={{ borderRadius: "10px", position: "relative", p: 0.5 }}
     component={"img"}
@@ -24,7 +30,7 @@ function HostingPreviewItem({ hosting }: { hosting: HostingType }) {
   />
   <CardContent sx={{p: 1}}> 
     <Typography variant="subtitle1" sx={{fontWeight: 500, lineHeight: 1  }}>
-      {hosting.location!.city!}, {hosting.location!.state!}
+      {hosting.location!.street!.split(' ')[0]}, {hosting.location!.state!}
     </Typography>
     <Typography variant="caption" color="text.secondary">
       {formatDistance(new Date(hosting.updatedAt!), new Date(), {

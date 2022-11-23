@@ -8,9 +8,11 @@ import { ContextProvider } from '../context/context';
 import { SessionProvider } from 'next-auth/react';
 import HalfTypeLayout from '../component/layout/otherLayout/halfType/halfTypeLayout';
 import NoLayout from '../component/layout/noLayout';
+import DetailTypeLayout from '../component/layout/otherLayout/detailType';
 
 const layouts: {[key: string] : any}= {
 	'defaultType': Layout,
+	'detailType': DetailTypeLayout,
 	'halfType': HalfTypeLayout,
 	'noLayout': NoLayout
 }

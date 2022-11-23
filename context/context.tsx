@@ -10,6 +10,11 @@ export type AlreadyCheck = {
     alreadyEmail: string | null,
     provider: string | null
 }
+interface AddressType {
+    formatted_address?: any;
+    address_components?: any;
+    place_id?: any;
+}
 interface ContextType {
 	userEmail: string | undefined;
 	setUserEmail: Dispatch<SetStateAction<string | undefined>>;
@@ -25,7 +30,7 @@ interface ContextType {
     }>>
     alreadyChk: AlreadyCheck, setAlreadayChk: Dispatch<SetStateAction<AlreadyCheck>>,
     coordinate: CoordinateType, setCoordinate: Dispatch<SetStateAction<CoordinateType>>,
-    address: {} | any, setAddress: Dispatch<SetStateAction<{} | any>>,
+    address: AddressType | null, setAddress: Dispatch<SetStateAction<AddressType | null>>,
     hostLocation: HostAddressType | null, setHostLocation: Dispatch<SetStateAction<HostAddressType | null>>,
     emailRegex: RegExp,
 }
@@ -48,7 +53,7 @@ export const ContextProvider = (props: {children: ReactNode}) => {
     })
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords);
-    const [address, setAddress] = useState<{} | any>({})
+    const [address, setAddress] = useState<AddressType | null>(null)
     const [hostLocation, setHostLocation]=useState<HostAddressType | null>(null)
 
     useEffect(()=> {

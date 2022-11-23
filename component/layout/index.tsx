@@ -39,6 +39,6 @@ export default function Layout (props: DefaultProps) {
 		<Container maxWidth={false} sx={{pt: 2}}>
 			{children}
 		</Container>
-		<Footer />
+		<Footer sx={{position: 'fixed', bottom: 0}} />
 	</Container> )
 }

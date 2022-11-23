@@ -24,9 +24,10 @@ const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
 
 export default function PlacesAutocomplete(props: Props) {
 	const {setShowMap, setOpen, disabled} = props;
-	const [searchTxt, setSearchTxt] = useState<string | null>(null);
+	const [searchTxt, setSearchTxt] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [nowLocationShow, setNowlocationShow] = useState<boolean>(false);
+	const [focused, setFocused] = useState<boolean>(false);
     const ctx = useCtx();
     const {coordinate, setCoordinate, setAddress, hostLocation, address} = ctx!;
 	const {
@@ -46,23 +47,25 @@ export default function PlacesAutocomplete(props: Props) {
 	const ref = useOnclickOutside(() => {
 		clearSuggestions();
 	});
-
 	useEffect(()=> {
-		renderSuggestions()
+		console.log('searchTxt',searchTxt, searchTxt.length)
 		setNowlocationShow(false);
+		renderSuggestions()
 		if(data.length > 0) {
+			console.log(data.length)
 			setLoading(false);
 		}
-		if(searchTxt!.length > 0 ) {
-			setNowlocationShow(false);
-		}
-		if(searchTxt!.length == 0) {
+		if(searchTxt!.length == 0 && focused) {
 			setNowlocationShow(true);
+		}
+		if(searchTxt!.length > 0 && data.length == 0 ) {
+			setNowlocationShow(false);
+			setLoading(true);
 		}
 	}, [searchTxt]);
 	useEffect(()=> {
 		if(address){
-			setSearchTxt(address.formatted_address)
+			setSearchTxt(address!.formatted_address!)
 		}
 	}, [disabled])
 	const handleInput = (e: any): void => {
@@ -94,7 +97,7 @@ export default function PlacesAutocomplete(props: Props) {
             const mapUri = createStaticMapUri(coords);
 			setCoordinate({...coords, imgUrl: mapUri});
 			const data = await nowLocationAddress(coords);
-			setAddress(data);
+			setAddress(data!);
 			console.log('data', data)	
 		});
 	  });
@@ -118,6 +121,10 @@ export default function PlacesAutocomplete(props: Props) {
 		</ListItem>);
 	});
 	const focusHandle = () => {
+		setFocused(true);
+		if(searchTxt!.length == 0) {
+			setNowlocationShow(true);
+		}
 		if(data.length == 0) {
 			setNowlocationShow(true);
 		}
@@ -132,7 +139,7 @@ export default function PlacesAutocomplete(props: Props) {
 			setCoordinate({...coords, imgUrl: mapUri});
 
 			const data = await nowLocationAddress(coords);
-			setAddress(data);
+			setAddress(data!);
 		});
 		setOpen(true);
 	}
@@ -168,7 +175,9 @@ export default function PlacesAutocomplete(props: Props) {
 				placeholder="주소를 입력하세요"
 				style={{borderRadius: '8px'}}
 				onFocus={focusHandle}
-				onBlur={() => setTimeout(() => setNowlocationShow(false), 500)}
+				onBlur={() => setTimeout(() => { 
+					setFocused(false);
+					setNowlocationShow(false)}, 500)}
 			/>
 			<List sx={[{p: 0}, (nowLocationShow || status === "OK") && {py: 1}]}>
 				{status === "OK" && <>

@@ -13,10 +13,10 @@ import { Box } from '@mui/system';
 import popupCenter from '../../popup/popupCenter';
 import { FcGoogle } from "react-icons/fc";
 import { CiMail } from "react-icons/ci";
-
 interface OnClose {
 	onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 export default function AlreadyCheck(props: OnClose) {
 	const [password, setPassword] = useState<string | null>(null);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -73,17 +73,15 @@ export default function AlreadyCheck(props: OnClose) {
 			}
 		}
 	}
-
+	
 	const googleSigninHandle = () => {
 		popupCenter('/oAuthPage/gOauth', 'Google Login', )
 		// 가입 여부 체크 callback
-		//@ts-ignore
-		window.alreadyCallback = (data: AlreadyCheck) => {
+		window.alreadyCallback = (data: any) => {
 			setAlreadayChk(data);
 			console.log(data)
 		} 
 		// 서약동의 callback
-		//@ts-ignore
 		window.commitmentCallback = (userEmail: string ) => {
 			setUserEmail(userEmail);
 			setMode('Commitment');

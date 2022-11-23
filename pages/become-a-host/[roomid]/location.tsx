@@ -13,11 +13,6 @@ import { Types } from 'mongoose';
 import { createAndUpdateListing } from '../../../lib/api/propertyApi';
 import { HalfLayoutContext } from '../../../component/layout/otherLayout/halfType/halfTypeLayout';
 import Head from 'next/head';
-declare global {
-    interface Window {
-        initMap: () => void;
-    }
-}
 export default function RoomLocation () {
 	const [showMap, setShowMap] = useState<boolean>(false);
 	const [open, setOpen] = useState<boolean>(false);

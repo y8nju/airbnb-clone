@@ -8,7 +8,6 @@ import { FcGoogle } from "react-icons/fc";
 import { signIn } from 'next-auth/react';
 import popupCenter from '../../popup/popupCenter';
 
-
 export default function Login() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [emailType, setEmailType] = useState<boolean>(false);
@@ -58,13 +57,11 @@ export default function Login() {
 	const googleSigninHandle = () => {
 		popupCenter('/oAuthPage/gOauth', 'Google Login', )
 		// 가입 여부 체크 callback
-		//@ts-ignore
 		window.alreadyCallback = (data: AlreadyCheck) => {
 			setAlreadayChk(data);
 			console.log(data)
 		} 
 		// 서약동의 callback
-		//@ts-ignore
 		window.commitmentCallback = (userEmail: string ) => {
 			setUserEmail(userEmail);
 			setMode('Commitment');

@@ -75,7 +75,7 @@ export default function AlreadyCheck(props: OnClose) {
 	}
 
 	const googleSigninHandle = () => {
-		popupCenter('/OAuth/google', 'Google Login', )
+		popupCenter('/Oauth/gOauth', 'Google Login', )
 		// 가입 여부 체크 callback
 		//@ts-ignore
 		window.alreadyCallback = (data: AlreadyCheck) => {

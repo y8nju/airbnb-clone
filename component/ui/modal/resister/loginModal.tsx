@@ -56,7 +56,7 @@ export default function Login() {
 		}
 	}
 	const googleSigninHandle = () => {
-		popupCenter('/OAuth/gOAuth', 'Google Login', )
+		popupCenter('/Oauth/gOauth', 'Google Login', )
 		// 가입 여부 체크 callback
 		//@ts-ignore
 		window.alreadyCallback = (data: AlreadyCheck) => {

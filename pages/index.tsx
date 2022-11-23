@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head'
 import HostingPreviewItem from "../component/card/hostingPreviewItem";
 import { HostingType } from "../interface/hostingType";
+import dbConnect from "../lib/dbConnect";
 import Hosting from "../lib/models/hosting";
 import styles from '../styles/Home.module.css'
 
@@ -28,6 +29,7 @@ export default function Home({ hostings }: { hostings: HostingType[] }) {
   </Container>)
 }
 export const getServerSideProps: GetServerSideProps = async () => {
+  await dbConnect();
   const hostings = await Hosting.find({ step: 11 });
   console.log(hostings)
 

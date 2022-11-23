@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import { HostingType } from "../../../interface/hostingType";
+import dbConnect from "../../../lib/dbConnect";
 import Hosting from "../../../lib/models/hosting";
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
+    await dbConnect();
     const token = await getToken({req});
     const doc = req.body as HostingType;
     console.log("updateStepData Handle --- ", {

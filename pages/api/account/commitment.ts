@@ -1,9 +1,11 @@
 import { StringExpression } from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "../../../lib/dbConnect";
 import Account from "../../../lib/models/account";
 import { authOption } from "../auth/[...nextauth]";
 
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
+    await dbConnect();
     const {email, visible} = req.body
     const findEmail = await Account.findOne({email: email});
     if(!findEmail) {

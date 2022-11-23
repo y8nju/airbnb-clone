@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { HostingType } from "../../../interface/hostingType";
+import dbConnect from "../../../lib/dbConnect";
 import Hosting from "../../../lib/models/hosting";
 
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
+    await dbConnect();
     const {roomid} = req.query;
     let datas = await Hosting.find();
     if(roomid) {

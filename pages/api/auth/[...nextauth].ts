@@ -5,6 +5,7 @@ import { login } from "../../../lib/api/accountApi";
 import account from "../../../lib/models/account";
 import { compare } from "bcryptjs";
 import { ParaglidingSharp } from "@mui/icons-material";
+import dbConnect from "../../../lib/dbConnect";
 
 export const authOption: NextAuthOptions = {
 	pages: {
@@ -17,6 +18,7 @@ export const authOption: NextAuthOptions = {
 				password: {},
 			},
 			async authorize(credentials, req) {
+				await dbConnect();
 				console.log('credentials', JSON.stringify(credentials));
 				try {
 					const getId = await account.findOne({email: credentials!.email}); // id Find
@@ -58,6 +60,7 @@ export const authOption: NextAuthOptions = {
 			// return false // 인증X /error=AcessDenied
 			// throw new Error('Duplicated');	// 파라미터
 			console.log(params);
+			await dbConnect();
 			const {email, name} = params.user;
 			const {provider, providerAccountId} = params.account!;
 			const findEmail = await account.findOne({email: email});

@@ -4,8 +4,10 @@ import { hash } from "bcryptjs";
 import AccountType from "../../../interface/accountType";
 import Account from "../../../lib/models/account";
 import { useCtx } from "../../../context/context";
+import dbConnect from "../../../lib/dbConnect";
 
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
+    await dbConnect();
 	const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     
     if(req.method !== "POST") {

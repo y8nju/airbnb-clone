@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "../../../lib/dbConnect";
 import Property from "../../../lib/models/property";
 
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
+    await dbConnect();
     const {group} = req.query;
     
     let datas = await Property.find();

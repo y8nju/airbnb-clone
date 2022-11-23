@@ -58,7 +58,7 @@ export default function RoomPrice() {
 			setPrice((num) => num as number + 1000);
 		}
 	}
-	const priceMinusHandel = () => {
+	const priceMinusHandle = () => {
 		if( price as number > 13399127) {
 			setPrice(13399127);
 		} else if(price as number - 1000 < 13400) {
@@ -103,9 +103,9 @@ export default function RoomPrice() {
 				<Grid item alignItems="center" sx={{display: 'flex'}} >
 					<IconButton
 						color="info"
-						onClick={priceMinusHandel}
-						disabled={price  as number <= 13400}
-						sx={{border: 1, p: 0.5}}>
+						onClick={priceMinusHandle}
+						disabled={(price !== undefined && price<= 13400)}
+						sx={{border: 1, p: 1}}>
 						<RemoveIcon fontSize="small" />
 					</IconButton>
 					<PriceInput placeholder="00" 
@@ -116,7 +116,7 @@ export default function RoomPrice() {
 					<IconButton
 						color="info"
 						onClick={priceAddHandle}
-						disabled={price  as number >= 13399127}
+						disabled={(price !== undefined && price >= 13399127)}
 						sx={{border: 1, p: 1}}>
 						<AddIcon fontSize="small" />
 					</IconButton>

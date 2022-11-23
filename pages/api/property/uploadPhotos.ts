@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse, NextConfig } from "next";
 import formidable from "formidable";
 import { firebaseApp } from "../../../lib/firebase-config";
 import {ref, getStorage, getDownloadURL, uploadBytes} from 'firebase/storage';
+import dbConnect from '../../../lib/dbConnect';
 
 
 /* 
@@ -23,6 +24,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 	) {
+	await dbConnect();
 	const form = formidable({ multiples: true });
 	console.log("==== uploadPhotos ===");
 	

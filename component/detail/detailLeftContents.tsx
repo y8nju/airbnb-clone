@@ -2,9 +2,12 @@ import { Grid, Box, Typography, Avatar, Divider } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { HostingType } from "../../interface/hostingType";
 import { amenitiesGroup, AmenityType } from "../../lib/utils/amenitiesGroup";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import BookingSummary from "./parts/booking";
+import CalendarStatic from "./calendar/calendarStatic";
 
 function DetailLeftContents({ data }: { data: HostingType }) {
+
   const [amenities, setAmenities] = useState<AmenityType[]| []>([]);
   useEffect(()=> {
     let arr: any[] = []
@@ -23,7 +26,7 @@ function DetailLeftContents({ data }: { data: HostingType }) {
   return (<>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid flex={1} sx={{ py: 3 }}>
-          <Typography variant="h5" sx={{mb: 2}}>
+          <Typography variant="h5" sx={{mb: 2}} fontWeight={500}>
             {data.hostname!.split("@")[0]} 님이 호스팅하는 {data.property}의&nbsp;
             {data.privacy}
           </Typography>
@@ -60,6 +63,7 @@ function DetailLeftContents({ data }: { data: HostingType }) {
           <Grid container>
             {amenities.map((one, index) => {
                 return <Grid item sm={6} xs={12}
+                  key={index}
                   alignItems="center"
                   sx={{display: 'flex', pb: 1, gap: '8px'}}>
                   {one.icon} {one.title}
@@ -74,6 +78,11 @@ function DetailLeftContents({ data }: { data: HostingType }) {
         <Typography variant="body1">
           {data.description!.description!}
         </Typography>
+      </Grid>
+      <Divider />
+      <Grid container direction="column" sx={{ py: 3 }}>
+        <BookingSummary data={data} />
+        <CalendarStatic />
       </Grid>
       <Divider />
     </>

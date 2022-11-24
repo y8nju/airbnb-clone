@@ -1,12 +1,17 @@
-import { Button, Container, Toolbar, Typography } from '@mui/material';
+import { Breakpoint, Button, Container, Toolbar, Typography } from '@mui/material';
 import CategoryMenu from '../menu/categoryMenu';
 import TuneIcon from '@mui/icons-material/Tune';
 
-function ResponsiveAppBar() {
+interface Props {
+	sx?: any,
+	mw?: Breakpoint,
+}
+
+function ResponsiveAppBar(props: Props) {
 	const filterHandle = (event: React.MouseEvent<HTMLElement>) => {
 
 	};
-	return (<Container maxWidth="xl" >
+	return (<Container maxWidth={props.mw} >
     <Toolbar>
 		<CategoryMenu />
 		

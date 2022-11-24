@@ -9,7 +9,7 @@ import { HostingType } from "../../interface/hostingType";
 function DetailMainContents({ data }: { data: HostingType }) {
   return (
     <Grid container sx={{ mt: 3 }}>
-      <Grid container spacing={2}>
+      <Grid container spacing={6}>
         <Grid item xs={12} md={8}>
           <DetailLeftContents data={data} />
         </Grid>

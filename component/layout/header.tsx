@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { Box, Button, Container, Toolbar, Typography } from "@mui/material";
+import { Box, Breakpoint, Button, Container, Toolbar, Typography } from "@mui/material";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -8,7 +8,11 @@ import AnchorUserMenu from '../menu/anchorUserMenu';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import { useSession } from 'next-auth/react';
 
-export default function Header () {
+interface Props {
+	sx?: any,
+	mw?: Breakpoint,
+}
+export default function Header (props: Props) {
 	const [anchorElUser, setAnchorElUser] = useState<null | Element>(null);
 	const [signupOpen, setSignupOpen] = useState<boolean>(false);
 	const {status} = useSession();
@@ -19,8 +23,8 @@ export default function Header () {
 		setAnchorElUser(null);
 	};
 	
-	return ( <Container maxWidth={false} disableGutters={true} sx={{ borderBottom: 1, borderBottomColor: 'grey.300' }}>
-		<Container maxWidth="xl">
+	return ( <Container maxWidth={false} disableGutters={true} sx={[{ borderBottom: 1, borderBottomColor: 'grey.300' }, props.sx]}>
+		<Container maxWidth={props.mw}>
 			<Toolbar>
 				<img src="/images/logo.svg" alt="logo" width="102" height="32" />
 				<Typography variant="h6" component="div" sx={{ flexGrow: 1 }} textAlign="center">

@@ -15,11 +15,11 @@ export default function DetailTypeLayout (props: ChidrenProps) {
 	const {headerAlertProps} = ctx!;
 	return ( <Container maxWidth={false} disableGutters={true}>
         <AppBar position="static" sx={{ bgcolor: "white", color: 'text.primary' }}>
-            <Header />
+            <Header mw="lg" />
         </AppBar>
 		<Container maxWidth={false} sx={{pt: 2}}>
 			{children}
 		</Container>
-		<Footer sx={{bgcolor: grey[100]}} />
+		<Footer sx={{bgcolor: grey[100]}} mw="lg" />
 	</Container> )
 }

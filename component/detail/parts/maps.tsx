@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { HostingType } from '../../interface/hostingType';
-import { CoorsType } from '../../interface/mapsType';
+import { HostingType } from '../../../interface/hostingType';
+import { CoorsType } from '../../../interface/mapsType';
 
 const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
 
@@ -21,22 +21,28 @@ function buildContent() {
 
 export default function Maps({ data }: { data: HostingType }) {
 	const mapElement = useRef<HTMLDivElement>(null);
-	const [coords, setCoords] = useState<CoorsType>({lat: 37.5656, lng: 126.9769})
+	const [coords, setCoords] = useState<google.maps.LatLngLiteral>({lat: 37.5656, lng: 126.9769})
 	
 	useEffect(() => {
 		if(data) {
-		setCoords({
-			lat: data.location!.lat!,
-			lng: data.location!.lng!
-		})
+			setCoords({
+				lat: data.location!.lat!,
+				lng: data.location!.lng!
+			})
 		}
 	}, []);
-
-	
-	  // script에서 google map api를 가져온 후에 실행될 callback 함수
-	const initMap = useCallback(() => {
+	const loadScript = (url: string) => {
+		var index  = window.document.getElementsByTagName("script")[0]
+		var script = window.document.createElement("script")
+		script.src = url
+		script.async = true
+		script.defer = true
+		index?.parentNode?.insertBefore(script, index)
+	}
+	const initMap = () => {
 		const { google } = window;
-		if (!mapElement.current || !google) return;
+    	if (!mapElement.current || !google) return;
+
 		const map = new google.maps.Map(mapElement.current!, {
 			mapId: '4ef2f3ae999feb44',
 			zoom: 17,
@@ -53,23 +59,25 @@ export default function Maps({ data }: { data: HostingType }) {
 			position: coords,
 			content: buildContent(),
 		});
-	}, []);
-	
-	
+	}
 	useEffect(() => {
-		const script = window.document.getElementsByTagName('script')[0];
-		const includeCheck = script.src.startsWith(
-		'https://maps.googleapis.com/maps/api'
-		);
-		if (includeCheck) return initMap();
+		// const script = window.document.getElementsByTagName('script')[0];
+		// const includeCheck = script.src.startsWith(
+		// 	'https://maps.googleapis.com/maps/api'
+		// );
+
+		// if (includeCheck) return initMap();
 		window.initMap = initMap;
-	}, [initMap]);
+		loadScript("https://maps.googleapis.com/maps/api/js?v=beta&key=AIzaSyD_8pLwS_D3xDZV5Q2RKdv5_dCnpuAptRI&callback=initMap&libraries=marker")
+	}, [coords]);
 
 	return (<>
-		<div ref={mapElement} style={{ minHeight: '400px' }} />
-		<script
+		<div ref={mapElement} style={{ height: '100%' }} />
+		{/* <script
 		src="https://maps.googleapis.com/maps/api/js?v=beta&key=AIzaSyD_8pLwS_D3xDZV5Q2RKdv5_dCnpuAptRI&callback=initMap&libraries=marker"
-		defer
-		></script>
+		async defer></script> */}
 	</>);
 }
+
+
+  

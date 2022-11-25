@@ -8,8 +8,7 @@ function DetailMainHeader({ data }: { data: HostingType }) {
   return (
     <Grid container direction="column">
       <Typography variant="h4" fontWeight={600}>
-        {/* {data.title} */}
-        히든 헤이븐 - 수영장과 바다 전망을 즐길 수 있는 5베드 빌라
+        {data.title}
       </Typography>
       <Grid container justifyContent="space-between" alignItems="center"
         sx={{mt: 1}}>

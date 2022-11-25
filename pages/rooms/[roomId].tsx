@@ -10,30 +10,22 @@ import { HostingType } from "../../interface/hostingType";
 import { getHostingList } from "../../lib/api/propertyApi";
 import { useEffect, useState, createContext } from "react";
 import DetailMainMaps from "../../component/detail/detailMainMaps";
-import { addDays } from "date-fns";
+import dateFns, { addDays } from "date-fns";
+import { BookingType } from "../../interface/bookingType";
 
-
-export type Booking = {
-  productId?: string;
-  checkin?: Date | null;
-  checkout?: Date | null;
-  numberOfGuests?: number;
-  numberOfAdults?: number;
-  numberOfChildren?: number;
-};
 export const BookingContext = createContext<{
-  bookingData: Booking;
-  updateData: (frag: Booking) => void;
+  bookingData: BookingType;
+  updateData: (frag: BookingType) => void;
   isOpened: boolean;
   openDialog: () => void;
   closeDialog: () => void;
 } | null>(null);
 export default function HostingRoomDetail({ data }: { data: HostingType }) {
-  const [booking, setBooking] = useState<Booking>({
+  const [booking, setBooking] = useState<BookingType>({
     productId: data._id!.toString(),
     checkin: addDays(new Date(), 1),
     checkout: addDays(new Date(), 4),
-    numberOfGuests: 2,
+    numberOfGuests: 1,
     numberOfAdults: 2,
     numberOfChildren: 0,
   });
@@ -41,7 +33,7 @@ export default function HostingRoomDetail({ data }: { data: HostingType }) {
   
   const openDialog = () => setOpened(true);
   const closeDialog = () => setOpened(false);
-  const updateData = (frag: Booking) => {
+  const updateData = (frag: BookingType) => {
     setBooking((tp) => ({ ...tp, ...frag }));
   };
 

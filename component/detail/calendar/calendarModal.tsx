@@ -27,14 +27,14 @@ const StyleInput = styled(TextField) ({
 	  borderTopRightRadius: '8px',
 	  borderBottomLeftRadius: 0,
 	  borderBottomRightRadius: '8px',
-	  borderLeftColor: 'transparent'
+	  borderLeftWidth: 0
 	},
 	'& .MuiInputBase-formControl:hover fieldset': {
 	  borderColor: grey[400],
 	  backgroundColor: 'transparent;'
 	},
-	'&:last-of-type:hover .MuiInputBase-formControl fieldset': {
-	  borderLeftColor: 'transparent'
+	'&:last-of-type fieldset .MuiInputBase-formControl.Mui-focused fieldset': {
+		borderLeftWidth: 2
 	},
 	'& .MuiInputBase-formControl.Mui-focused fieldset': {
 		borderRadius: '8px',
@@ -69,11 +69,11 @@ export default function CalendarModal() {
 			<Box>
 			{bookingData.checkin && bookingData.checkout ? (<>
 				<Typography variant="h5">
-					{differenceInCalendarDays(bookingData.checkout, bookingData.checkin)}박
+					{differenceInCalendarDays(bookingData.checkout as Date, bookingData.checkin as Date)}박
 				</Typography>
 				<Typography variant="body2" color="text.secondary">
-					{format(bookingData.checkin, "yyyy년 MM월 dd일")} ~
-					{format(bookingData.checkout, "yyyy년 MM월 dd일")}
+					{format(bookingData.checkin as Date, "yyyy년 MM월 dd일")} ~
+					{format(bookingData.checkout as Date, "yyyy년 MM월 dd일")}
 				</Typography> 
 			</>) : (<>
 				<Typography variant="h5">날짜 선택</Typography>
@@ -95,7 +95,7 @@ export default function CalendarModal() {
 						shrink: true,
 					}}
 					label="체크인"
-					value={ bookingData.checkin ? format(bookingData.checkin, "yyyy-MM-dd") : "" }
+					value={ bookingData.checkin ? format(bookingData.checkin as Date, "yyyy-MM-dd") : "" }
 					placeholder={"YYYY-MM-DD"}/>
 				<StyleInput
 					color="info"
@@ -106,7 +106,7 @@ export default function CalendarModal() {
 					}}
 					label="체크아웃"
 					disabled={!bookingData.checkin && true}
-					value={ bookingData.checkout ? format(bookingData.checkout, "yyyy-MM-dd"): "" }
+					value={ bookingData.checkout ? format(bookingData.checkout as Date, "yyyy-MM-dd"): "" }
 				placeholder={"YYYY-MM-DD"}/>
 			</Box>
 		</Grid>

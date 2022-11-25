@@ -8,6 +8,7 @@ import { differenceInCalendarDays, format } from "date-fns";
 import CalendarModal from "./calendar/calendarModal";
 import { grey } from '@mui/material/colors';
 import styled from '@mui/material/styles/styled';
+import { useRouter } from "next/router";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
@@ -51,8 +52,35 @@ const StyleButton = styled(Button) ({
 })
 
 export default function DetailRightContents({ data }: { data: HostingType }) {
+  const router = useRouter()
 	const bookingCtx = useContext(BookingContext);
 	const {bookingData, openDialog, isOpened} = bookingCtx!;
+  console.log('bookingData', bookingData);
+
+  let diff;
+  if (bookingData.checkin && bookingData.checkout) {
+    diff = differenceInCalendarDays(bookingData.checkout as Date, bookingData.checkin as Date);
+  }
+
+  const reserveHandle: React.MouseEventHandler = (evt) => {
+    evt.stopPropagation();
+    if (bookingCtx && bookingData.checkin && bookingData.checkout && bookingData.productId) {
+      const params = new URLSearchParams();
+      params.append("numberOfGuests", bookingData.numberOfGuests!.toString());
+      params.append("numberOfAdults", bookingData.numberOfAdults!.toString());
+      params.append(
+        "numberOfChildren",
+        bookingData.numberOfChildren!.toString()!
+      );
+      params.append("numberOfGuests", format(bookingData.checkin as Date, "yyyy-MM-dd"));
+      params.append("numberOfGuests", format(bookingData.checkout as Date, "yyyy-MM-dd"));
+      // console.log(params.toString());
+      const path = "/book/stays/" + bookingData.productId
+      router.push(path+ "?" + params.toString(), path);
+    } else {
+      bookingCtx?.openDialog();
+    }
+  };
 
   return (
     <>
@@ -87,7 +115,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                     <Typography sx={{fontSize: '10px'}}>체크인</Typography>
                     <Typography variant="body2">
                       {bookingData.checkin
-                        ? format(bookingData.checkin, "yyyy-MM-dd")
+                        ? format(bookingData.checkin as Date, "yyyy-MM-dd")
                         : "날짜추가"}
                     </Typography>
                   </Grid>
@@ -96,7 +124,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                     <Typography sx={{fontSize: '10px'}}>체크아웃</Typography>
                     <Typography variant="body2">
                       {bookingData.checkout
-                        ? format(bookingData.checkout, "yyyy-MM-dd")
+                        ? format(bookingData.checkout as Date, "yyyy-MM-dd")
                         : "날짜추가"}
                     </Typography>
                   </Grid>
@@ -116,11 +144,13 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
               {isOpened && <CalendarModal />}
             </Box>
             <Box sx={{ mb: 1 }}>
-              <Button variant="contained" fullWidth size="large" sx={gradientBg}>
+              <Button variant="contained" fullWidth size="large"
+                onClick={reserveHandle}
+                sx={gradientBg}>
                 {bookingData.checkin && bookingData.checkout ? '예약하기' : '예약 가능 여부 보기'}
               </Button>
             </Box>
-            {bookingData.checkin && bookingData.checkout &&<>
+            {diff &&<>
               <Box sx={{mb:2}}>
                 <Typography variant="body2" align="center">
                   예약 확정 전에는 요금이 청구되지 않습니다.
@@ -128,10 +158,10 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
               </Box>
               <Box sx={{ mb: 1, display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="body1" fontWeight={300}>
-                  ₩{data!.price!.toLocaleString()} X 1박
+                  ₩{data!.price!.toLocaleString()} X {diff}박
                   </Typography>
                 <Typography variant="body1" fontWeight={300}>
-                  ₩{(data!.price! * 1).toLocaleString()}
+                  ₩{(data!.price! * diff).toLocaleString()}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1, display: "flex", justifyContent: "space-between" }}>
@@ -139,7 +169,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                   서비스 수수료
                 </Typography>
                 <Typography variant="body1" fontWeight={300}>
-                  ₩{Math.round(data!.price! * 1 * 0.14).toLocaleString()}
+                  ₩{Math.round(data!.price! * diff * 0.14).toLocaleString()}
                 </Typography>
               </Box>
               <Divider sx={{my: 2}} />
@@ -149,8 +179,8 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                 </Typography>
                 <Typography variant="body1" fontWeight={500}>
                   ₩
-                  {(data!.price! * differenceInCalendarDays(bookingData.checkout, bookingData.checkin) +
-                    Math.ceil(data!.price! * differenceInCalendarDays(bookingData.checkout, bookingData.checkin) * 0.14)
+                  {(data!.price! * diff +
+                    Math.ceil(data!.price! * diff * 0.14)
                   ).toLocaleString()}
                 </Typography>
               </Box>

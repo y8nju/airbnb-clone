@@ -9,11 +9,13 @@ import { SessionProvider } from 'next-auth/react';
 import HalfTypeLayout from '../component/layout/otherLayout/halfType/halfTypeLayout';
 import NoLayout from '../component/layout/noLayout';
 import DetailTypeLayout from '../component/layout/otherLayout/detailType';
+import BookTypeLayout from '../component/layout/otherLayout/bookType';
 
 const layouts: {[key: string] : any}= {
 	'defaultType': Layout,
 	'detailType': DetailTypeLayout,
 	'halfType': HalfTypeLayout,
+	'bookType': BookTypeLayout,
 	'noLayout': NoLayout
 }
 type AppLayoutProps = AppProps & {

@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 function HostingPreviewItem({ hosting }: { hosting: HostingType }) {
   const router = useRouter();
   const clickHandle = () => {
-    router.push("/rooms/" + hosting._id);
+    window.open("/rooms/" + hosting._id);
   };
 
   return (<Card onClick={clickHandle}

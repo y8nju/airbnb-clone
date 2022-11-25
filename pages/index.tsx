@@ -10,7 +10,10 @@ import styles from '../styles/Home.module.css'
 
 export default function Home({ hostings }: { hostings: HostingType[] }) {
 
-  return (
+  return (<>
+    <Head>
+      <title>여행은 살아보는 거야 - 에어비앤비</title>
+    </Head>
     <Container maxWidth="xl">
       <Grid container spacing={2} >
       {hostings.map((one) => (
@@ -26,7 +29,8 @@ export default function Home({ hostings }: { hostings: HostingType[] }) {
         </Grid>
       ))}
     </Grid>
-  </Container>)
+  </Container>
+  </>)
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   await dbConnect();

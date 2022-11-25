@@ -7,7 +7,6 @@ body {
     word-break: keep-all;
     user-select: none;
 }
-
 a {
   color: inherit;
   text-decoration: none;
@@ -54,6 +53,11 @@ input[type="number"]::-webkit-inner-spin-button {
 .mdl-textfield__input:-webkit-autofill + .mdl-textfield__label {
   top: -20px;
   transform: scale(0.75);
+}
+.material-symbols-rounded {
+  font-display: swap;
+  color: #fff;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
 @media (prefers-color-scheme: dark) {

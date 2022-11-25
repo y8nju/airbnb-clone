@@ -31,14 +31,14 @@ export default function Layout (props: DefaultProps) {
 			<>
 			{headerAlertProps.visible && <HeaderAlert />}
 			<AppBar position="sticky" sx={{ bgcolor: "white", color: 'text.primary' }}>
-				<Header />
-				<Nav />
+				<Header mw="xl"/>
+				<Nav mw="xl" />
 			</AppBar>
 			</>
 		</ElevationScroll>
 		<Container maxWidth={false} sx={{pt: 2}}>
 			{children}
 		</Container>
-		<Footer />
+		<Footer sx={{position: 'fixed', bottom: 0}} mw="xl" />
 	</Container> )
 }

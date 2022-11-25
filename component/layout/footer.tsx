@@ -1,10 +1,14 @@
-import { AppBar, Box, Container, Divider, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Breakpoint, Container, Divider, Theme, Toolbar, Typography } from '@mui/material';
 
-export default function Footer () {
+interface Props {
+	sx?: any,
+	mw?: Breakpoint,
+}
+export default function Footer (props: Props) {
 	
-	return ( <Box component="footer"  position="fixed"
-		sx={{width: '100vw', top: 'auto', bottom: 0, bgcolor: "white", color: 'text.primary', borderTop: 1, borderTopColor: 'grey.300' }}>
-		<Container maxWidth="xl">
+	return ( <Box component="footer"
+		sx={[{width: '100vw', bgcolor: "white", color: 'text.primary', borderTop: 1, borderTopColor: 'grey.300' }, props.sx]}>
+		<Container maxWidth={props.mw}>
 			<Toolbar sx={{ borderBottom: 1, borderBottomColor: 'grey.300' }}>
 				<Typography variant="body1">
 					© 2022 Airbnb, Inc.

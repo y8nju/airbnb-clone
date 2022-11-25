@@ -149,7 +149,7 @@ export default function AddressDialog (props: Open) {
 	const [lastChange, setLastChange] = useState<Date>(new Date());
 	const [zoomMaps, setZoomMaps] = useState<boolean>(false);
 	useEffect(() => {
-		if(address) {
+		if(address !== null) {
 			address!.address_components!.forEach((one: { types: any[]; long_name: SetStateAction<string | null>; }) => {
 				one.types.forEach(type => {
 					switch(type) {
@@ -181,11 +181,11 @@ export default function AddressDialog (props: Open) {
 	}, [address])
 	useEffect(()=> {
 		if(street) {
-			address?.address_components!.forEach((one: { types: any[]; long_name: string; }) => {
+			address!.address_components!.forEach((one: { types: any[]; long_name: string; }) => {
 				one.types.forEach(type => {
 					switch(type) {
 						case 'premise': {
-							setStreet(street.concat(one.long_name));
+							setStreet(street.concat(' ', one.long_name));
 							break;
 						}
 					}
@@ -199,7 +199,7 @@ export default function AddressDialog (props: Open) {
 		setDisabled(true)
 		setHostLocation({
 			uri: coordinate.imgUrl! as string,
-			placeId: address?.place_id,
+			placeId: address!.place_id! as string,
 			state: state as string,
 			city: city as string,
 			street: street as string,

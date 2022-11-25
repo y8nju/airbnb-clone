@@ -11,8 +11,8 @@ import {
 } from '@mui/x-date-pickers-pro/DateRangePickerDay';
 import { DateRange } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { useContext, useState } from "react";
-import { BookingContext } from "../../../pages/rooms/[roomId]";
 import  dateFns from 'date-fns';
+import { BookingContext } from "../../../context/bookingContext";
 
 export default function CalendarStatic() {
     const bookingCtx = useContext(BookingContext);

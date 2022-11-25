@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { useContext } from "react";
 import { differenceInCalendarDays, format } from "date-fns";
 import { HostingType } from "../../../interface/hostingType";
-import { BookingContext } from "../../../pages/rooms/[roomId]";
+import { BookingContext } from "../../../context/bookingContext";
 
 export default function BookingSummary({ data }: { data: HostingType }) {
 	const bookingCtx = useContext(BookingContext);

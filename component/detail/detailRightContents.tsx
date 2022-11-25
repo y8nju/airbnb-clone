@@ -3,12 +3,12 @@ import { Box, Grid, Typography, Divider } from "@mui/material";
 import { Card, CardContent, Button } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { HostingType } from "../../interface/hostingType";
-import { BookingContext } from "../../pages/rooms/[roomId]";
 import { differenceInCalendarDays, format } from "date-fns";
 import CalendarModal from "./calendar/calendarModal";
 import { grey } from '@mui/material/colors';
 import styled from '@mui/material/styles/styled';
 import { useRouter } from "next/router";
+import { BookingContext } from "../../context/bookingContext";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}

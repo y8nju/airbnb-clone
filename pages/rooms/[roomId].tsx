@@ -8,58 +8,29 @@ import DetailMainContents from "../../component/detail/detailMainContents";
 import Head from "next/head";
 import { HostingType } from "../../interface/hostingType";
 import { getHostingList } from "../../lib/api/propertyApi";
-import { useEffect, useState, createContext } from "react";
+import { useContext } from "react";
 import DetailMainMaps from "../../component/detail/detailMainMaps";
 import dateFns, { addDays } from "date-fns";
 import { BookingType } from "../../interface/bookingType";
+import { BookingContext, BookingContextProvider } from "../../context/bookingContext";
 
-export const BookingContext = createContext<{
-  bookingData: BookingType;
-  updateData: (frag: BookingType) => void;
-  isOpened: boolean;
-  openDialog: () => void;
-  closeDialog: () => void;
-} | null>(null);
 export default function HostingRoomDetail({ data }: { data: HostingType }) {
-  const [booking, setBooking] = useState<BookingType>({
-    productId: data._id!.toString(),
-    checkin: addDays(new Date(), 1),
-    checkout: addDays(new Date(), 4),
-    numberOfGuests: 1,
-    numberOfAdults: 2,
-    numberOfChildren: 0,
-  });
-  const [isOpened, setOpened] = useState(false);
   
-  const openDialog = () => setOpened(true);
-  const closeDialog = () => setOpened(false);
-  const updateData = (frag: BookingType) => {
-    setBooking((tp) => ({ ...tp, ...frag }));
-  };
+	const bookingCtx = useContext(BookingContext);
 
   return (
     <>
       <Head>
         <title>{data.title} - 에어비앤비</title>
       </Head>
-      <BookingContext.Provider
-        value={{
-          bookingData: booking,
-          updateData: updateData,
-          isOpened,
-          openDialog,
-          closeDialog,
-        }}
-      >
-      {data && <Box onClick={() => closeDialog()}>
+      <BookingContextProvider data={data}>
       <Container maxWidth="lg" sx={{ position: "relative", pt: 1, py: 3 }}>
         <DetailMainHeader data={data} />
         <DetailMainPhotos data={data} />
         <DetailMainContents data={data} />
         <DetailMainMaps data={data} />
       </Container>
-      </Box>}
-      </BookingContext.Provider>
+      </BookingContextProvider>
     </>
   );
 }

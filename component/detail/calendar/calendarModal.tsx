@@ -2,9 +2,9 @@ import { Box, Paper, Typography, TextField, Grid } from "@mui/material";
 import styled from '@mui/material/styles/styled';
 import { useContext, useState } from "react";
 import { differenceInCalendarDays, format } from "date-fns";
-import { BookingContext } from "../../../pages/rooms/[roomId]";
 import CalendarStatic from "./calendarStatic";
 import { grey } from '@mui/material/colors';
+import { BookingContext } from "../../../context/bookingContext";
 
 const StyleInput = styled(TextField) ({
 	'& fieldset': {
@@ -58,12 +58,14 @@ const StyleInput = styled(TextField) ({
 
 export default function CalendarModal() {
 	const bookingCtx = useContext(BookingContext);
-	const {bookingData} = bookingCtx!;
+	const {bookingData, closeDialog} = bookingCtx!;
 
 	return ( <Paper
 		elevation={10}
 		sx={{ position: "absolute", top: "-16px", right: "-24px", padding: "16px 24px", zIndex: 3}}
 		onClick={(evt) => evt.stopPropagation()}>
+		<Grid container width="100vw" height="100vh" position="fixed" zIndex={-1} top={0} left={0}
+		onClick={() => closeDialog()}></Grid>
 		<Grid container spacing={2}>
 		<Grid item md={6}>
 			<Box>

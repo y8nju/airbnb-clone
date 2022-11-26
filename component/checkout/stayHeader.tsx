@@ -9,7 +9,7 @@ export default function StayHedaer() {
     <Grid container direction="column">
       <Grid item alignItems="center"
         sx={{ display: 'flex'}}>
-          <Box sx={{pr: 3 }}>
+          <Box sx={{pr: 3, ml: -1.5}}>
             <IconButton size="small" color={"info"}  onClick={() => router.back()}>
               <ChevronLeftRoundedIcon />
             </IconButton>

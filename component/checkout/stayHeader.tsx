@@ -3,7 +3,7 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
 
-function StayHedaer() {
+export default function StayHedaer() {
   const router = useRouter();
   return (
     <Grid container direction="column">
@@ -23,5 +23,3 @@ function StayHedaer() {
     </Grid>
   );
 }
-
-export default StayHedaer;

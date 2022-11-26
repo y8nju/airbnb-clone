@@ -1,125 +1,95 @@
 import { Box, Typography, Divider, TextField } from "@mui/material";
 import { Card, CardContent, Button } from "@mui/material";
 import { useContext, useState } from "react";
-import {  BookingContext } from "../../pages/rooms/[roomId]";
 import { format, differenceInCalendarDays } from "date-fns";
 
 import { useRouter } from "next/router";
 import { HostingType } from "../../interface/hostingType";
 import Grid from "@mui/material/Grid";
+import { BookingContext } from "../../context/bookingContext";
+import { PopulateBookingType } from "../../interface/bookingType";
 
-function StayAside({ data }: { data: HostingType }) {
-  // const router = useRouter();
-  // const bookingCtx = useContext(BookingContext);
-  // const {bookingData, updateData, openDialog} = bookingCtx!;
+function StayAside({ data }: { data: PopulateBookingType }) {
+  const router = useRouter();
+  const bookingCtx = useContext(BookingContext);
+  const {bookingData, updateData, openDialog} = bookingCtx!;
+  console.log('data', data)
 
-  // let diff;
-  // if (bookingData.checkin && bookingData.checkout) {
-  //   diff = differenceInCalendarDays(bookingData.checkout as Date, bookingData.checkin as Date);
-  // }
-  // //console.log("diff=", diff);
-
-  // const reserveHandle: React.MouseEventHandler = (evt) => {
-  //   evt.stopPropagation();
-  //   if (bookingCtx && bookingData.checkin && bookingData.checkout && bookingData.productId) {
-  //     const params = new URLSearchParams();
-  //     params.append("numberOfGuests", bookingData.numberOfGuests!.toString());
-  //     params.append("numberOfAdults", bookingData.numberOfAdults!.toString());
-  //     params.append(
-  //       "numberOfChildren",
-  //       bookingData.numberOfChildren!.toString()!
-  //     );
-  //     params.append("numberOfGuests", format(bookingData.checkin as Date, "yyyy-MM-dd"));
-  //     params.append("numberOfGuests", format(bookingData.checkout as Date, "yyyy-MM-dd"));
-  //     // console.log(params.toString());
-  //     router.push(
-  //       "/book/stays/" + bookingData.productId + "?" + params.toString()
-  //     );
-  //   } else {
-  //     openDialog();
-  //   }
-  // };
-
+  let diff;
+  if (data.checkin && data.checkout) {
+    diff = differenceInCalendarDays(new Date(data.checkout) as Date, new Date(data.checkin) as Date);
+  }
+  //console.log("diff=", diff);
   return (
     <>
       <Grid container position="sticky" top={0} sx={{py: 3}}>
-        <Card elevation={0} 
-          sx={{ width: 1, margin: "auto", px: 1, border: 1, borderColor: 'grey.300'}}>
-          <CardContent>
-            {/* <Box sx={{ mb: 1 }}>
-              <Typography component={"span"} variant={"h6"}>
-                ₩{data!.price!.toLocaleString()}
+        <Grid container direction="column" sx={{ width: 1, margin: "auto", p: 3, borderRadius: 2, border: 1, borderColor: 'grey.300'}}>
+            <Grid container justifyContent="space-between" sx={{ pb:2, gap: 1 }}>
+              <Grid item flex={1} sx={{borderRadius: 2, overflow: 'hidden'}}>
+                <img src={data.productId!.photos![0]} width="100%" height="106px" style={{objectFit: 'cover', verticalAlign: 'bottom'}} />
+              </Grid>
+              <Grid item flex={2} sx={{display: 'flex', flexDirection: 'column'}}>
+                <Typography variant="caption" color="text.secondary">
+                  {data.productId?.privacy}
+                </Typography>
+                <Typography variant="body2">
+                  {data.productId?.title}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Divider />
+            <Grid item sx={{ py:2 }}>
+              <Typography variant="body2" component="span" fontWeight={500} color="#ff385c">
+                에어
               </Typography>
-              <Typography component={"span"}>/박</Typography>
-            </Box>
-
-            <Box sx={{ mb: 1 }}>
-              <Button
-                variant="contained"
-                fullWidth
-                size="large"
-                onClick={reserveHandle}
-              >
-                {bookingData.checkin && bookingData.checkout
-                  ? "예약하기"
-                  : "예약 가능 여부 보기"}
-              </Button>
-            </Box>
-            <Box sx={{ mb: 2 }}>
-              <Typography textAlign={"center"} variant="body2">
-                예약 확정 전에는 요금이 청구되지 않습니다.
+              <Typography variant="body2" component="span" fontWeight={500}>
+                커버
               </Typography>
-            </Box>
-            {diff && (
-              <>
-                <Box
-                  sx={{
-                    mb: 1,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>
-                    ₩{data.price!.toLocaleString()} X {diff}박
+              <Typography variant="body1" component="span" fontWeight={300}>
+                를 통한 예약 보호
+              </Typography>
+            </Grid>
+            <Divider />
+            <Grid item sx={{ py: 2 }}>
+              <Typography variant="h5" sx={{mb: 2}} fontWeight={500}>
+                요금 세부정보
+              </Typography>
+              <Grid item justifyContent="space-between" sx={{ my: 1, display: "flex" }}>
+                <Typography variant="body1" fontWeight={300}>
+                  ₩{data.productId!.price!.toLocaleString()} X {diff}박
                   </Typography>
-                  <Typography>
-                    ₩{(data.price! * diff).toLocaleString()}{" "}
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    mb: 2,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography>서비스 수수료</Typography>
-                  <Typography>
-                    ₩{Math.round(data.price! * diff * 0.14).toLocaleString()}{" "}
-                  </Typography>
-                </Box>
-                <Divider />
-                <Box
-                  sx={{
-                    mb: 2,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    pt: 2,
-                  }}
-                >
-                  <Typography>총합계</Typography>
-                  <Typography>
-                    ₩
-                    {(
-                      data.price! * diff +
-                      Math.ceil(data.price! * diff * 0.14)
-                    ).toLocaleString()}
-                  </Typography>
-                </Box>
-              </>
-            )} */}
-          </CardContent>
-        </Card>
+                <Typography variant="body1" fontWeight={300}>
+                  ₩{(data.productId!.price! * diff).toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid item justifyContent="space-between" sx={{display: "flex" }}>
+                <Typography variant="body1" fontWeight={300}>
+                  서비스 수수료
+                </Typography>
+                <Typography variant="body1" fontWeight={300}>
+                  ₩{Math.round(data.productId!.price! * diff * 0.14).toLocaleString()}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Divider />
+            <Grid item justifyContent="space-between" sx={{ py:2, display: "flex" }}>
+              <Typography variant="body1" fontWeight={500}>
+                총합계
+              </Typography>
+              <Typography variant="body1" fontWeight={500}>
+                ₩
+                {(data.productId!.price! * diff +
+                  Math.ceil(data.productId!.price! * diff * 0.14)
+                ).toLocaleString()}
+              </Typography>
+            </Grid>
+            <Divider />
+            <Grid item sx={{ pt: 2, display: "flex" }}>
+              <Typography variant="body2" fontWeight={300}>
+                해외에서 결제가 처리되기 때문에 카드 발행사에서 추가 수수료를 부과할 수 있습니다.
+              </Typography>
+            </Grid>
+        </Grid>
       </Grid>
     </>
   );

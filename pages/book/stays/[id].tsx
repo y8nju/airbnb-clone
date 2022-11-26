@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import { GetServerSideProps } from "next";
 import { Box, tablePaginationClasses } from "@mui/material";
 
@@ -9,19 +10,24 @@ import Hosting from "../../../lib/models/hosting";
 import { HostingType } from "../../../interface/hostingType";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
+import { BookingContextProvider } from "../../../context/bookingContext";
+import { getBookingData } from "../../../lib/api/bookApi";
+import { BookingType, PopulateBookingType } from "../../../interface/bookingType";
 
-export default function StayCheckout({ data }: { data: HostingType }) {
+export default function StayCheckout({ data }: { data: PopulateBookingType }) {
+  console.log('data', data);
   const router = useRouter();
-  console.log(router.query);
   return (
     <>
       <Head>
-        <title>{data.title} - 에어비앤비</title>
+        <title>예약 요청</title>
       </Head>
-      <Grid container  sx={{ mt: 3 }}>
-        <StayHedaer />
-        <StayMain data={data} />
-      </Grid>
+      <BookingContextProvider data={data.productId}>
+        <Grid container  sx={{ mt: 3 }}>
+          <StayHedaer />
+          <StayMain data={data} />
+        </Grid>
+      </BookingContextProvider>
     </>
   );
 }
@@ -30,15 +36,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   await dbConnect();
   const { id } = ctx.query;
 
-  const data = await Hosting.findById(id);
-  if (!data) {
+  const response = await getBookingData(id as string);
+  if (!response) {
     return {
       notFound: true,
     };
   }
   return {
     props: {
-      data: JSON.parse(JSON.stringify(data)),
+      data: response.datas,
     },
   };
 };

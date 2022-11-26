@@ -39,5 +39,11 @@ const hostingSchema = new mongoose.Schema<HostingType>({
     price: Number
 })
 
+hostingSchema.virtual("booking",{
+	localField:"_id",
+	ref: "booking",
+	foreignField:"productId"
+});
+
 export default mongoose.models.Hosting as mongoose.Model<HostingType> ||
     mongoose.model<HostingType>('Hosting', hostingSchema);

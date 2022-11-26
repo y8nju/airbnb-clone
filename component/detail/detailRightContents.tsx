@@ -9,6 +9,9 @@ import { grey } from '@mui/material/colors';
 import styled from '@mui/material/styles/styled';
 import { useRouter } from "next/router";
 import { BookingContext } from "../../context/bookingContext";
+import { creatAndUpdateBooking } from "../../lib/api/bookApi";
+import { BookingType } from "../../interface/bookingType";
+import GuestSelect from "./parts/guestSelect";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
@@ -54,29 +57,37 @@ const StyleButton = styled(Button) ({
 export default function DetailRightContents({ data }: { data: HostingType }) {
   const router = useRouter()
 	const bookingCtx = useContext(BookingContext);
-	const {bookingData, openDialog, isOpened} = bookingCtx!;
-  console.log('bookingData', bookingData);
+	const {bookingData, openDialog, isOpened, openSelectOpen, isSelectOpend} = bookingCtx!;
 
   let diff;
   if (bookingData.checkin && bookingData.checkout) {
     diff = differenceInCalendarDays(bookingData.checkout as Date, bookingData.checkin as Date);
   }
 
-  const reserveHandle: React.MouseEventHandler = (evt) => {
+  const reserveHandle: React.MouseEventHandler = async (evt) => {
     evt.stopPropagation();
     if (bookingCtx && bookingData.checkin && bookingData.checkout && bookingData.productId) {
-      const params = new URLSearchParams();
-      params.append("numberOfGuests", bookingData.numberOfGuests!.toString());
-      params.append("numberOfAdults", bookingData.numberOfAdults!.toString());
-      params.append(
-        "numberOfChildren",
-        bookingData.numberOfChildren!.toString()!
-      );
-      params.append("numberOfGuests", format(bookingData.checkin as Date, "yyyy-MM-dd"));
-      params.append("numberOfGuests", format(bookingData.checkout as Date, "yyyy-MM-dd"));
+      const rst = await creatAndUpdateBooking(bookingData);
+      if(rst && rst.result) {
+        console.log(rst)
+        const rstData = rst.data as BookingType;
+        const id = rstData._id;
+
+        const params = new URLSearchParams();
+        params.append("productId", String(rstData.productId));
+        params.append("checkin", format(new Date(rstData.checkin), "yyyy-MM-dd"));
+        params.append("checkout", format(new Date(rstData.checkout), "yyyy-MM-dd"));
+        params.append("numberOfGuests", rstData.numberOfGuests!.toString());
+        params.append("numberOfAdults", rstData.numberOfAdults!.toString());
+        params.append("numberOfChildren",rstData.numberOfChildren!.toString());
+        params.append("numberOfInfants", rstData.numberOfInfants!.toString());
+        params.append("numberOfPets",rstData.numberOfPets!.toString());
       // console.log(params.toString());
-      const path = "/book/stays/" + bookingData.productId
-      router.push(path+ "?" + params.toString(), path);
+        const path = "/book/stays/" + id
+        router.push(path+ "?" + params.toString(), path);
+      }else {
+        console.log('데이터가 정상적으로 등록되지 않았습니다')
+      }
     } else {
       bookingCtx?.openDialog();
     }
@@ -134,14 +145,17 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                   variant="outlined"
                   color="info"
                   size="large"
+                  onClick={() => openSelectOpen()}
                   sx={{flexDirection: "column"}}>
                   <Typography sx={{fontSize: '10px'}}>인원</Typography>
                   <Typography variant="body2">
-                    게스트 {bookingData.numberOfGuests}명
+                    게스트 {bookingData.numberOfGuests}명 
+                    {bookingData.numberOfInfants !== 0 && `, 유아 ${bookingData.numberOfInfants}명`}
                   </Typography>
                 </StyleButton>
               </Box>
               {isOpened && <CalendarModal />}
+              {isSelectOpend && <GuestSelect guest={data.floorPlan?.guests!} />}
             </Box>
             <Box sx={{ mb: 1 }}>
               <Button variant="contained" fullWidth size="large"

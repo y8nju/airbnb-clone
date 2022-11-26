@@ -3,7 +3,6 @@ import styled from '@mui/material/styles/styled';
 
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import ko from "date-fns/locale/ko";
 import { StaticDateRangePicker, StaticDateRangePickerProps} from '@mui/x-date-pickers-pro/StaticDateRangePicker';;
 import {
 	DateRangePickerDay as MuiDateRangePickerDay,
@@ -12,11 +11,32 @@ import {
 import { DateRange } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { useContext, useState } from "react";
 import  dateFns from 'date-fns';
+import ko from "date-fns/locale/ko";
 import { BookingContext } from "../../../context/bookingContext";
+import { creatAndUpdateBooking } from "../../../lib/api/bookApi";
+import { useRouter } from "next/router";
+import { ObjectId } from "mongodb";
+import { BookingType } from "../../../interface/bookingType";
 
-export default function CalendarStatic() {
-    const bookingCtx = useContext(BookingContext);
-    const {bookingData, updateData} = bookingCtx!;
+interface Props {
+  saved?: boolean
+}
+
+export default function CalendarStatic(props: Props) {
+  const router = useRouter();
+  const bookingCtx = useContext(BookingContext);
+  const {bookingData, updateData, closeDialog, updateSavedData} = bookingCtx!;
+  const savedHandle = async () => {
+    const rst = await creatAndUpdateBooking({
+      ...bookingData, _id: router.query.id
+    } as BookingType);
+    if(rst && rst.result) {
+        updateSavedData();
+        closeDialog();
+    }else {
+        console.log('데이터가 정상적으로 등록되지 않았습니다')
+      }
+  }
 
   const value: DateRange<dateFns | Date> = [
     bookingData.checkin ?? null,
@@ -35,6 +55,7 @@ export default function CalendarStatic() {
           value={value as any}
           renderDay={renderWeekPickerDay}
           onChange={(newValue) => {
+            console.log(newValue)
             updateData({ checkin: newValue[0], checkout: newValue[1] });
           }}
           renderInput={() => <></>}
@@ -51,6 +72,11 @@ export default function CalendarStatic() {
         >
           날짜지우기
         </Button>
+        {props.saved && <Button variant="contained" color="info" size="small"
+          onClick={savedHandle}
+          disabled={!(bookingData.checkin && bookingData.checkout) ? true : false}>
+          저장하기
+        </Button>}
       </Grid>
     </Grid>
   );

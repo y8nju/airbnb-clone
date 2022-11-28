@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HostingType } from '../../../interface/hostingType';
-import { CoorsType } from '../../../interface/mapsType';
 
 const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
 
@@ -17,7 +16,6 @@ function buildContent() {
 	`;
 	return content;
 }
-
 
 export default function Maps({ data }: { data: HostingType }) {
 	const mapElement = useRef<HTMLDivElement>(null);
@@ -41,7 +39,7 @@ export default function Maps({ data }: { data: HostingType }) {
 	}
 	const initMap = () => {
 		const { google } = window;
-    	if (!mapElement.current || !google) return;
+		if (!mapElement.current || !google) return;
 
 		const map = new google.maps.Map(mapElement.current!, {
 			mapId: '4ef2f3ae999feb44',
@@ -50,10 +48,6 @@ export default function Maps({ data }: { data: HostingType }) {
 			mapTypeControl: false,
 			fullscreenControl: false,
 			});
-			// new google.maps.Marker({
-			// position: coords,
-			// map,
-			// });
 		const markerView = new google.maps.marker.AdvancedMarkerView({
 			map,
 			position: coords,
@@ -61,23 +55,11 @@ export default function Maps({ data }: { data: HostingType }) {
 		});
 	}
 	useEffect(() => {
-		// const script = window.document.getElementsByTagName('script')[0];
-		// const includeCheck = script.src.startsWith(
-		// 	'https://maps.googleapis.com/maps/api'
-		// );
-
-		// if (includeCheck) return initMap();
 		window.initMap = initMap;
-		loadScript("https://maps.googleapis.com/maps/api/js?v=beta&key=AIzaSyD_8pLwS_D3xDZV5Q2RKdv5_dCnpuAptRI&callback=initMap&libraries=marker")
+		loadScript(`https://maps.googleapis.com/maps/api/js?v=beta&key=${appKey}&callback=initMap&libraries=marker`)
 	}, [coords]);
 
 	return (<>
 		<div ref={mapElement} style={{ height: '100%' }} />
-		{/* <script
-		src="https://maps.googleapis.com/maps/api/js?v=beta&key=AIzaSyD_8pLwS_D3xDZV5Q2RKdv5_dCnpuAptRI&callback=initMap&libraries=marker"
-		async defer></script> */}
 	</>);
 }
-
-
-  

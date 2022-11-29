@@ -2,13 +2,15 @@ import { useContext, useState, useEffect } from "react";
 import { Grid, Box, Typography, Avatar, Divider } from "@mui/material";
 import Button from "@mui/material/Button";
 import { BookingContext } from "../../context/bookingContext";
-import { differenceInCalendarDays, format, addDays } from "date-fns";
+import { differenceInCalendarDays, format, addDays, subDays } from "date-fns";
 import {ko} from "date-fns/locale";
 import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import { pink } from '@mui/material/colors';
 import CalendarModal from "./calendarModal";
 import { PopulateBookingType } from "../../interface/bookingType";
 import GuestSelect from "./guestSelect";
+import Paypal from "./paypal";
+import { useSession } from "next-auth/react";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
@@ -18,8 +20,11 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 	const bookingCtx = useContext(BookingContext);
 	const {bookingData, isOpened, openDialog, savedData, openSelectOpen, isSelectOpend} = bookingCtx!;
 	const {checkin, checkout} = data;
+	const checkinStr = checkin!.toString().slice(0, 10);
+	const checkoutStr = checkout!.toString().slice(0, 10);
+	
 	const reserveHandle = () => {
-		
+		// router.push("/book/submit/" + json.data._id);
 	}
 
 	return (<>
@@ -31,10 +36,10 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 					<Grid item sx={{display: 'flex', flexDirection: "column"}}>
 						<Typography variant="body1" fontWeight={500}>날짜</Typography>
 						<Typography variant="body1" fontWeight={300}>
-							{format(new Date(checkin.slice(0, 10)), 'PPP', {locale: ko})}~
-							{	new Date(checkin.slice(0, 10)).getFullYear() !== new Date(checkout.slice(0, 10)).getFullYear() ? format(new Date(checkout.slice(0, 10)), 'PPP', {locale: ko}) : (
-								new Date(checkin.slice(0, 10)).getMonth() !== new Date(checkout.slice(0, 10)).getMonth() ? format(new Date(checkout.slice(0, 10)), 'MMM do', {locale: ko}) :
-								format(new Date(checkout.slice(0, 10)), 'do', {locale: ko})
+							{format(new Date(checkinStr), 'PPP', {locale: ko})}~
+							{	new Date(checkinStr).getFullYear() !== new Date(checkoutStr).getFullYear() ? format(new Date(checkoutStr), 'PPP', {locale: ko}) : (
+								new Date(checkinStr).getMonth() !== new Date(checkoutStr).getMonth() ? format(new Date(checkoutStr), 'MMM do', {locale: ko}) :
+								format(new Date(checkoutStr), 'do', {locale: ko})
 							)}
 						</Typography>
 					</Grid>
@@ -62,16 +67,9 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 			</Grid>
 			<Divider />
 			<Grid item sx={{ py: 2 }}>
-				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>결제 방식 선택하기</Typography>
-				<Grid item justifyContent="space-between" sx={{display: 'flex', py: 1}}>
-					
-				</Grid>
-			</Grid>
-			<Divider />
-			<Grid item sx={{ py: 2 }}>
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>결제 수단</Typography>
-				<Grid item justifyContent="space-between" sx={{display: 'flex', py: 1}}>
-					
+				<Grid item flex={1} sx={{display: 'flex', py: 1}}>
+					<Paypal bookingData={data} />
 				</Grid>
 			</Grid>
 			<Divider />
@@ -111,10 +109,10 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>환불 정책</Typography>
 				<Grid item sx={{ py: 1}}>
 					<Typography variant="body1" component="span" fontWeight={500}>
-						{format(addDays(new Date(checkin.slice(0, 10)), -30), 'MMM do', {locale: ko})} 전까지 무료로 취소하실 수 있습니다.
+						{format(subDays(new Date(checkinStr), 3), 'MMM do', {locale: ko})} 전까지 무료로 취소하실 수 있습니다.
 					</Typography>
 					<Typography variant="body1" component="span">
-						체크인 날짜인 {format(new Date(checkin.slice(0, 10)), 'MMM do', {locale: ko})} 전에 취소하면 부분 환불을 받으실 수 있습니다. 
+						체크인 날짜인 {format(new Date(checkinStr), 'MMM do', {locale: ko})} 전에 취소하면 부분 환불을 받으실 수 있습니다. 
 					</Typography>
 					<Typography component="span" fontWeight={500}
 						sx={{ml: 1, textDecoration: 'underline'}}>

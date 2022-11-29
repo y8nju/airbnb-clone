@@ -10,12 +10,12 @@ export default async function handler (req:NextApiRequest, res: NextApiResponse)
     const doc = req.body as BookingType;
     const {checkin, checkout} = doc;
     console.log('mongoDoc', doc)
-    const checkinYear = checkin.split('.')[0].trim();
-    const checkinMonth = ('0' + checkin.split('.')[1].trim()).slice(-2);
-    const checkinDate = ('0' + checkin.split('.')[2].trim()).slice(-2);
-    const checkoutYear = checkout.split('.')[0].trim();
-    const checkoutMonth = ('0' + checkout.split('.')[1].trim()).slice(-2);
-    const checkoutDate = ('0' + checkout.split('.')[2].trim()).slice(-2);
+    const checkinYear = String(checkin).split('.')[0].trim();
+    const checkinMonth = ('0' + String(checkin).split('.')[1].trim()).slice(-2);
+    const checkinDate = ('0' + String(checkin).split('.')[2].trim()).slice(-2);
+    const checkoutYear = String(checkout).split('.')[0].trim();
+    const checkoutMonth = ('0' + String(checkout).split('.')[1].trim()).slice(-2);
+    const checkoutDate = ('0' + String(checkout).split('.')[2].trim()).slice(-2);
     const newDoc = {
         ...doc,
         checkin: new Date(`${checkinYear}-${checkinMonth}-${checkinDate}`),

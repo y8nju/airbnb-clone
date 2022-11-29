@@ -13,11 +13,10 @@ function StayAside({ data }: { data: PopulateBookingType }) {
   const router = useRouter();
   const bookingCtx = useContext(BookingContext);
   const {bookingData, updateData, openDialog} = bookingCtx!;
-  console.log('data', data)
 
   let diff;
   if (data.checkin && data.checkout) {
-    diff = differenceInCalendarDays(new Date(data.checkout) as Date, new Date(data.checkin) as Date);
+    diff = differenceInCalendarDays(new Date(data.checkout as Date) as Date, new Date(data.checkin as Date) as Date);
   }
   //console.log("diff=", diff);
   return (

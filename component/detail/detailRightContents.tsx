@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box, Grid, Typography, Divider } from "@mui/material";
 import { Card, CardContent, Button } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -12,6 +12,7 @@ import { BookingContext } from "../../context/bookingContext";
 import { creatAndUpdateBooking } from "../../lib/api/bookApi";
 import { BookingType } from "../../interface/bookingType";
 import GuestSelect from "./parts/guestSelect";
+import { useSession } from "next-auth/react";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
@@ -58,7 +59,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
   const router = useRouter()
 	const bookingCtx = useContext(BookingContext);
 	const {bookingData, openDialog, isOpened, openSelectOpen, isSelectOpend} = bookingCtx!;
-
+  const {data: session} = useSession();
   let diff;
   if (bookingData.checkin && bookingData.checkout) {
     diff = differenceInCalendarDays(bookingData.checkout as Date, bookingData.checkin as Date);
@@ -75,8 +76,8 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
 
         const params = new URLSearchParams();
         params.append("productId", String(rstData.productId));
-        params.append("checkin", format(new Date(rstData.checkin), "yyyy-MM-dd"));
-        params.append("checkout", format(new Date(rstData.checkout), "yyyy-MM-dd"));
+        params.append("checkin", format(new Date(rstData!.checkin as Date), "yyyy-MM-dd"));
+        params.append("checkout", format(new Date(rstData!.checkout as Date), "yyyy-MM-dd"));
         params.append("numberOfGuests", rstData.numberOfGuests!.toString());
         params.append("numberOfAdults", rstData.numberOfAdults!.toString());
         params.append("numberOfChildren",rstData.numberOfChildren!.toString());
@@ -159,8 +160,9 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
             </Box>
             <Box sx={{ mb: 1 }}>
               <Button variant="contained" fullWidth size="large"
+                disabled={!session}
                 onClick={reserveHandle}
-                sx={gradientBg}>
+                sx={session && gradientBg}>
                 {bookingData.checkin && bookingData.checkout ? '예약하기' : '예약 가능 여부 보기'}
               </Button>
             </Box>

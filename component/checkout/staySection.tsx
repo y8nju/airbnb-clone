@@ -1,34 +1,51 @@
 import { useContext, useState, useEffect } from "react";
-import { Grid, Box, Typography, Avatar, Divider } from "@mui/material";
+import { Grid, Typography, Divider } from "@mui/material";
 import Button from "@mui/material/Button";
 import { BookingContext } from "../../context/bookingContext";
 import { differenceInCalendarDays, format, addDays, subDays } from "date-fns";
 import {ko} from "date-fns/locale";
 import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
-import { pink } from '@mui/material/colors';
+import { grey, pink } from '@mui/material/colors';
 import CalendarModal from "./calendarModal";
 import { PopulateBookingType } from "../../interface/bookingType";
 import GuestSelect from "./guestSelect";
 import Paypal from "./paypal";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { Error } from '@mui/icons-material/';
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
 
 export default function StaySection({ data }: { data: PopulateBookingType }) {
-	const [bookDate, setBookDate] = useState<string|null>(null);
+	const [isPaymnet, setIsPayment] = useState<boolean>(false);
+	const router = useRouter();
 	const bookingCtx = useContext(BookingContext);
 	const {bookingData, isOpened, openDialog, savedData, openSelectOpen, isSelectOpend} = bookingCtx!;
-	const {checkin, checkout} = data;
+	const {checkin, checkout, payment} = data;
 	const checkinStr = checkin!.toString().slice(0, 10);
 	const checkoutStr = checkout!.toString().slice(0, 10);
-	
 	const reserveHandle = () => {
-		// router.push("/book/submit/" + json.data._id);
+		console.log('data.payment', data.payment)
+		if(data.payment) {
+			router.push("/book/submit/" + data._id);
+		}else {
+			setIsPayment(true)
+		}
 	}
 
 	return (<>
 		<Grid container direction="column">
+			{isPaymnet && 
+				<Grid container alignItems="center" sx={{my: 3, borderRadius: 2, border: 1, borderColor: grey[300]}}>
+					<Grid sx={{p: 1.5}}>
+						<Error sx={{mr: 1, mt: 0.5, fontSize: 50}} color={'error'} />
+					</Grid>
+					<Grid flex={1}>
+						<Typography variant="body1" sx={{fontWeight: 500, mb: 0.5}}>다시 시도해주세요.</Typography>
+						<Typography variant="body2" sx={{fontWeight: 300}}>올바르지 않은 비밀번호입니다. 다시 시도하거나 다른 로그인 방법을 선택하세요.</Typography>
+					</Grid>
+				</Grid>
+			}
 			<Grid item sx={{ py: 2 }}>
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>예약정보</Typography>
 				<Grid item justifyContent="space-between" sx={{display: 'flex', py: 1}}>
@@ -69,10 +86,10 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 			<Grid item sx={{ py: 2 }}>
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>결제 수단</Typography>
 				<Grid item flex={1} sx={{display: 'flex', py: 1}}>
-					<Paypal bookingData={data} />
+					<Paypal data={data} paymentUpdate={setIsPayment} />
 				</Grid>
 			</Grid>
-			<Divider />
+			{/* <Divider />
 			<Grid item sx={{ py: 2 }}>
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>필수 입력 정보</Typography>
 				<Grid container justifyContent="space-between" sx={{ py: 1}}>
@@ -103,14 +120,15 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 							sx={{ minWidth:'fit-content', px: 1.5 }}>추가</Button>
 					</Grid>
 				</Grid>
-			</Grid>
+			</Grid> */}
 			<Divider />
 			<Grid item sx={{ py: 2 }}>
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>환불 정책</Typography>
 				<Grid item sx={{ py: 1}}>
-					<Typography variant="body1" component="span" fontWeight={500}>
+					{differenceInCalendarDays(new Date(checkinStr), new Date()) >= 3 &&
+						<Typography variant="body1" component="span" fontWeight={500}>
 						{format(subDays(new Date(checkinStr), 3), 'MMM do', {locale: ko})} 전까지 무료로 취소하실 수 있습니다.
-					</Typography>
+					</Typography>}
 					<Typography variant="body1" component="span">
 						체크인 날짜인 {format(new Date(checkinStr), 'MMM do', {locale: ko})} 전에 취소하면 부분 환불을 받으실 수 있습니다. 
 					</Typography>

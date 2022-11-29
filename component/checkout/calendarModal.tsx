@@ -66,7 +66,7 @@ export default function CalendarModal() {
 	const {bookingData, closeDialog} = bookingCtx!;
 
 	return ( <Grid container justifyContent="center" alignItems="center"
-        width="100vw" height="100vh" position="fixed" zIndex={10} top={0} left={0}>
+        width="100vw" height="100vh" position="fixed" zIndex={1000} top={0} left={0}>
         <Grid container width="100%" height="100%" position="fixed" zIndex={1} top={0} left={0}
             onClick={() => closeDialog()}
             sx={{backgroundColor: '#00000080'}}></Grid>

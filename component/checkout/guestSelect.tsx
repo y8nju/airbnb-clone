@@ -15,18 +15,19 @@ export default function GuestSelect(props: {guest: number}) {
     const {bookingData, updateData, closeSelectOpen, updateSavedData} = bookingCtx!
     const savedHandle = async () => {
         const rst = await creatAndUpdateBooking({
-          ...bookingData, _id: router.query.id
-        } as BookingType);
+            ...bookingData,
+            _id: router.query.id
+        } as unknown as BookingType);
         if(rst && rst.result) {
             updateSavedData();
             closeSelectOpen();
         }else {
             console.log('데이터가 정상적으로 등록되지 않았습니다')
-          }
-      }
+        }
+    }
 
     return(<Grid container justifyContent="center" alignItems="center"
-        width="100vw" height="100vh" position="fixed" zIndex={10} top={0} left={0}>
+        width="100vw" height="100vh" position="fixed" zIndex={1000} top={0} left={0}>
         <Grid container width="100%" height="100%" position="fixed" zIndex={1} top={0} left={0}
             onClick={() => closeSelectOpen()}
             sx={{backgroundColor: '#00000080'}}></Grid>

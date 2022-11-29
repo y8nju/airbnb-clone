@@ -69,6 +69,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
     evt.stopPropagation();
     if (bookingCtx && bookingData.checkin && bookingData.checkout && bookingData.productId) {
       const rst = await creatAndUpdateBooking(bookingData);
+      console.log('예약하기', rst)
       if(rst && rst.result) {
         console.log(rst)
         const rstData = rst.data as BookingType;
@@ -122,8 +123,8 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                   size="large"
                   onClick={() => openDialog()}
                   sx={{dispaly: 'flex'}}>
-                  <Grid item flex={1} direction="column" justifyContent="center" alignItems="flex-start" 
-                    sx={{display: 'flex', padding: '10px 21px', borderRight: `1px solid ${grey[400]}`}}>
+                  <Grid item flex={1} justifyContent="center" alignItems="flex-start" 
+                    sx={{display: 'flex',  direction: 'column', padding: '10px 21px', borderRight: `1px solid ${grey[400]}`}}>
                     <Typography sx={{fontSize: '10px'}}>체크인</Typography>
                     <Typography variant="body2">
                       {bookingData.checkin
@@ -131,8 +132,8 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                         : "날짜추가"}
                     </Typography>
                   </Grid>
-                  <Grid item flex={1} direction="column" justifyContent="center" alignItems="flex-start" 
-                    sx={{display: 'flex', padding: '10px 21px' }}>
+                  <Grid item flex={1} justifyContent="center" alignItems="flex-start" 
+                    sx={{display: 'flex',  direction: 'column', padding: '10px 21px' }}>
                     <Typography sx={{fontSize: '10px'}}>체크아웃</Typography>
                     <Typography variant="body2">
                       {bookingData.checkout

@@ -10,13 +10,17 @@ import { getHostingList } from "../../lib/api/propertyApi";
 import DetailMainMaps from "../../component/detail/detailMainMaps";
 import { BookingContextProvider } from "../../context/bookingContext";
 
+const HeadTitle = ({title}: {title: string}) => {
+  return (
+      <Head>
+          <title>{title} - 에어비앤비</title>
+      </Head>
+  )
+}
 export default function HostingRoomDetail({ data }: { data: HostingType }) {
-
   return (
     <>
-      <Head>
-        <title>{data.title} - 에어비앤비</title>
-      </Head>
+      <HeadTitle title={data.title! as string} />
       <BookingContextProvider data={data}>
       <Container maxWidth="lg" sx={{ position: "relative", pt: 1, py: 3 }}>
         <DetailMainHeader data={data} />

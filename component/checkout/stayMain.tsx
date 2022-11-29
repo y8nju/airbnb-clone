@@ -7,6 +7,7 @@ import { PopulateBookingType } from "../../interface/bookingType";
 import dbConnect from "../../lib/dbConnect";
 import { useRouter } from "next/router";
 import { getBookingData } from "../../lib/api/bookApi";
+import { Types } from "mongoose";
 
 export default function StayMain({ data }: { data: PopulateBookingType }) {
   const router = useRouter();
@@ -17,14 +18,14 @@ export default function StayMain({ data }: { data: PopulateBookingType }) {
   useEffect(() => {
     if(data) {
       updateData({
-        productId: data.productId!._id,
+        productId: data.productId!._id as Types.ObjectId,
         checkin: new Date(data.checkin!),
         checkout: new Date(data.checkout!),
         numberOfGuests: data.numberOfGuests!,
         numberOfAdults: data.numberOfAdults!,
         numberOfChildren: data.numberOfChildren!,
         numberOfInfants: data.numberOfInfants!,
-        numberOfPets: data.numberOfPets!,
+        numberOfPets: data.numberOfPets!
       })
     }
   }, []);

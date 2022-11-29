@@ -12,7 +12,7 @@ const postOption = {
 
 export async function creatAndUpdateBooking(doc: BookingType) {
     console.log('updateData', doc)
-    console.log(doc.checkin.toLocaleDateString())
+    const {checkin, checkout} = doc
     let endPoint = serverURI + '/api/book/creatAndUpdateBooking';
     const response = await fetch(endPoint, {
         ...postOption,
@@ -35,3 +35,18 @@ export async function getBookingData(id?: string) {
     const data = await response.json();
     return data
 }
+
+// export async function getValid(doc: any) {
+//     let endPoint = serverURI + '/api/book/valid';
+//     console.log(doc)
+//     const response = await fetch(endPoint, {
+//         method: "POST",
+//         body: JSON.stringify({
+//         productId: doc.productId,
+//         checkin: doc.checkin,
+//         checkout: doc.checkout,
+//         }),
+//         headers: { "Content-type": "application/json" },
+//     });
+//     return response;
+// }

@@ -16,22 +16,25 @@ export default async function handler (req:NextApiRequest, res: NextApiResponse)
     const checkoutYear = String(checkout).split('.')[0].trim();
     const checkoutMonth = ('0' + String(checkout).split('.')[1].trim()).slice(-2);
     const checkoutDate = ('0' + String(checkout).split('.')[2].trim()).slice(-2);
-    const newDoc = {
-        ...doc,
+    const newDoc: BookingType = {
+        ...req.body,
         checkin: new Date(`${checkinYear}-${checkinMonth}-${checkinDate}`),
         checkout: new Date(`${checkoutYear}-${checkoutMonth}-${checkoutDate}`)
     }
-    console.log(newDoc)
+    console.log('newDoc', newDoc)
     let resultItem;
     if(req.method !== "POST") {
         return res.status(405).json({result: false, message: '요청을 처리할 수 없습니다'})
     }
+    if(doc.checkin == null || doc.checkout == null || !doc.productId) {
+        res.status(422).json({ result: false, message: '필수 데이터가 존재하지 않습니다' });
+    }
     try {
         if(newDoc._id) {
-            resultItem = await Booking.findByIdAndUpdate(doc._id, newDoc, {
+            resultItem = await Booking.findByIdAndUpdate(newDoc._id, newDoc, {
                 returnDocument: "after",
             });
-            console.log(resultItem);
+            console.log('resultItem', resultItem);
         } else {
             resultItem = await Booking.create(newDoc);
         }

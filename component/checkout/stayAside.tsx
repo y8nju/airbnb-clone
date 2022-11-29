@@ -1,11 +1,9 @@
-import { Box, Typography, Divider, TextField } from "@mui/material";
-import { Card, CardContent, Button } from "@mui/material";
+import { Box, Grid, Typography, Divider, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { format, differenceInCalendarDays } from "date-fns";
 
 import { useRouter } from "next/router";
 import { HostingType } from "../../interface/hostingType";
-import Grid from "@mui/material/Grid";
 import { BookingContext } from "../../context/bookingContext";
 import { PopulateBookingType } from "../../interface/bookingType";
 

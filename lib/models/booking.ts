@@ -13,7 +13,12 @@ const bookingSchema = new mongoose.Schema<BookingType>({
     numberOfInfants: Number,
     numberOfChildren: Number,
     numberOfPets: Number,
-
+    payment: {
+        source: String,
+        orderId: String,
+        payerId: String,
+        paidTime: Date
+    }
 
     // disabledBookingDate 다 따로 받기( checkout 날짜 빼기)
 })

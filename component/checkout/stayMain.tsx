@@ -19,8 +19,8 @@ export default function StayMain({ data }: { data: PopulateBookingType }) {
     if(data) {
       updateData({
         productId: data.productId!._id as Types.ObjectId,
-        checkin: new Date(data.checkin!),
-        checkout: new Date(data.checkout!),
+        checkin: new Date(data.checkin!.toString().slice(0, 10)),
+        checkout: new Date(data.checkout!.toString().slice(0, 10)),
         numberOfGuests: data.numberOfGuests!,
         numberOfAdults: data.numberOfAdults!,
         numberOfChildren: data.numberOfChildren!,

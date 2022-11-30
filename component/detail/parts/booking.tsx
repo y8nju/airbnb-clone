@@ -14,11 +14,11 @@ export default function BookingSummary({ data }: { data: HostingType }) {
 		<>
 			<Typography variant="h5" sx={{mb: 2}}>
 			{data.location!.city}, {data.location!.state}에서{" "}
-			{differenceInCalendarDays(bookingData.checkout, bookingData.checkin)}박
+			{differenceInCalendarDays(bookingData.checkout as Date, bookingData.checkin as Date)}박
 			</Typography>
 			<Typography variant="body1" color="text.secondary">
-			{format(bookingData.checkin, "yyyy년 MM월 dd일")} ~
-			{format(bookingData.checkout, "yyyy년 MM월 dd일")}
+			{format(bookingData.checkin as Date, "yyyy년 MM월 dd일")} ~
+			{format(bookingData.checkout as Date, "yyyy년 MM월 dd일")}
 			</Typography>
 		</>
 		)}

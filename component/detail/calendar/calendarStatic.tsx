@@ -38,7 +38,7 @@ export default function CalendarStatic(props: Props) {
       }
   }
 
-  const value: DateRange<dateFns | Date> = [
+  const value: DateRange<dateFns | Date | string | null> = [
     bookingData.checkin ?? null,
     bookingData.checkout ?? null,
   ];

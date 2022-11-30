@@ -110,15 +110,17 @@ export default function BookInfo({ data }: { data: PopulateBookingType }) {
                 </Typography>
             </Grid>
             <Grid item flex={7} sx={{display: 'flex', gap: 4}}>
-                <Typography variant="body1" fontWeight={300} sx={{flex: 1}}>
-                    총 {diff}박
-                </Typography>
-                <Typography variant="body1" fontWeight={300} sx={{flex: 1}}>
-                    ₩
-                    {(data.productId!.price! * diff +
-                    Math.ceil(data.productId!.price! * diff * 0.14)
-                    ).toLocaleString()}
-                </Typography>
+                {diff && <>
+                    <Typography variant="body1" fontWeight={300} sx={{flex: 1}}>
+                        총 {diff}박
+                    </Typography>
+                    <Typography variant="body1" fontWeight={300} sx={{flex: 1}}>
+                        ₩
+                        {(data.productId!.price! * diff +
+                        Math.ceil(data.productId!.price! * diff * 0.14)
+                        ).toLocaleString()}
+                    </Typography>
+                </>}
             </Grid>
 		</Grid>
     </Grid>)

@@ -9,10 +9,15 @@ import MapsModal from './mapsModal';
 export default function BookInfo({ data }: { data: PopulateBookingType }) {
     const [mapsOpen, setMapsOpen] = useState<boolean>(false);
     const { location } = data.productId;
+	const checkinStr = data.checkin!.toString().slice(0, 10);
+	const checkoutStr = data.checkout!.toString().slice(0, 10);
     let diff;
     if (data.checkin && data.checkout) {
         diff = differenceInCalendarDays(new Date(data.checkout as Date) as Date, new Date(data.checkin as Date) as Date);
     }
+    useEffect(() => {
+        console.log(typeof data.checkin)
+    }, [])
 
     return(<Grid direction="column" sx={{ width: 1, margin: "auto", p: 3, borderRadius: 2, border: 1, borderColor: 'grey.300'}}>
 		<Grid container justifyContent="space-between" alignItems="center" sx={{ pb:3, pt: 1 }}>
@@ -21,8 +26,11 @@ export default function BookInfo({ data }: { data: PopulateBookingType }) {
                     체크인
                 </Typography>
                 <Typography variant="body1" fontWeight={300}>
-                    {new Intl.DateTimeFormat('ko', { dateStyle: 'long' }).format(new Date(data.checkin.slice(0,10)))}
-                    ({new Intl.DateTimeFormat('ko', { weekday: 'short' }).format(new Date(data.checkin.slice(0,10)))})
+                    {data.checkin !== null && <>
+                        {new Intl.DateTimeFormat('ko', { dateStyle: 'long' }).format(new Date(checkinStr))}
+                        ({new Intl.DateTimeFormat('ko', { weekday: 'short' }).format(new Date(checkoutStr))})
+                    </>
+                    }
                 </Typography>
             </Grid>
             <Grid container flex={1} sx={{gap: 6}}>
@@ -30,8 +38,11 @@ export default function BookInfo({ data }: { data: PopulateBookingType }) {
                     체크아웃
                 </Typography>
                 <Typography variant="body1" fontWeight={300}>
-                    {new Intl.DateTimeFormat('ko', { dateStyle: 'long' }).format(new Date(data.checkout.slice(0,10)))}
-                    ({new Intl.DateTimeFormat('ko', { weekday: 'short' }).format(new Date(data.checkout.slice(0,10)))})
+                    {data.checkout !== null && <>
+                        {new Intl.DateTimeFormat('ko', { dateStyle: 'long' }).format(new Date(checkinStr))}
+                        ({new Intl.DateTimeFormat('ko', { weekday: 'short' }).format(new Date(checkoutStr))})
+                        </>
+                    }
                 </Typography>
             </Grid>
 		</Grid>

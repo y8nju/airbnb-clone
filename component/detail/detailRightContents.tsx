@@ -124,7 +124,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                   onClick={() => openDialog()}
                   sx={{dispaly: 'flex'}}>
                   <Grid item flex={1} justifyContent="center" alignItems="flex-start" 
-                    sx={{display: 'flex',  direction: 'column', padding: '10px 21px', borderRight: `1px solid ${grey[400]}`}}>
+                    sx={{display: 'flex',  flexDirection: 'column', padding: '10px 21px', borderRight: `1px solid ${grey[400]}`}}>
                     <Typography sx={{fontSize: '10px'}}>체크인</Typography>
                     <Typography variant="body2">
                       {bookingData.checkin
@@ -133,7 +133,7 @@ export default function DetailRightContents({ data }: { data: HostingType }) {
                     </Typography>
                   </Grid>
                   <Grid item flex={1} justifyContent="center" alignItems="flex-start" 
-                    sx={{display: 'flex',  direction: 'column', padding: '10px 21px' }}>
+                    sx={{display: 'flex',  flexDirection: 'column', padding: '10px 21px' }}>
                     <Typography sx={{fontSize: '10px'}}>체크아웃</Typography>
                     <Typography variant="body2">
                       {bookingData.checkout

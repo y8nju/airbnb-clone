@@ -7,6 +7,7 @@ import LoginAndSignUp from '../ui/modal/resister';
 import AnchorUserMenu from '../menu/anchorUserMenu';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface Props {
 	sx?: any,
@@ -26,7 +27,10 @@ export default function Header (props: Props) {
 	return ( <Container maxWidth={false} disableGutters={true} sx={[{ borderBottom: 1, borderBottomColor: 'grey.300' }, props.sx]}>
 		<Container maxWidth={props.mw}>
 			<Toolbar>
-				<img src="/images/logo.svg" alt="logo" width="102" height="32" />
+				<Link  href="/">
+					<img src="/images/logo.svg" alt="logo" width="102" height="32"
+						style={{verticalAlign: 'bottom'}} />
+				</Link>
 				<Typography variant="h6" component="div" sx={{ flexGrow: 1 }} textAlign="center">
 					서치 영역 들어옴
 				</Typography>

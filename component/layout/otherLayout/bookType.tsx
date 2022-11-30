@@ -9,6 +9,7 @@ import { useCtx } from '../../../context/context';
 import { ChidrenProps } from '../../../interface/propsType';
 import { grey } from '@mui/material/colors';
 import Toolbar from '@mui/material/Toolbar';
+import Link from 'next/link';
 
 export default function BookTypeLayout (props: ChidrenProps) {
 	const { children } = props;
@@ -16,7 +17,10 @@ export default function BookTypeLayout (props: ChidrenProps) {
 	return ( <Container maxWidth={false} disableGutters={true} sx={{minHeight: '100vh'}}>
         <AppBar position="static" elevation={0} sx={{ bgcolor: "white", color: 'text.primary', borderBottom: 1, borderBottomColor: 'grey.300' }}>
             <Toolbar>
-				<img src="/images/logo.svg" alt="logo" width="102" height="32" />
+				<Link  href="/">
+					<img src="/images/logo.svg" alt="logo" width="102" height="32"
+						style={{verticalAlign: 'bottom'}} />
+				</Link>
 			</Toolbar>
         </AppBar>
 		<Container maxWidth="lg" sx={{pt: 4}} >

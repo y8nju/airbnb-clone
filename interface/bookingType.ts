@@ -4,7 +4,7 @@ import { HostingType } from "./hostingType";
 
 export interface BookingType {
     _id?: Types.ObjectId,
-    guestId: string,
+    guestId?: string,
     productId?: string | Types.ObjectId;
     checkin?: dateFns | Date | string | null;
     checkout?: dateFns | Date | string | null;
@@ -23,7 +23,7 @@ export interface BookingType {
 }
 export interface PopulateBookingType {
     _id: Types.ObjectId,
-    guestId: string,
+    guestId?: string,
     productId: HostingType;
     checkin: dateFns | Date | null;
     checkout: dateFns | Date | null;

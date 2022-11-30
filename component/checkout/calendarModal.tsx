@@ -6,6 +6,7 @@ import { grey } from '@mui/material/colors';
 import { BookingContext } from "../../context/bookingContext";
 import CalendarStatic from "../detail/calendar/calendarStatic";
 import CloseIcon from '@mui/icons-material/Close';
+import { ReservedPeriod } from "../../pages/rooms/[roomId]";
 
 const StyleInput = styled(TextField) ({
 	'& fieldset': {
@@ -60,7 +61,7 @@ const StyleInput = styled(TextField) ({
 	}
   })
 
-export default function CalendarModal() {
+export default function CalendarModal({reserved}: {reserved: ReservedPeriod}) {
 	const [inpFocus, setInpFocus] = useState<boolean>(false);
 	const bookingCtx = useContext(BookingContext);
 	const {bookingData, closeDialog} = bookingCtx!;
@@ -137,7 +138,7 @@ export default function CalendarModal() {
                     </Box>
                 </Grid>
             </Grid>
-            <CalendarStatic saved={true} />
+            <CalendarStatic saved={true} reserved={reserved}  />
         </Paper>
 	</Grid>);
 }

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { BookingType } from "../../interface/bookingType";
 
 const bookingSchema = new mongoose.Schema<BookingType>({
+    guestId: String,
     productId: {
         type: mongoose.SchemaTypes.ObjectId,
 		ref: 'Hosting',

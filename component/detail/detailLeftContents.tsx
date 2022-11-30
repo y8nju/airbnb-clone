@@ -5,8 +5,14 @@ import { amenitiesGroup, AmenityType } from "../../lib/utils/amenitiesGroup";
 import { useContext, useEffect, useState } from "react";
 import BookingSummary from "./parts/booking";
 import CalendarStatic from "./calendar/calendarStatic";
+import { ReservedPeriod } from "../../pages/rooms/[roomId]";
 
-function DetailLeftContents({ data }: { data: HostingType }) {
+interface Props {
+  data: HostingType,
+  reserved: ReservedPeriod
+}
+
+function DetailLeftContents({ data, reserved }: Props) {
 
   const [amenities, setAmenities] = useState<AmenityType[]| []>([]);
   useEffect(()=> {
@@ -82,7 +88,7 @@ function DetailLeftContents({ data }: { data: HostingType }) {
       <Divider />
       <Grid container direction="column" sx={{ py: 3 }}>
         <BookingSummary data={data} />
-        <CalendarStatic />
+        <CalendarStatic reserved={reserved} />
       </Grid>
       <Divider />
     </>

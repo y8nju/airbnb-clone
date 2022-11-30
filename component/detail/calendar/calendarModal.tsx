@@ -5,6 +5,7 @@ import { differenceInCalendarDays, format } from "date-fns";
 import CalendarStatic from "./calendarStatic";
 import { grey } from '@mui/material/colors';
 import { BookingContext } from "../../../context/bookingContext";
+import { ReservedPeriod } from "../../../pages/rooms/[roomId]";
 
 const StyleInput = styled(TextField) ({
 	'& fieldset': {
@@ -59,7 +60,7 @@ const StyleInput = styled(TextField) ({
 	}
   })
 
-export default function CalendarModal() {
+export default function CalendarModal({reserved}: {reserved: ReservedPeriod}) {
 	const [inpFocus, setInpFocus] = useState<boolean>(false);
 	const bookingCtx = useContext(BookingContext);
 	const {bookingData, closeDialog} = bookingCtx!;
@@ -126,7 +127,7 @@ export default function CalendarModal() {
 				</Box>
 			</Grid>
 		</Grid>
-		<CalendarStatic />
+		<CalendarStatic reserved={reserved} />
 	</Paper>
 	);
 }

@@ -28,7 +28,7 @@ export const authOption: NextAuthOptions = {
 						console.log("authorize : ", response);
 						if (response) {
 							return { email: response.email,
-								name: `${response.lastName} ${response.firstName}`,
+								name: `${response.firstName}`,
 							} as any;
 						}else {
 							return null

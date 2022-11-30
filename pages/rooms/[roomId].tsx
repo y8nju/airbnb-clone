@@ -9,6 +9,7 @@ import { HostingType } from "../../interface/hostingType";
 import { getHostingList } from "../../lib/api/propertyApi";
 import DetailMainMaps from "../../component/detail/detailMainMaps";
 import { BookingContextProvider } from "../../context/bookingContext";
+import Booking from "../../lib/models/booking";
 
 const HeadTitle = ({title}: {title: string}) => {
   return (
@@ -17,7 +18,15 @@ const HeadTitle = ({title}: {title: string}) => {
       </Head>
   )
 }
-export default function HostingRoomDetail({ data }: { data: HostingType }) {
+export type ReservedPeriod = [
+  { checkin: Date | string; checkout: Date | string }
+];
+interface Props {
+  data: HostingType,
+  reserved: ReservedPeriod
+}
+export default function HostingRoomDetail({data, reserved}: Props) {
+  
   return (
     <>
       <HeadTitle title={data.title! as string} />
@@ -25,7 +34,7 @@ export default function HostingRoomDetail({ data }: { data: HostingType }) {
       <Container maxWidth="lg" sx={{ position: "relative", pt: 1, py: 3 }}>
         <DetailMainHeader data={data} />
         <DetailMainPhotos data={data} />
-        <DetailMainContents data={data} />
+        <DetailMainContents data={data} reserved={reserved} />
         <DetailMainMaps data={data} />
       </Container>
       </BookingContextProvider>
@@ -37,6 +46,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   await dbConnect();
   const { roomId } = ctx.query;
   const data = await getHostingList(roomId as string);
+  const reserved = await Booking.find(
+    {productId: roomId}, 'checkin checkout'
+  )
   if (!data) {
     return {
       notFound: true,
@@ -44,7 +56,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
   return {
     props: {
-      data: data.datas
+      data: data.datas,
+      reserved: JSON.parse(JSON.stringify(reserved))
     },
   };
 };

@@ -12,11 +12,17 @@ import GuestSelect from "./guestSelect";
 import Paypal from "./paypal";
 import { useRouter } from "next/router";
 import { Error } from '@mui/icons-material/';
+import { ReservedPeriod } from "../../pages/rooms/[roomId]";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
 
-export default function StaySection({ data }: { data: PopulateBookingType }) {
+interface Props {
+	data: PopulateBookingType
+	reserved: ReservedPeriod
+	}
+
+export default function StaySection({ data, reserved }: Props) {
 	const [isPaymnet, setIsPayment] = useState<boolean>(false);
 	const router = useRouter();
 	const bookingCtx = useContext(BookingContext);
@@ -42,14 +48,14 @@ export default function StaySection({ data }: { data: PopulateBookingType }) {
 					</Grid>
 					<Grid flex={1}>
 						<Typography variant="body1" sx={{fontWeight: 500, mb: 0.5}}>다시 시도해주세요.</Typography>
-						<Typography variant="body2" sx={{fontWeight: 300}}>올바르지 않은 비밀번호입니다. 다시 시도하거나 다른 로그인 방법을 선택하세요.</Typography>
+						<Typography variant="body2" sx={{fontWeight: 300}}>결제 세부사항을 확인하세요.</Typography>
 					</Grid>
 				</Grid>
 			}
 			<Grid item sx={{ py: 2 }}>
 				<Typography variant="h5" sx={{mb: 2}} fontWeight={500}>예약정보</Typography>
 				<Grid item justifyContent="space-between" sx={{display: 'flex', py: 1}}>
-					{isOpened && <CalendarModal />}
+					{isOpened && <CalendarModal reserved={reserved} />}
 					<Grid item sx={{display: 'flex', flexDirection: "column"}}>
 						<Typography variant="body1" fontWeight={500}>날짜</Typography>
 						<Typography variant="body1" fontWeight={300}>

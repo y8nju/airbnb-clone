@@ -13,8 +13,14 @@ import { useRouter } from "next/router";
 import { BookingContextProvider } from "../../../context/bookingContext";
 import { getBookingData } from "../../../lib/api/bookApi";
 import { BookingType, PopulateBookingType } from "../../../interface/bookingType";
+import Booking from '../../../lib/models/booking';
+import { ReservedPeriod } from '../../rooms/[roomId]';
 
-export default function StayCheckout({ data }: { data: PopulateBookingType }) {
+interface Props {
+  data: PopulateBookingType
+  reserved: ReservedPeriod
+}
+export default function StayCheckout({ data, reserved }: Props) {
   console.log('data', data);
   const router = useRouter();
   return (
@@ -25,7 +31,7 @@ export default function StayCheckout({ data }: { data: PopulateBookingType }) {
       <BookingContextProvider data={data.productId}>
         <Grid container  sx={{ mt: 3 }}>
           <StayHedaer />
-          <StayMain data={data} />
+          <StayMain data={data} reserved={reserved} />
         </Grid>
       </BookingContextProvider>
     </>
@@ -37,6 +43,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
   const response = await getBookingData(id as string);
+  const roomId = response.datas.productId.productId
+  const reserved = await Booking.find(
+    {productId: roomId}, 'checkin checkout'
+  )
   if (!response) {
     return {
       notFound: true,
@@ -45,6 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       data: response.datas,
+      reserved: JSON.parse(JSON.stringify(reserved))
     },
   };
 };

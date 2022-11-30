@@ -69,7 +69,7 @@ export default function Signup() {
 		}
 	}, [firstName])
 	useEffect(()=> {
-		if((!emailRegex.test(email!) || password!.length < 8 || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
+		if((!emailRegex.test(email!) || (password !== null && password!.length < 8) || !(age! > 18) || !termsChk ||  !firstName || !lastName  )) {
 			setEssentialData(true);
 		} else {
 			setEssentialData(false);

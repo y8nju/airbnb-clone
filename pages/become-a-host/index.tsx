@@ -1,6 +1,7 @@
 import { Button, Grid, Typography } from "@mui/material"
 import { Box } from "@mui/system";
 import { GetServerSideProps, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link"
 import { useRouter } from "next/router";
@@ -10,6 +11,8 @@ import RightInner from "../../component/layout/otherLayout/halfType/rightInner";
 import HostingButton from "../../component/room/hostingButton";
 import { HostingType } from "../../interface/hostingType";
 import { getHostingList } from "../../lib/api/propertyApi";
+import dbConnect from "../../lib/dbConnect";
+import Hosting from "../../lib/models/hosting";
 
 export default function BecomeAHost ({hostingList}: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const [showAll, setShowAll] = useState<boolean>(false)
@@ -108,8 +111,10 @@ export default function BecomeAHost ({hostingList}: InferGetServerSidePropsType<
 BecomeAHost.layout = "halfType";
 
 export const getServerSideProps: GetServerSideProps = async(context) => {
-    const response = await getHostingList();
-    const hostingList = response.datas;
+    await dbConnect();
+    const session = await getSession(context);
+    const response = await Hosting.find({hostname: session?.user?.email}).lean();
+    const hostingList = JSON.parse(JSON.stringify(response));
     return {
         props: {
             hostingList

@@ -55,3 +55,14 @@ export async function fileUpload(doc: FormData) {
     const data = await response.json();
     return data;
 }
+
+export async function deletedList(roomid: string) {
+    let endPoint = serverURI + '/api/property/deletedList'
+    console.log('roomid', roomid)
+    const response = await fetch(endPoint, {
+        ...postOption,
+        body: JSON.stringify({roomid: roomid})
+    })
+    const data = await response.json();
+    return data;
+}

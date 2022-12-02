@@ -1,14 +1,23 @@
 import { Container, Grid } from "@mui/material";
+import {useEffect, useContext} from 'react';
 import { GetServerSideProps } from "next";
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import Head from 'next/head'
 import HostingPreviewItem from "../component/card/hostingPreviewItem";
 import { HostingType } from "../interface/hostingType";
 import dbConnect from "../lib/dbConnect";
 import Hosting from "../lib/models/hosting";
 import styles from '../styles/Home.module.css'
+import { ContextProvider, useCtx } from "../context/context";
 
-export default function Home({ hostings }: { hostings: HostingType[] }) {
+export default function Home({ hostings, myListing }: { hostings: HostingType[], myListing: HostingType[] }) {
+	const ctx = useCtx();
+  const {setMyListing} = ctx!;
+
+  useEffect(() => {
+    setMyListing(myListing);
+    console.log(myListing)
+  }, [myListing])
 
   return (<>
     <Head>
@@ -32,13 +41,15 @@ export default function Home({ hostings }: { hostings: HostingType[] }) {
   </Container>
   </>)
 }
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   await dbConnect();
+  const session = await getSession(context);
   const hostings = await Hosting.find({ step: 11 });
-
+  const myListing = await Hosting.find({step: 11, hostname: session?.user?.email})
   return {
     props: {
       hostings: JSON.parse(JSON.stringify(hostings)),
+      myListing: JSON.parse(JSON.stringify(myListing))
     },
   };
 };

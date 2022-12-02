@@ -12,7 +12,7 @@ interface AnchorAction {
 export default function AnchorUser(props: AnchorAction) {
     const {setSignupOpen, closeMenu} = props;
 	const ctx = useCtx();
-	const {setMode, setUserEmail} = ctx!;
+	const {setMode, setUserEmail, myListing} = ctx!;
     const router = useRouter();
     const logoutHandle = () => {
         setSignupOpen(false);
@@ -37,7 +37,12 @@ export default function AnchorUser(props: AnchorAction) {
 	<Divider />
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
 		<Typography>
-			<Link href="/become-a-host">숙소 호스트 되기</Link>
+			{myListing !== null && myListing.length > 0 ? <Link href="/hosting" style={{position: 'relative'}}>숙소 관리
+				<span style={{position: 'absolute', top: '4px', width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%',}}></span>
+			</Link> : 
+			<Link href="/become-a-host" style={{position: 'relative'}}>숙소 호스트 되기
+				<span style={{position: 'absolute', top: '4px', width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%',}}></span>
+			</Link>}
 		</Typography>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>

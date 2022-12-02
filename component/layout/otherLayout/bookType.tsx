@@ -18,7 +18,7 @@ export default function BookTypeLayout (props: ChidrenProps) {
         <AppBar position="static" elevation={0} sx={{ bgcolor: "white", color: 'text.primary', borderBottom: 1, borderBottomColor: 'grey.300' }}>
             <Toolbar>
 				<Link  href="/">
-					<img src="/images/logo.svg" alt="logo" width="102" height="32"
+					<img src="/icon.svg" alt="logo" width="32" height="32"
 						style={{verticalAlign: 'bottom'}} />
 				</Link>
 			</Toolbar>

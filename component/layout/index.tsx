@@ -9,6 +9,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import HeaderAlert from '../ui/Alert/headerAlert';
 import { useCtx } from '../../context/context';
 import { DefaultProps } from '../../interface/propsType';
+import { useRouter } from 'next/router';
 
 function ElevationScroll(props: DefaultProps) {
 	const { children, window } = props;
@@ -26,13 +27,15 @@ export default function Layout (props: DefaultProps) {
 	const { children, window } = props;
 	const ctx = useCtx();
 	const {headerAlertProps} = ctx!;
+	const router = useRouter();
+	const {pathname} = router;
 	return ( <Container maxWidth={false} disableGutters={true}>
 		<ElevationScroll {...props}>
 			<>
 			{headerAlertProps.visible && <HeaderAlert />}
 			<AppBar position="sticky" sx={{ bgcolor: "white", color: 'text.primary' }}>
 				<Header mw="xl"/>
-				<Nav mw="xl" />
+				{pathname == '/' && <Nav mw="xl" />}
 			</AppBar>
 			</>
 		</ElevationScroll>

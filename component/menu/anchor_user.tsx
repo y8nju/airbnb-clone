@@ -39,16 +39,19 @@ export default function AnchorUser(props: AnchorAction) {
 
 	return (<>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Typography style={{fontWeight: 500}}>메세지</Typography>
+		<Typography fontWeight={500}>메세지</Typography>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Typography style={{fontWeight: 500}}>알림</Typography>
+		<Typography fontWeight={500}>알림</Typography>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Typography style={{fontWeight: 500}}>여행</Typography>
+		<Link href="/trips" style={{position: 'relative', fontWeight: 500}}>
+			여행
+			<span style={{position: 'absolute', top: '4px', width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%',}}></span>
+		</Link>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Typography style={{fontWeight: 500}}>위시리스트</Typography>
+		<Typography fontWeight={500}>위시리스트</Typography>
 	</MenuItem>
 	<Divider />
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>

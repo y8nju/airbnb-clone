@@ -24,11 +24,13 @@ export async function getPropertyGroupList(group?: string) {
     return propertyGroup;
 }
 
-export async function getHostingList(roomid?: string) {
-    console.log('roomid', roomid)
+export async function getHostingList(doc: any) {
+    
     let endPoint = serverURI + '/api/property/hostingList';
-    if(roomid) {
-        endPoint += `?roomid=${roomid}`
+    if(typeof doc == 'string') {
+        endPoint += `?roomid=${doc}`
+    }else if ((typeof doc == 'object')) {
+        endPoint += `?hostname=${doc.hostname}`+`&step=${doc.step}`
     }
     const response = await fetch(endPoint);
     const data = await response.json();

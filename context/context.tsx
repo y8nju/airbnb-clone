@@ -32,7 +32,6 @@ interface ContextType {
     coordinate: CoordinateType, setCoordinate: Dispatch<SetStateAction<CoordinateType>>,
     address: AddressType | null, setAddress: Dispatch<SetStateAction<AddressType | null>>,
     hostLocation: HostAddressType | null, setHostLocation: Dispatch<SetStateAction<HostAddressType | null>>,
-    myListing:  HostingType[] | null, setMyListing: Dispatch<SetStateAction<HostingType[] | null>>,
     emailRegex: RegExp,
 }
 
@@ -56,7 +55,6 @@ export const ContextProvider = (props: {children: ReactNode}) => {
     const [coordinate, setCoordinate] = useState<CoordinateType>(defaultCoords);
     const [address, setAddress] = useState<AddressType | null>(null)
     const [hostLocation, setHostLocation]=useState<HostAddressType | null>(null)
-    const [myListing, setMyListing] = useState< HostingType[] | null >(null)
 
     useEffect(()=> {
         navigator.geolocation.getCurrentPosition(position => {
@@ -79,7 +77,6 @@ export const ContextProvider = (props: {children: ReactNode}) => {
         coordinate: coordinate, setCoordinate: setCoordinate,
         address: address, setAddress: setAddress,
         hostLocation: hostLocation, setHostLocation: setHostLocation,
-        myListing, setMyListing,
         emailRegex: emailRegex,
     }}>
         {props.children}

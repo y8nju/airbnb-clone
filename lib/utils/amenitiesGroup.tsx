@@ -1,6 +1,6 @@
 
 import {WifiRounded, TvRounded, DirectionsCarRounded, SpeedRounded, LocalLaundryServiceRounded, CountertopsRounded, AcUnitRounded, DeskRounded, Pool, HotTubRounded, DeckRounded,
-    OutdoorGrillRounded, BalconyRounded, FireExtinguisherRounded, FireplaceRounded, FitnessCenterRounded, HouseboatRounded, DownhillSkiingRounded, MedicalServicesRounded} from '@mui/icons-material/';
+    OutdoorGrillRounded, BalconyRounded, FireExtinguisherRounded, FireplaceRounded, FitnessCenterRounded, HouseboatRounded, DownhillSkiingRounded, MedicalServicesRounded, WhatshotOutlined} from '@mui/icons-material/';
 import { RiBilliardsFill, RiDoorLockBoxFill, RiAlarmWarningFill, RiAlarmWarningLine } from "react-icons/ri";
 import { GiGrandPiano } from "react-icons/gi";
 import { TbBeach } from "react-icons/tb";
@@ -46,5 +46,6 @@ export const group3: AmenityType[] = [
     {title:'일산화탄소 경보기', icon: <RiAlarmWarningLine size="24px" /> }
 ]
 export const amenitiesGroup: AmenityType[] = [
+    {title:'전체', icon: <WhatshotOutlined />},
     ...group1, ...group2, ...group3
 ]

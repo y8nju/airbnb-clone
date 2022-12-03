@@ -8,6 +8,7 @@ import Hosting from "../lib/models/hosting";
 
 
 export default function Home({ hostings }: { hostings: HostingType[] }) {
+
   return (<>
     <Head>
       <title>여행은 살아보는 거야 - 에어비앤비</title>
@@ -31,8 +32,12 @@ export default function Home({ hostings }: { hostings: HostingType[] }) {
   </>)
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  console.log(context.query.type)
   await dbConnect();
-  const hostings = await Hosting.find({ step: 11 });
+  let hostings = await Hosting.find({ step: 11 })
+  if(!(context.query.type == '전체' || context.query.type == undefined)) {
+    hostings = await Hosting.find({ step: 11, amenities: context.query.type })
+  }
   return {
     props: {
       hostings: JSON.parse(JSON.stringify(hostings)),

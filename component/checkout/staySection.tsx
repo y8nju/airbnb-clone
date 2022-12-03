@@ -7,12 +7,13 @@ import {ko} from "date-fns/locale";
 import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import { grey, pink } from '@mui/material/colors';
 import CalendarModal from "./calendarModal";
-import { PopulateBookingType } from "../../interface/bookingType";
+import { BookingType, PopulateBookingType } from "../../interface/bookingType";
 import GuestSelect from "./guestSelect";
 import Paypal from "./paypal";
 import { useRouter } from "next/router";
 import { Error } from '@mui/icons-material/';
 import { ReservedPeriod } from "../../pages/rooms/[roomId]";
+import { creatAndUpdateBooking } from "../../lib/api/bookApi";
 
 const gradientBg = {backgroundImage: 'radial-gradient(circle at center center, rgb(255, 56, 92) 0%, rgb(230, 30, 77) 27.5%, rgb(227, 28, 95) 40%, rgb(215, 4, 102) 57.5%, rgb(189, 30, 89) 75%, rgb(189, 30, 89) 100%)',
     backgroundSize: '200% 200%'}
@@ -26,13 +27,23 @@ export default function StaySection({ data, reserved }: Props) {
 	const [isPaymnet, setIsPayment] = useState<boolean>(false);
 	const router = useRouter();
 	const bookingCtx = useContext(BookingContext);
-	const {bookingData, isOpened, openDialog, savedData, openSelectOpen, isSelectOpend} = bookingCtx!;
+	const {bookingData, isOpened, openDialog, savedData, openSelectOpen, isSelectOpend, updateSavedData} = bookingCtx!;
 	const {checkin, checkout, payment} = data;
 	const checkinStr = checkin!.toString().slice(0, 10);
 	const checkoutStr = checkout!.toString().slice(0, 10);
-	const reserveHandle = () => {
+	const reserveHandle = async() => {
 		console.log('data.payment', data.payment)
 		if(data.payment) {
+			const rst = await creatAndUpdateBooking({
+				...bookingData,
+				_id: router.query.id,
+				result: 'true'
+			} as unknown as BookingType);
+			if(rst && rst.result) {
+				updateSavedData();
+			}else {
+				console.log('데이터가 정상적으로 등록되지 않았습니다')
+			}
 			router.push("/book/submit/" + data._id);
 		}else {
 			setIsPayment(true)

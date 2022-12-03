@@ -20,6 +20,7 @@ export interface BookingType {
         payerId: string;
         paidTime: Date;
     };
+    result?: string
 }
 export interface PopulateBookingType {
     _id: Types.ObjectId,
@@ -38,4 +39,5 @@ export interface PopulateBookingType {
         orderId: string;
         paidTime: Date;
     };
+    result?: string
 }

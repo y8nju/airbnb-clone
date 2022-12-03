@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import BookingSummary from "./parts/booking";
 import CalendarStatic from "./calendar/calendarStatic";
 import { ReservedPeriod } from "../../pages/rooms/[roomId]";
+import { findEmail } from "../../lib/api/accountApi";
 
 interface Props {
   data: HostingType,
@@ -13,8 +14,9 @@ interface Props {
 }
 
 function DetailLeftContents({ data, reserved }: Props) {
-
   const [amenities, setAmenities] = useState<AmenityType[]| []>([]);
+  const [hostName, setHostName] = useState<string|null>(null);
+
   useEffect(()=> {
     let arr: any[] = []
     if(data?.amenities !== undefined && data!.amenities!.length > 0) {
@@ -27,13 +29,20 @@ function DetailLeftContents({ data, reserved }: Props) {
       })
     };
     setAmenities(arr);
-
+    if(data){
+      const getHost = async() => {
+          const result = await findEmail(data.hostname as string);
+          const host = result.data
+          setHostName(host.firstName);
+      }
+      getHost();
+  }
   }, [])
   return (<>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid flex={1} sx={{ py: 3 }}>
           <Typography variant="h5" sx={{mb: 2}} fontWeight={500}>
-            {data.hostname!.split("@")[0]} 님이 호스팅하는 {data.property}의&nbsp;
+            {hostName} 님이 호스팅하는 {data.property}의&nbsp;
             {data.privacy}
           </Typography>
           <Typography variant="body1" fontWeight={300}>

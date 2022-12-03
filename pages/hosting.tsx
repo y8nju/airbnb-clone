@@ -14,9 +14,9 @@ export default function HostingPage({hostings}: InferGetServerSidePropsType<type
         <Head>
             <title>호스트 알림판</title>
         </Head>
-        <Grid container direction="column" minHeight="77vh" sx={{ mt: 3 }}>
+        <Grid container direction="column" minHeight="77vh">
             <Grid container>
-                <Grid container justifyContent="space-between" alignItems="flex-end">
+                <Grid container justifyContent="space-between" alignItems="flex-end" sx={{py: 3}}>
                     <Typography variant="h4" fontWeight={600}>
                         {session?.user?.name}님, 안녕하세요!
                     </Typography>

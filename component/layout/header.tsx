@@ -21,7 +21,6 @@ export default function Header (props: Props) {
 	const {status} = useSession();
 	const router = useRouter();
 	const {pathname} = router;
-	console.log(pathname)
 
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElUser(event.currentTarget);

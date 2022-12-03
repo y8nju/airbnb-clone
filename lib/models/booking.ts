@@ -19,9 +19,8 @@ const bookingSchema = new mongoose.Schema<BookingType>({
         orderId: String,
         payerId: String,
         paidTime: Date
-    }
-
-    // disabledBookingDate 다 따로 받기( checkout 날짜 빼기)
+    },
+    result: String
 })
 
 export default mongoose.models.Booking as mongoose.Model<BookingType> ||

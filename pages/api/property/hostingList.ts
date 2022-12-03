@@ -6,7 +6,6 @@ import Hosting from "../../../lib/models/hosting";
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
     await dbConnect();
     let datas = await Hosting.find();
-    console.log(req.query)
     
     if(Object.keys(req.query).includes('roomid')) {
         datas = await Hosting.findById(req.query.roomid).lean();

@@ -43,9 +43,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
   const response = await getBookingData(id as string);
-  const roomId = response.datas.productId.productId
+  const roomId = response.datas.productId.productId;
   const reserved = await Booking.find(
-    {productId: roomId}, 'checkin checkout'
+    {productId: roomId, result: 'true'}, 'checkin checkout '
   )
   if (!response) {
     return {

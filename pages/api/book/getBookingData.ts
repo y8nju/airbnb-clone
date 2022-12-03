@@ -4,8 +4,14 @@ import Booking from "../../../lib/models/booking";
 
 export default async function handler (req:NextApiRequest, res: NextApiResponse) {
     await dbConnect();
-    const {id} = req.query;
-    const datas = await Booking.findById(id).populate('productId').lean();
+    let datas;
+    if(Object.keys(req.query).includes('id')) {
+        datas = await Booking.findById(req.query.id).populate('productId').lean();
+    }
+    if(Object.keys(req.query).includes('guestId')) {
+        console.log(req.query)
+        datas = await Booking.find({guestId: req.query.guestId}).populate('productId').lean();
+    }
     if(!datas) {
         return res.status(403).json({
             result: false,

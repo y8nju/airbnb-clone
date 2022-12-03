@@ -1,7 +1,6 @@
 import AccountType from "../../interface/accountType";
 
 const serverURI = process.env.NEXT_PUBLIC_SERVER_URI
-console.log(serverURI)
 
 const postOption = {
     method: 'POST',

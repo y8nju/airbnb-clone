@@ -7,6 +7,8 @@ import { useCtx } from "../../context/context";
 import { HostingType } from "../../interface/hostingType";
 import { getHostingList } from "../../lib/api/propertyApi";
 
+const home: string = process.env.NEXT_PUBLIC_SERVER_URI as string
+
 interface AnchorAction {
     setSignupOpen: (value: SetStateAction<boolean>) => void
     closeMenu: (event: React.MouseEvent<HTMLElement>) => void
@@ -17,10 +19,11 @@ export default function AnchorUser(props: AnchorAction) {
 	const {setMode, setUserEmail} = ctx!;
     const [myListing, setMyListing] = useState< HostingType[] | null >(null)
 	const {data: session} = useSession();
+    const router = useRouter();
+
 
 	useEffect(() => {
 		myListingHandle();
-		console.log(myListing)
 	}, [session])
 	const myListingHandle = async() => {
 		const info = {
@@ -31,10 +34,10 @@ export default function AnchorUser(props: AnchorAction) {
 		setMyListing(rst.datas);
 	}
     const logoutHandle = () => {
-        setSignupOpen(false);
+		setSignupOpen(false);
 		setMode('Checked');
 		setUserEmail(undefined);
-        signOut();
+        signOut({callbackUrl: home});
     };
 
 	return (<>

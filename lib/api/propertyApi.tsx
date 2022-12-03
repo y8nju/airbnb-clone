@@ -24,7 +24,7 @@ export async function getPropertyGroupList(group?: string) {
     return propertyGroup;
 }
 
-export async function getHostingList(doc: any) {
+export async function getHostingList(doc?: any) {
     
     let endPoint = serverURI + '/api/property/hostingList';
     if(typeof doc == 'string') {

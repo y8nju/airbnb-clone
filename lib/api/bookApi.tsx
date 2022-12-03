@@ -13,25 +13,28 @@ const postOption = {
 export async function creatAndUpdateBooking(doc: BookingType) {
     console.log('updateData', doc)
     const {checkin, checkout} = doc;
-    const checkinStr: string = checkin!.toString().slice(0, 10)
-    const checkoutStr: string = checkout!.toString().slice(0, 10)
+    const checkinStr: string = checkin!.toLocaleString().slice(0, 12)
+    const checkoutStr: string = checkout!.toLocaleString().slice(0, 12)
+    console.log(checkinStr, checkoutStr)
     let endPoint = serverURI + '/api/book/creatAndUpdateBooking';
     const response = await fetch(endPoint, {
         ...postOption,
         body: JSON.stringify({
             ...doc,
             checkin: new Date(checkinStr).toLocaleDateString(),
-            checkout: new Date(checkoutStr)!.toLocaleDateString()
+            checkout: new Date(checkoutStr).toLocaleDateString()
         })
     });
     const data = await response.json();
     return data;
 }
 
-export async function getBookingData(id?: string) {
+export async function getBookingData(doc?: any) {
     let endPoint = serverURI + '/api/book/getBookingData';
-    if(id) {
-        endPoint += `?id=${id}`
+    if(typeof doc == 'string') {
+        endPoint += `?id=${doc}`
+    }else if (Object.keys(doc).includes('guestId')) {
+        endPoint += `?guestId=${doc.guestId}`
     }
     const response = await fetch(endPoint);
     const data = await response.json();

@@ -1,13 +1,18 @@
 import { AppBar, Box, Breakpoint, Container, Divider, Theme, Toolbar, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { grey } from '@mui/material/colors';
 
 interface Props {
 	sx?: any,
 	mw?: Breakpoint,
 }
 export default function Footer (props: Props) {
+	const router = useRouter();
+	const { pathname } = router;
 	
 	return ( <Box component="footer"
-		sx={[{width: '100vw', bgcolor: "white", color: 'text.primary', borderTop: 1, borderTopColor: 'grey.300' }, props.sx]}>
+		sx={[{width: '100vw', bgcolor: "white", color: 'text.primary', borderTop: 1, borderTopColor: 'grey.300' },
+			pathname == '/trips' && {bgcolor: grey[100]}, props.sx]}>
 		<Container maxWidth={props.mw}>
 			<Toolbar sx={{ borderBottom: 1, borderBottomColor: 'grey.300' }}>
 				<Typography variant="body1">

@@ -10,7 +10,7 @@ import {
 } from '@mui/x-date-pickers-pro/DateRangePickerDay';
 import { DateRange } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { useContext, useEffect, useState } from "react";
-import  dateFns, {eachDayOfInterval, format, subDays} from 'date-fns';
+import  dateFns, {eachDayOfInterval, format, subDays, addDays} from 'date-fns';
 import ko from "date-fns/locale/ko";
 import { BookingContext } from "../../../context/bookingContext";
 import { creatAndUpdateBooking } from "../../../lib/api/bookApi";
@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { ObjectId } from "mongodb";
 import { BookingType } from "../../../interface/bookingType";
 import { ReservedPeriod } from "../../../pages/rooms/[roomId]";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 interface Props {
   saved?: boolean, 
@@ -29,7 +30,7 @@ export default function CalendarStatic({saved, reserved}: Props) {
   const router = useRouter();
   const bookingCtx = useContext(BookingContext);
   const {bookingData, updateData, closeDialog, updateSavedData} = bookingCtx!;
-  
+  console.log('reserved', reserved)
   useEffect(()=> {
     let arr: string[] = [];
     reserved.map(one => {
@@ -40,8 +41,18 @@ export default function CalendarStatic({saved, reserved}: Props) {
       return result.forEach(day => arr.push(format(day, "yyyy-MM-dd")));
       // return result.forEach(day => arr.push(day));
     });
+    arr.sort();
     setPeriod(arr);
   }, []);
+  useEffect(()=> {
+    if(period.includes(format(new Date(bookingData.checkin), "yyyy-MM-dd"))){
+      const lastBookDay = new Date(period[period.length-1])
+      updateData({
+        checkin: addDays(lastBookDay, 1), 
+        checkout: null
+      })
+    }
+  }, [period])
   const savedHandle = async () => {
     const rst = await creatAndUpdateBooking({
       ...bookingData, _id: router.query.id

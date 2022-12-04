@@ -9,6 +9,7 @@ export default function AfterBookItem({data}: {data: PopulateBookingType}) {
     const [hostName, setHostName] = useState<string|null>(null);
     
     useEffect(()=> {
+        console.log(typeof data.checkin)
         if(data){
             const getHost = async() => {
                 const result = await findEmail(data.productId.hostname as string);
@@ -19,7 +20,7 @@ export default function AfterBookItem({data}: {data: PopulateBookingType}) {
         }
     }, [])
     return (<Grid item sx={{width: 1}} xs={12} md={6}>
-        {data && <Card sx={{borderRadius: 2}}>
+        {data == null ? null : <Card sx={{borderRadius: 2}}>
 		<CardActionArea sx={{display: 'flex'}}>
 			<CardContent sx={{flex: 1, position: 'relative'}}>
                 <Grid item sx={{pb: 2}}>
@@ -34,13 +35,13 @@ export default function AfterBookItem({data}: {data: PopulateBookingType}) {
                 <Grid item sx={{display: 'flex', pt: 2}}>
                     <Box sx={{mr: 2}}>
                         <Typography variant="body2">
-                            {format(new Date(data.checkin.slice(0,10)), 'MMM do', {locale: ko})}-
+                            {format(new Date((data.checkin as string)?.slice(0,10)), 'MMM do', {locale: ko})}-
                         </Typography>
                         <Typography variant="body2">
-                           {format(new Date(data.checkout.slice(0,10)), 'MMM do', {locale: ko})}
+                           {format(new Date((data.checkout as string)?.slice(0,10)), 'MMM do', {locale: ko})}
                         </Typography>
                         <Typography variant="caption" component="div" color="text.secondary">
-                           {data.checkout.slice(0,4)}년
+                           {(data.checkout as string)?.slice(0,4)}년
                         </Typography>
                     </Box>
                     <Divider orientation="vertical" flexItem />
@@ -55,7 +56,7 @@ export default function AfterBookItem({data}: {data: PopulateBookingType}) {
                 </Grid>
                 <Typography fontSize="10px" fontWeight={500}
                     sx={{position: 'absolute', top: '8px', left: 'calc(100% + 8px)', whiteSpace: 'nowrap', backgroundColor: '#fff', px: 0.6, py: 0.2, borderRadius: 1}}>
-                {formatDistance(new Date(data.checkin.slice(0,10)), new Date(), {
+                {formatDistance(new Date((data.checkin as string)?.slice(0,10)), new Date(), {
                     addSuffix: true,
                     locale: ko,
                 })}{" "}

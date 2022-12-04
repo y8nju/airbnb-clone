@@ -19,7 +19,7 @@ export default function BeforeBookItem({data}: {data: PopulateBookingType}) {
         }
     }, [])
     return (<Grid item sx={{width: 1}} xs={12} md={3}>
-        {data && <Card sx={{borderRadius: 2, p: 1}}>
+        {data == null ? null : <Card sx={{borderRadius: 2, p: 1}}>
 		<CardActionArea sx={{display: 'flex'}}>
 			<CardMedia
                 sx={{borderRadius: 2, width: '120px'}}
@@ -35,10 +35,10 @@ export default function BeforeBookItem({data}: {data: PopulateBookingType}) {
                     호스트: {hostName}님
                 </Typography>
                 <Typography variant="caption" component="div">
-                    {format(new Date(data.checkin.slice(0,10)), 'yyyy MMM do', {locale: ko})}-
+                    {format(new Date((data.checkin as string)?.slice(0,10)), 'yyyy MMM do', {locale: ko})}-
                 </Typography>
                 <Typography variant="caption" component="div">
-                    {format(new Date(data.checkout.slice(0,10)), 'yyyy MMM do', {locale: ko})}
+                    {format(new Date((data.checkout as string)?.slice(0,10)), 'yyyy MMM do', {locale: ko})}
                 </Typography>
 			</CardContent>
 		</CardActionArea>

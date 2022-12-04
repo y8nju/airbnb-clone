@@ -17,9 +17,14 @@ const nextConfig = {
       }
     }
   },
+  i18n: {
+    locales: ["ko", "en"],
+    defaultLocale: "ko",
+  },
 }
 
 module.exports = () => {
+  
   const MONGODB_URI = process.env.MONGODB_URI;
   mongoose.connect(MONGODB_URI, {dbName: 'airbnbClone'})
     .then(() => console.log('      - connect success'));

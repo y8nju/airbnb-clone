@@ -26,8 +26,8 @@ export interface PopulateBookingType {
     _id: Types.ObjectId,
     guestId?: string,
     productId: HostingType;
-    checkin: dateFns | Date | null;
-    checkout: dateFns | Date | null;
+    checkin: dateFns | Date | string | null;
+    checkout: dateFns | Date | string | null;
     numberOfGuests: number;
     numberOfAdults: number;
     numberOfChildren: number;

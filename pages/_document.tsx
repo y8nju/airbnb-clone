@@ -5,6 +5,7 @@ export default function Document () {
     const googleMaps = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_APP_KEY}&libraries=places&region=kr`
     return ( <Html>
         <Head>
+            <meta property="og:image" content="/images/img_preview.jpg" />
             <link rel="preconnect" href="https://fonts.googleapis.com"></link>
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet"></link>
             <link rel="icon" href="/icon.svg" />

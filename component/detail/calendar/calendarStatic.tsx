@@ -45,7 +45,7 @@ export default function CalendarStatic({saved, reserved}: Props) {
     setPeriod(arr);
   }, []);
   useEffect(()=> {
-    if(period.includes(format(new Date(bookingData.checkin), "yyyy-MM-dd"))){
+    if(bookingData.checkin && period.includes(format(new Date(bookingData.checkin as string), "yyyy-MM-dd"))){
       const lastBookDay = new Date(period[period.length-1])
       updateData({
         checkin: addDays(lastBookDay, 1), 

@@ -25,7 +25,7 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
         let beforeArr: PopulateBookingType[] = []
         let afterArr: PopulateBookingType[] = []
         bookList.map((book) => {
-            if(isPast(new Date(book.checkout.slice(0,10)))) {
+            if(isPast(new Date((book.checkout as string)?.slice(0,10)))) {
                 beforeArr.push(book as any)
             } else {
                 afterArr.push(book as any)
@@ -65,7 +65,7 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
                     </Grid>
                     <Divider />
                 </>}
-                {afterList.length > 0 && <Grid container direction="column" sx={{pt: 3, pb: 6}}>
+                {afterList.length >= 1 ? <Grid container direction="column" sx={{pt: 3, pb: 6}}>
                     <Typography variant="h6" fontWeight={500} sx={{mb: 2}}>
                         예정된 예약
                     </Typography>
@@ -75,8 +75,8 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
                         }
                         )}    
                     </Grid>
-                </Grid>}
-                {beforeList.length > 0 && <>
+                </Grid> : null }
+                {beforeList.length >= 1 ? <>
                     <Divider />
                     <Grid container direction="column" sx={{pt: 3, pb: 6}}>
                     <Typography variant="h6" fontWeight={500} sx={{mb: 2}}>
@@ -89,7 +89,7 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
                         )}    
                     </Grid>
                 </Grid>
-                </>}
+                </> : null}
             </Grid>
         </Container>
     </>)

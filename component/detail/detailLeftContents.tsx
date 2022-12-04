@@ -89,12 +89,6 @@ function DetailLeftContents({ data, reserved }: Props) {
         </Grid>
         <Divider />
       </>}
-      <Grid container sx={{ py: 3 }}>
-        <Typography variant="body1">
-          {data.description!.description!}
-        </Typography>
-      </Grid>
-      <Divider />
       <Grid container direction="column" sx={{ py: 3 }}>
         <BookingSummary data={data} />
         <CalendarStatic reserved={reserved} />

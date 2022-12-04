@@ -22,7 +22,6 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
     
 
     useEffect(() => {
-        console.log('bookList', bookList)
         let beforeArr: PopulateBookingType[] = []
         let afterArr: PopulateBookingType[] = []
         bookList.map((book) => {
@@ -35,7 +34,6 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
         setBeforeList(beforeArr);
         setAfterList(afterArr);
     }, [bookList]);
-    console.log(afterList)
     
 
     return (<>
@@ -50,7 +48,7 @@ export default function Trips({bookList}: {bookList: PopulateBookingType[]}) {
                     </Typography>
                 </Grid>
                 <Divider />
-                {(bookList == null || bookList.length == 0) && <>
+                {(bookList == null || bookList.length == 0 || afterList.length == 0 ) && <>
                     <Grid item sx={{pt: 3, pb: 6}}>
                         <Typography variant="h6" fontWeight={500}>
                             아직 예약된 여행이 없습니다!

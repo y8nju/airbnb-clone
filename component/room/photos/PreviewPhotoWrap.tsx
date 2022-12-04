@@ -16,10 +16,10 @@ export default function PreviewPhotoWrap () {
     
 
     useEffect(()=> {
-        console.log('files.length', files.length);
-        console.log('notFiles.length', notFiles?.length);
-        console.log(notFiles, typeof notFiles);
-        console.log('savedImgUri', savedImgUri);
+        // console.log('files.length', files.length);
+        // console.log('notFiles.length', notFiles?.length);
+        // console.log(notFiles, typeof notFiles);
+        // console.log('savedImgUri', savedImgUri);
         if(files) {
             if(files.length < 4 ) {
                     setNotFiles(Array.from(Array(4 - files.length), (x, index) => <NotPhotoItem key={index} />))
@@ -29,9 +29,7 @@ export default function PreviewPhotoWrap () {
             }
         }
         if(savedImgUri) {
-            console.log('aaaaaaaaaaaaaaaaaa')
             if(savedImgUri!.length > 0) {
-                console.log('bbbbbbbbbbbbbbbbbbbbbbbb')
                 if(savedImgUri!.length < 4) {
                     setNotFiles(Array.from(Array(4 - savedImgUri!.length), (x, index) => <NotPhotoItem key={index} />))
                 }  else if (savedImgUri!.length > 4) {
@@ -48,10 +46,6 @@ export default function PreviewPhotoWrap () {
             }
         }
     }, [files, savedImgUri])
-
-    useEffect(() => {
-        console.log(notFiles)
-    }, [notFiles])
 
     return ( <PhotosInner>
         <>

@@ -157,7 +157,9 @@ export default function AddressDialog (props: Open) {
 							setState(one.long_name);
 							break;
 						}
-						case 'sublocality_level_1': {
+						case 'sublocality_level_1':
+						case 'localcity':
+						case 'locality': {
 							setCity(one.long_name);
 							break;
 						}
@@ -171,6 +173,16 @@ export default function AddressDialog (props: Open) {
 						}
 						case  'postal_code': {
 							setZipCode(one.long_name);
+							break;
+						}
+					}
+				})
+			})
+			address!.address_components!.forEach((one: { types: any[]; long_name: SetStateAction<string | null>; }) => {
+				one.types.forEach(type => {
+					switch(type) {
+						case 'sublocality_level_3':{
+							setStreet(one.long_name);
 							break;
 						}
 					}

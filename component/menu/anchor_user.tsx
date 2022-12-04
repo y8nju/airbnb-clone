@@ -47,26 +47,25 @@ export default function AnchorUser(props: AnchorAction) {
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
 		<Typography fontWeight={500}>알림</Typography>
 	</MenuItem>
-	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Link href="/trips" style={{position: 'relative', fontWeight: 500}}>
-			여행
-			<span style={{position: 'absolute', top: '4px', width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%',}}></span>
-		</Link>
+	<MenuItem onClick={() => router.push("/trips")} sx={{pr: 8}}>
+		<Typography>여행</Typography>
+		<span style={{width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%', alignSelf: 'flex-start'}}></span>
 	</MenuItem>
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
 		<Typography fontWeight={500}>위시리스트</Typography>
 	</MenuItem>
 	<Divider />
-	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
-		<Typography>
-			{myListing !== null && myListing.length > 0 ?<Link href="/hosting" style={{position: 'relative'}}>숙소 관리
-				<span style={{position: 'absolute', top: '4px', width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%',}}></span>
-			</Link> : 
-			<Link href="/become-a-host" style={{position: 'relative'}}>숙소 호스트 되기
-				<span style={{position: 'absolute', top: '4px', width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%',}}></span>
-			</Link>}
-		</Typography>
-	</MenuItem>
+	{myListing !== null && myListing.length > 0 ?
+		<MenuItem onClick={() => router.push('/hosting')}
+			sx={{pr: 8}}>
+			<Typography>숙소 관리</Typography>
+			<span style={{width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%', alignSelf: 'flex-start'}}></span>
+		</MenuItem> :
+		<MenuItem onClick={() => router.push('/become-a-host')}
+			sx={{pr: 8}}>
+			<Typography>숙소 호스트 되기</Typography>
+			<span style={{width: '8px', height: '8px', backgroundColor: '#ff385c', borderRadius: '50%', alignSelf: 'flex-start'}}></span>
+		</MenuItem>}
 	<MenuItem onClick={closeMenu} sx={{pr: 8}}>
 		<Typography>체험 호스팅 하기</Typography>
 	</MenuItem>

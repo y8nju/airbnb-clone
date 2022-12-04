@@ -28,7 +28,7 @@ export default function RoomTitle() {
 	const {roomid} = router.query;
     const layoutCtx = useContext(HalfLayoutContext);
     const {setNextBtnDisabled, nextBtnDisabled, roomStep, progressPer, savedData} = layoutCtx!;
-
+	
 	useEffect(()=> {
 		if(savedData) {
 			if(savedData.title) {
@@ -53,7 +53,6 @@ export default function RoomTitle() {
             step: roomStep
 		}
 		const rst = await createAndUpdateListing(updateData);
-		console.log(rst)
 		if(rst.result) {
 			router.push('/become-a-host/'+roomid+'/description');
 		} else {

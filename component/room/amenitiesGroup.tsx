@@ -47,10 +47,6 @@ export default function AmenitiesGroup (props: Props) {
       ) => {
         setAmenities(newFormats);
       };
-    useEffect(()=> {
-        console.log(amenities)
-
-    }, [amenities])
     return ( <ToggleButtonGroup
         value={amenities}
         onChange={handleFormat}

@@ -125,7 +125,7 @@ export default function RoomFloorPlan () {
 						<IconButton
 							color="info"
 							onClick={() => setBedrooms((c) => c - 1)}
-							disabled={bathrooms <= 1}
+							disabled={bedrooms <= 1}
 							sx={{border: 1, p: 0.5}}>
 							<RemoveIcon fontSize="small" />
 						</IconButton>

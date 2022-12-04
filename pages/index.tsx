@@ -32,7 +32,6 @@ export default function Home({ hostings }: { hostings: HostingType[] }) {
   </>)
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context.query.type)
   await dbConnect();
   let hostings = await Hosting.find({ step: 11 })
   if(!(context.query.type == '전체' || context.query.type == undefined)) {

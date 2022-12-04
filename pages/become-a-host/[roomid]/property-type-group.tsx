@@ -1,4 +1,5 @@
 import { Grid } from "@mui/material";
+import { Types } from "mongoose";
 import { GetServerSideProps, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -24,7 +25,6 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetServerSi
 
     useEffect(() => {
         if(savedData) {
-            console.log('savedData.group', savedData.group)
             setGroup(savedData.group as string);
         }
     }, [savedData])
@@ -32,7 +32,6 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetServerSi
         if(group !== '') {
             setNextBtnDisabled(false)
         }
-        console.log(group)
     }, [group])
 
     const nextStepHandle = async () => {
@@ -40,13 +39,12 @@ export default function roomPropertyTypeGroup ({propertyGroup}: InferGetServerSi
         const newListingData = {
             hostname: session?.user?.email as string,
             group: group,
-            step: roomStep
+            step: roomStep,
+			_id: new Types.ObjectId(roomid as string),
         }
-        console.log(newListingData)
         const rst = await createAndUpdateListing(newListingData);
         if(rst && rst.result) {
             const data = rst.data as HostingType;
-            const roomid = data._id;
             const group = data.group
             const path = `/become-a-host/${String(roomid)}/property-type`
             router.push(path+`?group=${group}`, path);

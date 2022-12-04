@@ -36,10 +36,10 @@ export default function RoomDescription() {
 	useEffect(()=> {
 		setNextBtnDisabled(false);
 		if(savedData) {
-			if(savedData.description) {	
-				if(savedData.description.descGroup.length > 0) {
+			if(savedData.RoomDescription) {	
+				setRoomDesc(savedData.description.description);
+				if(savedData.description.descGroup && savedData.description.descGroup.length > 0) {
 					setDescStep(1);
-					setRoomDesc(savedData.description.description);
 				}
 			}
 		}
@@ -105,7 +105,7 @@ export default function RoomDescription() {
 				<Box>
 					<Typography variant="overline" sx={{color: grey[700]}}>{cnt}</Typography><Typography variant="overline" sx={{color: grey[700]}}>/500</Typography>
 				</Box>
-				{roomDesc.length > 32 && <FormHelperText 
+				{roomDesc.length > 500 && <FormHelperText 
 						sx={{display: 'flex', alignItems: 'center', color:"#d32f2f"}}>
 					<Error sx={{mr: 1, mt: 0.5}} fontSize="small" />
 					<span>500자까지 입력하실 수 있습니다</span>

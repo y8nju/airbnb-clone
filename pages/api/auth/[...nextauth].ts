@@ -19,7 +19,7 @@ export const authOption: NextAuthOptions = {
 			},
 			async authorize(credentials, req) {
 				let user : User;
-				user = {id : "iudjmi", email:"master@gmail.com", name : "마스터"};
+				user = {id : "iudjmi", email:"aru@aa.aa", name : "마스터"};
 				return user;
 				// await dbConnect();
 				// console.log('credentials', JSON.stringify(credentials));

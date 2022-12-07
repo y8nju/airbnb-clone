@@ -30,8 +30,7 @@ export const authOption: NextAuthOptions = {
 						const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URI + '/api/account/signin',  {
 							method: 'POST',
 							headers: { 
-								"Content-type": "application/json",
-								"Accept": "application/json"
+								"Content-type": "application/json"
 							},
 							body: JSON.stringify({email: credentials.email, password: credentials.password})
 						})

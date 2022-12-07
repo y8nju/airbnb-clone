@@ -27,7 +27,7 @@ export const authOption: NextAuthOptions = {
 					const getId = await account.findOne({email: credentials!.email}); // id Find
 					if(getId) {
 						console.log('getId', getId);
-						const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URI+ '/api/account/signin',  {
+						const response = await fetch('/api/account/signin',  {
 							method: 'POST',
 							headers: { 
 								"Content-type": "application/json",

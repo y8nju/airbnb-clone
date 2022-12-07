@@ -50,6 +50,7 @@ type Credentials = {
     password: string
 }
 export async function login(credentials: Credentials) {
+    console.log({email: credentials.email, password: credentials.password});
     let endPoint = serverURI + '/api/account/signin';
     const response = await fetch(endPoint,  {
         ...postOption,

@@ -27,11 +27,20 @@ export const authOption: NextAuthOptions = {
 					const getId = await account.findOne({email: credentials!.email}); // id Find
 					if(getId) {
 						console.log('getId', getId);
-						const response = await login(credentials!)
+						const response = await fetch('/api/account/signin',  {
+							method: 'POST',
+							headers: { 
+								"Content-type": "application/json",
+								"Accept": "application/json"
+							},
+							body: JSON.stringify({email: credentials.email, password: credentials.password})
+						})
 						console.log("authorize : ", response);
+						const data = await response.json();
+						
 						if (response) {
-							return { email: response.email,
-								name: `${response.firstName}`,
+							return { email: data.email,
+								name: `${data.firstName}`,
 							} as any;
 						}else {
 							return null

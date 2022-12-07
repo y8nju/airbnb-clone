@@ -20,10 +20,13 @@ export const authOption: NextAuthOptions = {
 			async authorize(credentials, req) {
 				await dbConnect();
 				console.log('credentials', JSON.stringify(credentials));
+				if(!credentials) {
+					throw new Error('aaaaaaaaaaaaaaaaaaaaaaa')
+				}
 				try {
 					const getId = await account.findOne({email: credentials!.email}); // id Find
 					if(getId) {
-						console.log('getId', getId)
+						console.log('getId', getId);
 						const response = await login(credentials!)
 						console.log("authorize : ", response);
 						if (response) {
@@ -59,12 +62,12 @@ export const authOption: NextAuthOptions = {
 			// return true	// 인증O
 			// return false // 인증X /error=AcessDenied
 			// throw new Error('Duplicated');	// 파라미터
-			console.log(params);
+			console.log('params', params);
 			await dbConnect();
 			const {email, name} = params.user;
 			const {provider, providerAccountId} = params.account!;
 			const findEmail = await account.findOne({email: email});
-			console.log(findEmail)
+			console.log('findEmail', findEmail)
 			if(!findEmail){
 				return `/oAuthPage/gOauthSignup?email=${email}&provider=${provider}&providerAccountId=${providerAccountId}`
 			}

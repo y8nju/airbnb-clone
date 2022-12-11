@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { HostingType } from '../../../interface/hostingType';
 
 const appKey = process.env.NEXT_PUBLIC_GOOGLE_APP_KEY;
@@ -22,6 +22,7 @@ export default function Maps({ data }: { data: HostingType }) {
 	const [coords, setCoords] = useState<google.maps.LatLngLiteral>({lat: 37.5656, lng: 126.9769})
 	
 	useEffect(() => {
+		console.log('a')
 		if(data) {
 			setCoords({
 				lat: data.location!.lat!,
@@ -37,7 +38,7 @@ export default function Maps({ data }: { data: HostingType }) {
 		script.defer = true
 		index?.parentNode?.insertBefore(script, index)
 	}
-	const initMap = () => {
+	const initMap = useCallback(() =>{
 		const { google } = window;
 		if (!mapElement.current || !google) return;
 
@@ -53,11 +54,19 @@ export default function Maps({ data }: { data: HostingType }) {
 			position: coords,
 			content: buildContent(),
 		});
-	}
+		console.log(map)
+	}, [])
 	useEffect(() => {
-		window.initMap = initMap;
+		const script = window.document.getElementsByTagName('script')[0];
+		const includeCheck = script.src.startsWith(
+		'https://maps.googleapis.com/maps/api'
+		);
+
+		if (includeCheck) return initMap();
+
+    	window.initMap = initMap;
 		loadScript(`https://maps.googleapis.com/maps/api/js?v=beta&key=${appKey}&callback=initMap&libraries=marker`)
-	}, [coords]);
+	}, [initMap, loadScript]);
 
 	return (<>
 		<div ref={mapElement} style={{ height: '100%' }} />

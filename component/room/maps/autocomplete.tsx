@@ -48,11 +48,10 @@ export default function PlacesAutocomplete(props: Props) {
 		clearSuggestions();
 	});
 	useEffect(()=> {
-		console.log('searchTxt',searchTxt, searchTxt.length)
+		// console.log('searchTxt',searchTxt, searchTxt.length)
 		setNowlocationShow(false);
 		renderSuggestions()
 		if(data.length > 0) {
-			console.log(data.length)
 			setLoading(false);
 		}
 		if(searchTxt!.length == 0 && focused) {
@@ -84,9 +83,9 @@ export default function PlacesAutocomplete(props: Props) {
 	  setValue(description, false);
 	//   setShowMap(true); 내용 등록이 완료 시에 지도가 보여야함
 	  clearSuggestions();
-	  console.log('suggestion', suggestion);
+	//   console.log('suggestion', suggestion);
 	  getGeocode({ address: description }).then((results) => {
-		console.log(getZipCode(results[0], true));
+		// console.log(getZipCode(results[0], true));
 		const { lat, lng } = getLatLng(results[0]);
 		console.log("📍 Coordinates: ", { lat, lng });
 		navigator.geolocation.getCurrentPosition(async (position) => {
@@ -97,8 +96,7 @@ export default function PlacesAutocomplete(props: Props) {
             const mapUri = createStaticMapUri(coords);
 			setCoordinate({...coords, imgUrl: mapUri});
 			const data = await nowLocationAddress(coords);
-			setAddress(data!);
-			console.log('data', data)	
+			setAddress(data!);	
 		});
 	  });
 	  setOpen(true);

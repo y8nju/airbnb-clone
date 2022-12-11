@@ -16,7 +16,6 @@ export async function nowLocationAddress(coordinate: CoorsType) {
     const endPoint = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate.lat},${coordinate.lng}&key=${appKey}`
     const response = await fetch(endPoint);
     const data = await response.json();
-    console.log('data', data)
     let result;
     data.results.forEach((one: { types: any[]; }) => {
         one.types.forEach(type => {
